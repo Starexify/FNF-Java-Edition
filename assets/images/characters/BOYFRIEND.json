@@ -1,0 +1,45 @@
+{
+    "version": "1.0.0",
+    "name": "Boyfriend",
+    "renderType": "multisparrow",
+    "assetPath": "images/characters/BOYFRIEND",
+    "flipX": false,
+    "singTime": 8.0,
+    "animations": [
+        {
+            "name": "idle",
+            "prefix": "BF idle dance",
+            "offsets": [-5, 0],
+            "framerate": 24,
+            "looped": true
+        },
+        {
+            "name": "singUP",
+            "prefix": "BF NOTE UP",
+            "offsets": [0, 27],
+            "framerate": 24,
+            "looped": false
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "BF NOTE DOWN",
+            "offsets": [0, -30],
+            "framerate": 24,
+            "looped": false
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "BF NOTE LEFT",
+            "offsets": [12, -6],
+            "framerate": 24,
+            "looped": false
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "BF NOTE RIGHT",
+            "offsets": [-38, -7],
+            "framerate": 24,
+            "looped": false
+        }
+    ]
+}
