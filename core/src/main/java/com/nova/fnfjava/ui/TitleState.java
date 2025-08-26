@@ -4,10 +4,8 @@ import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
@@ -15,14 +13,14 @@ import com.nova.fnfjava.Main;
 /**
  * Title screen of the application. Displayed after the application is created.
  */
-public class TitleScreen extends MusicBeatState {
+public class TitleState extends MusicBeatState {
     public AnimatedSprite logoBl;
     public AnimatedSprite gfDance;
     public boolean danceLeft = false;
 
     public AnimatedSprite titleText;
 
-    public TitleScreen(Main main) {
+    public TitleState(Main main) {
         super(main);
     }
 
@@ -80,6 +78,7 @@ public class TitleScreen extends MusicBeatState {
     public void input() {
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             titleText.animation.play("enter");
+            main.switchState(new MainMenuState(main));
         }
     }
 }
