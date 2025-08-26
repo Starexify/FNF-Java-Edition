@@ -6,8 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
 
@@ -22,6 +22,9 @@ public class MusicBeatState implements Screen {
     @Override
     public void show() {
         stage = new Stage(main.viewport, main.spriteBatch);
+
+        stage.getRoot().getColor().a = 0;
+        stage.getRoot().addAction(Actions.fadeIn(0.5f));
 
         Conductor.beatHit.add(this::beatHit);
         Conductor.stepHit.add(this::stepHit);
