@@ -9,10 +9,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
 
 public class AnimationController {
-    private ObjectMap<String, Animation<TextureRegion>> animations = new ObjectMap<>();
+    private ObjectMap<String, AnimationData> animations = new ObjectMap<>();
     private AnimatedSprite sprite;
     private String currentAnimationName;
-    private Animation<TextureRegion> currentAnimation;
+    private AnimationData curAnim;
     private float stateTime;
     private boolean playing;
     private boolean looping = true;
@@ -20,15 +20,6 @@ public class AnimationController {
     public AnimationController(AnimatedSprite sprite) {
         this.sprite = sprite;
         stateTime = 0f;
-        playing = true;
-    }
-
-    public void addByPrefix(String name, String prefix, float frameRate) {
-        if (sprite.atlas != null) {
-            Array<TextureAtlas.AtlasRegion> animFrames = sprite.atlas.findRegions(prefix);
-            Animation<TextureRegion> animation = new Animation<TextureRegion>(1.0f / frameRate, animFrames);
-            addAnimation(name, animation);
-        }
     }
 
     /**
@@ -56,40 +47,72 @@ public class AnimationController {
             }
 
             if (animFrames.size > 0) {
-                Animation<TextureRegion> animation = new Animation<TextureRegion>(1.0f / frameRate, animFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
-                addAnimation(name, animation);
+                AnimationData anim = new AnimationData(new Animation<TextureRegion>(1.0f / frameRate, animFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL));
+                animations.put(name, anim);
             } else
                 Gdx.app.log("AnimationControllerWarning", "Could not create animation: " + name + ", no frames were found with the prefix " + prefix);
         }
     }
 
-    // Convenience overloads
     public void addByIndices(String name, String prefix, Array<Integer> indices) {
-        addByIndices(name, prefix, indices, 30f, true, false, false);
+        addByIndices(name, prefix, indices, 30, true, false, false);
     }
 
     public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate) {
         addByIndices(name, prefix, indices, frameRate, true, false, false);
     }
 
+    /**
+     * Adds a new animation to the sprite.
+     *
+     * @param   name        What this animation should be called (e.g. `"run"`).
+     * @param   prefix      Common beginning of image names in atlas (e.g. `"tiles-"`).
+     * @param   frameRate   The animation speed in frames per second.
+     *                      Note: individual frames have their own duration, which overrides this value.
+     * @param   looped      Whether or not the animation is looped or just plays once.
+     * @param   flipX       Whether the frames should be flipped horizontally.
+     * @param   flipY       Whether the frames should be flipped vertically.
+     */
+    public void addByPrefix(String name, String prefix, float frameRate, boolean looped, boolean flipX, boolean flipY) {
+        if (sprite.atlas != null) {
+            final Array<TextureAtlas.AtlasRegion> animFrames = sprite.atlas.findRegions(prefix);
+            final Array<TextureRegion> processedFrames = new Array<>();
 
-    public void addAnimation(String name, Animation<TextureRegion> anim) {
-        animations.put(name, anim);
+            for (TextureAtlas.AtlasRegion region : animFrames) {
+                TextureRegion frame = new TextureRegion(region);
+                if (flipX || flipY) frame.flip(flipX, flipY);
+                processedFrames.add(frame);
+            }
 
-        // If this is the first animation, set it as current
-        if (currentAnimation == null) {
-            play(name);
+            if (animFrames.size > 0) {
+                AnimationData anim = new AnimationData(new Animation<TextureRegion>(1.0f / frameRate, processedFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL));
+                animations.put(name, anim);
+            }
         }
     }
 
-    public void play(String name) {
-        play(name, true);
+    public void addByPrefix(String name, String prefix) {
+        addByPrefix(name, prefix, 30, true, false, false);
     }
 
+    public void addByPrefix(String name, String prefix, float frameRate) {
+        addByPrefix(name, prefix, frameRate, true, false, false);
+    }
+
+    /**
+     * Plays an existing animation (e.g. `"run"`).
+     * If you call an animation that is already playing, it will be ignored.
+     *
+     * @param   animName   The string name of the animation you want to play.
+     * @param   force      Whether to force the animation to restart.
+     * @param   reversed   Whether to play animation backwards or not.
+     * @param   frame      The frame number in the animation you want to start from.
+     *                     If a negative value is passed, a random frame is used.
+     */
     public void play(String name, boolean reset) {
         if (animations.containsKey(name)) {
             currentAnimationName = name;
-            currentAnimation = animations.get(name);
+            curAnim = animations.get(name);
 
             if (reset) {
                 stateTime = 0f;
@@ -99,14 +122,18 @@ public class AnimationController {
         }
     }
 
+    public void play(String name) {
+        play(name, true);
+    }
+
     public void update(float delta) {
-        if (playing && currentAnimation != null) {
+        if (playing && curAnim != null) {
             stateTime += delta;
         }
     }
 
     public TextureRegion getCurrentFrame() {
-        if (currentAnimation == null) return null;
-        return currentAnimation.getKeyFrame(stateTime, looping);
+        if (curAnim == null) return null;
+        return curAnim.animation.getKeyFrame(stateTime, looping);
     }
 }

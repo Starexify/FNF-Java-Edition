@@ -9,6 +9,8 @@ import com.nova.fnfjava.animation.AnimationController;
 public class AnimatedSprite extends Actor {
     public AnimationController animation;
 
+    public boolean dirty = true;
+
     public TextureAtlas atlas;
 
     public AnimatedSprite(float x, float y) {

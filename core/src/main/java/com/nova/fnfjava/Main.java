@@ -26,17 +26,4 @@ public class Main extends Game {
 
         setScreen(new TitleScreen(this));
     }
-
-    @Override
-    public void render() {
-        super.render();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void dispose() {
-    }
 }

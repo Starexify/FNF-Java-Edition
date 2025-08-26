@@ -35,6 +35,7 @@ public class TitleScreen extends MusicBeatState {
         logoBl = new AnimatedSprite( -150, 100);
         logoBl.atlas = new TextureAtlas("images/logoBumpin.atlas");
         logoBl.animation.addByPrefix("bump", "logo bumpin", 24);
+        logoBl.animation.play("bump");
 
         gfDance = new AnimatedSprite((Gdx.graphics.getHeight() * 0.71F), Gdx.graphics.getHeight() * 0.01F);
         gfDance.atlas = new TextureAtlas("images/gfDanceTitle.atlas");
@@ -45,6 +46,7 @@ public class TitleScreen extends MusicBeatState {
         titleText.atlas = new TextureAtlas("images/titleEnter.atlas");
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
         titleText.animation.addByPrefix("enter", "ENTER PRESSED", 24);
+        titleText.animation.play("idle");
 
         add(logoBl);
         add(gfDance);
