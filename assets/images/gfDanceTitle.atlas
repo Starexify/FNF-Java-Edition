@@ -1,0 +1,215 @@
+gfDanceTitle.png
+size: 4096,4096
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+gfDance
+  rotate: false
+  xy: 0, 0
+  size: 717, 648
+  orig: 721, 662
+  offset: 2, 14
+  index: 0
+gfDance
+  rotate: false
+  xy: 727, 0
+  size: 721, 648
+  orig: 721, 662
+  offset: 0, 14
+  index: 1
+gfDance
+  rotate: false
+  xy: 1458, 0
+  size: 721, 646
+  orig: 721, 662
+  offset: 0, 16
+  index: 2
+gfDance
+  rotate: false
+  xy: 2189, 0
+  size: 717, 646
+  orig: 721, 662
+  offset: 2, 16
+  index: 3
+gfDance
+  rotate: false
+  xy: 2916, 0
+  size: 717, 649
+  orig: 721, 662
+  offset: 2, 13
+  index: 4
+gfDance
+  rotate: false
+  xy: 0, 659
+  size: 717, 649
+  orig: 721, 662
+  offset: 2, 13
+  index: 5
+gfDance
+  rotate: false
+  xy: 727, 659
+  size: 717, 650
+  orig: 721, 662
+  offset: 2, 12
+  index: 6
+gfDance
+  rotate: false
+  xy: 1454, 659
+  size: 717, 661
+  orig: 721, 662
+  offset: 2, 1
+  index: 7
+gfDance
+  rotate: false
+  xy: 1454, 659
+  size: 717, 661
+  orig: 721, 662
+  offset: 2, 1
+  index: 8
+gfDance
+  rotate: false
+  xy: 1454, 659
+  size: 717, 661
+  orig: 721, 662
+  offset: 2, 1
+  index: 9
+gfDance
+  rotate: false
+  xy: 2181, 659
+  size: 717, 662
+  orig: 721, 662
+  offset: 2, 0
+  index: 10
+gfDance
+  rotate: false
+  xy: 2181, 659
+  size: 717, 662
+  orig: 721, 662
+  offset: 2, 0
+  index: 11
+gfDance
+  rotate: false
+  xy: 2181, 659
+  size: 717, 662
+  orig: 721, 662
+  offset: 2, 0
+  index: 12
+gfDance
+  rotate: false
+  xy: 2908, 659
+  size: 717, 661
+  orig: 721, 662
+  offset: 2, 1
+  index: 13
+gfDance
+  rotate: false
+  xy: 2908, 659
+  size: 717, 661
+  orig: 721, 662
+  offset: 2, 1
+  index: 14
+gfDance
+  rotate: false
+  xy: 0, 1331
+  size: 717, 650
+  orig: 721, 662
+  offset: 2, 12
+  index: 15
+gfDance
+  rotate: false
+  xy: 727, 1331
+  size: 721, 650
+  orig: 721, 662
+  offset: 0, 12
+  index: 16
+gfDance
+  rotate: false
+  xy: 1458, 1331
+  size: 721, 650
+  orig: 721, 662
+  offset: 0, 12
+  index: 17
+gfDance
+  rotate: false
+  xy: 2189, 1331
+  size: 717, 650
+  orig: 721, 662
+  offset: 2, 12
+  index: 18
+gfDance
+  rotate: false
+  xy: 2916, 1331
+  size: 717, 651
+  orig: 721, 662
+  offset: 2, 11
+  index: 19
+gfDance
+  rotate: false
+  xy: 0, 1992
+  size: 717, 651
+  orig: 721, 662
+  offset: 2, 11
+  index: 20
+gfDance
+  rotate: false
+  xy: 727, 1992
+  size: 717, 652
+  orig: 721, 662
+  offset: 2, 10
+  index: 21
+gfDance
+  rotate: false
+  xy: 1454, 1992
+  size: 717, 657
+  orig: 721, 662
+  offset: 2, 5
+  index: 22
+gfDance
+  rotate: false
+  xy: 1454, 1992
+  size: 717, 657
+  orig: 721, 662
+  offset: 2, 5
+  index: 23
+gfDance
+  rotate: false
+  xy: 1454, 1992
+  size: 717, 657
+  orig: 721, 662
+  offset: 2, 5
+  index: 24
+gfDance
+  rotate: false
+  xy: 2181, 1992
+  size: 717, 656
+  orig: 721, 662
+  offset: 2, 6
+  index: 25
+gfDance
+  rotate: false
+  xy: 2181, 1992
+  size: 717, 656
+  orig: 721, 662
+  offset: 2, 6
+  index: 26
+gfDance
+  rotate: false
+  xy: 2181, 1992
+  size: 717, 656
+  orig: 721, 662
+  offset: 2, 6
+  index: 27
+gfDance
+  rotate: false
+  xy: 2908, 1992
+  size: 717, 656
+  orig: 721, 662
+  offset: 2, 6
+  index: 28
+gfDance
+  rotate: false
+  xy: 2908, 1992
+  size: 717, 656
+  orig: 721, 662
+  offset: 2, 6
+  index: 29
