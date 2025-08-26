@@ -15,13 +15,12 @@ public class AnimationController {
     private Animation<TextureRegion> currentAnimation;
     private float stateTime;
     private boolean playing;
-    private boolean looping;
+    private boolean looping = true;
 
     public AnimationController(AnimatedSprite sprite) {
         this.sprite = sprite;
         stateTime = 0f;
         playing = true;
-        looping = true;
     }
 
     public void addByPrefix(String name, String prefix, float frameRate) {
@@ -32,18 +31,47 @@ public class AnimationController {
         }
     }
 
-    public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate) {
+    /**
+     * Adds a new animation to the sprite.
+     *
+     * @param name      What this animation should be called (e.g. `"run"`).
+     * @param prefix    Common beginning of image names in the atlas (e.g. "tiles-").
+     * @param indices   An array of numbers indicating what frames to play in what order (e.g. `[0, 1, 2]`).
+     * @param frameRate The speed in frames per second that the animation should play at (e.g. `40` fps).
+     * @param looped    Whether or not the animation is looped or just plays once.
+     * @param flipX     Whether the frames should be flipped horizontally.
+     * @param flipY     Whether the frames should be flipped vertically.
+     */
+    public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate, boolean looped, boolean flipX, boolean flipY) {
         if (sprite.atlas != null) {
-            Array<TextureAtlas.AtlasRegion> animFrames = new Array<>();
+            final Array<TextureAtlas.AtlasRegion> animFrames = new Array<TextureAtlas.AtlasRegion>();
+
             for (int index : indices) {
                 TextureAtlas.AtlasRegion region = sprite.atlas.findRegion(prefix, index);
-                if (region != null) animFrames.add(region);
-                else Gdx.app.log("AtlasWarning", "Region not found: " + prefix + " index " + index);
+                if (region != null) {
+                    TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
+                    if (flipX || flipY) frame.flip(flipX, flipY);
+                    animFrames.add(frame);
+                }
             }
-            Animation<TextureRegion> animation = new Animation<TextureRegion>(1.0f / frameRate, animFrames);
-            addAnimation(name, animation);
+
+            if (animFrames.size > 0) {
+                Animation<TextureRegion> animation = new Animation<TextureRegion>(1.0f / frameRate, animFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+                addAnimation(name, animation);
+            } else
+                Gdx.app.log("AnimationControllerWarning", "Could not create animation: " + name + ", no frames were found with the prefix " + prefix);
         }
     }
+
+    // Convenience overloads
+    public void addByIndices(String name, String prefix, Array<Integer> indices) {
+        addByIndices(name, prefix, indices, 30f, true, false, false);
+    }
+
+    public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate) {
+        addByIndices(name, prefix, indices, frameRate, true, false, false);
+    }
+
 
     public void addAnimation(String name, Animation<TextureRegion> anim) {
         animations.put(name, anim);
@@ -80,9 +108,5 @@ public class AnimationController {
     public TextureRegion getCurrentFrame() {
         if (currentAnimation == null) return null;
         return currentAnimation.getKeyFrame(stateTime, looping);
-    }
-
-    public void setLooping(boolean looping) {
-        this.looping = looping;
     }
 }

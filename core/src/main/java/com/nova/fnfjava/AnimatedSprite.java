@@ -13,7 +13,7 @@ public class AnimatedSprite extends Actor {
 
     public AnimatedSprite(float x, float y) {
         animation = new AnimationController(this);
-        this.setPosition(x, y);
+        setPosition(x, y);
     }
 
     @Override
@@ -35,10 +35,5 @@ public class AnimatedSprite extends Actor {
             batch.draw(currentFrame, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
             batch.setColor(1, 1, 1, 1);
         }
-    }
-
-    public void playLoop(String name) {
-        animation.setLooping(true);
-        animation.play(name);
     }
 }
