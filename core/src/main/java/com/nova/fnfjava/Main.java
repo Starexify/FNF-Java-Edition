@@ -6,8 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.nova.fnfjava.system.frontEnds.SoundManager;
+import com.nova.fnfjava.sound.SoundManager;
 import com.nova.fnfjava.ui.TitleState;
+import com.nova.fnfjava.util.camera.CameraFlash;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
@@ -38,5 +39,11 @@ public class Main extends Game {
             this.screen.show();
             this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        CameraFlash.getInstance().dispose();
     }
 }

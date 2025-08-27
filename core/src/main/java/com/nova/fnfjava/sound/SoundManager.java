@@ -1,4 +1,4 @@
-package com.nova.fnfjava.system.frontEnds;
+package com.nova.fnfjava.sound;
 
 import com.badlogic.gdx.audio.Music;
 

@@ -4,11 +4,13 @@ import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.util.camera.CameraFlash;
 
 /**
  * Title screen of the application. Displayed after the application is created.
@@ -29,6 +31,8 @@ public class TitleState extends MusicBeatState {
     @Override
     public void show() {
         super.show();
+
+        CameraFlash.getInstance().setStage(stage);
 
         startIntro();
     }
@@ -69,6 +73,9 @@ public class TitleState extends MusicBeatState {
     @Override
     public void render(float delta) {
         super.render(delta);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+
         Conductor.getInstance().update();
 
         input();
@@ -96,6 +103,8 @@ public class TitleState extends MusicBeatState {
 
     public void skipIntro() {
         if (!skippedIntro) {
+
+            CameraFlash.getInstance().flash(Color.WHITE, initialized ? 1 : 4);
 
             skippedIntro = true;
         }
