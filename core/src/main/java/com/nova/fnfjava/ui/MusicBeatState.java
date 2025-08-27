@@ -57,7 +57,6 @@ public class MusicBeatState implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        main.spriteBatch.dispose();
     }
 
     @Override
