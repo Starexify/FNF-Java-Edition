@@ -14,6 +14,8 @@ import com.nova.fnfjava.Main;
  * Title screen of the application. Displayed after the application is created.
  */
 public class TitleState extends MusicBeatState {
+    public static boolean initialized = false;
+
     public AnimatedSprite logoBl;
     public AnimatedSprite gfDance;
     public boolean danceLeft = false;
@@ -28,7 +30,11 @@ public class TitleState extends MusicBeatState {
     public void show() {
         super.show();
 
-        playMenuMusic();
+        startIntro();
+    }
+
+    public void startIntro() {
+        if (!initialized || Main.sound.music == null) playMenuMusic();
 
         logoBl = new AnimatedSprite( -150, 100);
         logoBl.atlas = new TextureAtlas("images/logoBumpin.atlas");
@@ -40,31 +46,24 @@ public class TitleState extends MusicBeatState {
         gfDance.animation.addByIndices("danceLeft", "gfDance", new Array<>(new Integer[]{30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}), 24);
         gfDance.animation.addByIndices("danceRight", "gfDance", new Array<>(new Integer[]{15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}), 24);
 
+        add(logoBl);
+
+        add(gfDance);
+
         titleText = new AnimatedSprite(100, main.viewport.getWorldHeight() * 0.2F);
         titleText.atlas = new TextureAtlas("images/titleEnter.atlas");
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
         titleText.animation.addByPrefix("enter", "ENTER PRESSED", 24);
         titleText.animation.play("idle");
-
-        add(logoBl);
-        add(gfDance);
         add(titleText);
+
+        if (initialized) skipIntro();
+        else initialized = true;
     }
 
     public void playMenuMusic() {
         Music music = Gdx.audio.newMusic(Gdx.files.internal("music/freakyMenu/freakyMenu.ogg"));
         Main.sound.playMusic(music);
-    }
-
-    @Override
-    public void beatHit(Signal<Integer> integerSignal, Integer beat) {
-        super.beatHit(integerSignal, beat);
-        Gdx.app.log("Conductor Test", "Cur beat: " + beat);
-        danceLeft = !danceLeft;
-        if (gfDance != null && gfDance.animation != null) {
-            if (danceLeft) gfDance.animation.play("danceRight");
-            else gfDance.animation.play("danceLeft");
-        }
     }
 
     @Override
@@ -79,6 +78,26 @@ public class TitleState extends MusicBeatState {
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             titleText.animation.play("enter");
             main.switchState(new MainMenuState(main));
+        }
+    }
+
+    public boolean skippedIntro = false;
+
+    @Override
+    public void beatHit(Signal<Integer> integerSignal, Integer beat) {
+        super.beatHit(integerSignal, beat);
+        Gdx.app.log("Conductor Test", "Cur beat: " + beat);
+        danceLeft = !danceLeft;
+        if (gfDance != null && gfDance.animation != null) {
+            if (danceLeft) gfDance.animation.play("danceRight");
+            else gfDance.animation.play("danceLeft");
+        }
+    }
+
+    public void skipIntro() {
+        if (!skippedIntro) {
+
+            skippedIntro = true;
         }
     }
 }

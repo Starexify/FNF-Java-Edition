@@ -24,6 +24,7 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        Preferences.init();
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 

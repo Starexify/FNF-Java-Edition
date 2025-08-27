@@ -23,9 +23,6 @@ public class MusicBeatState implements Screen {
     public void show() {
         stage = new Stage(main.viewport, main.spriteBatch);
 
-        stage.getRoot().getColor().a = 0;
-        stage.getRoot().addAction(Actions.fadeIn(0.5f));
-
         Conductor.beatHit.add(this::beatHit);
         Conductor.stepHit.add(this::stepHit);
 
@@ -57,6 +54,9 @@ public class MusicBeatState implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+
+        Conductor.beatHit.remove(this::beatHit);
+        Conductor.stepHit.remove(this::stepHit);
     }
 
     @Override
