@@ -11,7 +11,7 @@ public class Conductor {
     private int stepsPerMeasure = 16;
 
     private int currentStep = -1;
-    private int currentBeat = -1;
+    public int currentBeat = 0;
     private int currentMeasure = -1;
 
     public static final Signal<Integer> stepHit = new Signal<>();

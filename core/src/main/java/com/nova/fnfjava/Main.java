@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.sound.SoundManager;
 import com.nova.fnfjava.ui.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
@@ -16,9 +17,10 @@ import com.nova.fnfjava.util.camera.CameraFlash;
 public class Main extends Game {
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
-    public static SoundManager sound = new SoundManager();
 
+    public static SoundManager sound = new SoundManager();
     public static AssetManager assetManager = new AssetManager();
+    public static FlxRandom random = new FlxRandom();
 
     // Game constants
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
