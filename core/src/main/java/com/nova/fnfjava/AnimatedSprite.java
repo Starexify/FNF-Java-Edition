@@ -11,8 +11,7 @@ import com.nova.fnfjava.animation.AnimationController;
 public class AnimatedSprite extends Actor {
     public AnimationController animation;
 
-    public int frameWidth = 0;
-    public int frameHeight = 0;
+    public int frameWidth = 0, frameHeight = 0;
 
     public TextureRegion frame;
     public TextureAtlas atlas;

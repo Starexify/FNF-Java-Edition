@@ -113,7 +113,7 @@ public class AtlasText extends Group {
 
     public AtlasText screenCenter(Axes axes) {
         if (axes.hasX()) setX((Gdx.graphics.getWidth() - getWidth()) / 2f);
-        if (axes.hasY())setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
+        if (axes.hasY()) setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
         return this;
     }
 
@@ -160,6 +160,68 @@ public class AtlasText extends Group {
             addActor(character);
         }
         character.setVisible(true);
+    }
+
+    @Override
+    public float getWidth() {
+        if (getChildren().size == 0) return 0;
+        return findMaxX() - findMinX();
+    }
+
+    @Override
+    public float getHeight() {
+        if (getChildren().size == 0) return 0;
+        return findMaxY() - findMinY();
+    }
+
+    public float findMinX() {
+        float value = Float.POSITIVE_INFINITY;
+        for (Actor child : getChildren()) {
+            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
+                if (child.getX() < value) {
+                    value = child.getX();
+                }
+            }
+        }
+        return value == Float.POSITIVE_INFINITY ? getX() : value;
+    }
+
+    public float findMaxX() {
+        float value = Float.NEGATIVE_INFINITY;
+        for (Actor child : getChildren()) {
+            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
+                float maxX = child.getX() + child.getWidth();
+                if (maxX > value) {
+                    value = maxX;
+                }
+            }
+        }
+        return value == Float.NEGATIVE_INFINITY ? getX() : value;
+    }
+
+    public float findMinY() {
+        float value = Float.POSITIVE_INFINITY;
+        for (Actor child : getChildren()) {
+            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
+                if (child.getY() < value) {
+                    value = child.getY();
+                }
+            }
+        }
+        return value == Float.POSITIVE_INFINITY ? getY() : value;
+    }
+
+    public float findMaxY() {
+        float value = Float.NEGATIVE_INFINITY;
+        for (Actor child : getChildren()) {
+            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
+                float maxY = child.getY() + child.getHeight();
+                if (maxY > value) {
+                    value = maxY;
+                }
+            }
+        }
+        return value == Float.NEGATIVE_INFINITY ? getY() : value;
     }
 }
 

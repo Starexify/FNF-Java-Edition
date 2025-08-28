@@ -148,7 +148,7 @@ public class TitleState extends MusicBeatState {
         for (int i = 0; i < textArray.length; i++) {
             AtlasText money = new AtlasText(0, 0, textArray[i], AtlasFont.BOLD);
             money.screenCenter(Axes.X);
-            money.setY(money.getY() + (i * 60) + 200);
+            money.setY(money.getY() - (i * 60) + 200);
             textGroup.addActor(money);
         }
     }
@@ -157,8 +157,8 @@ public class TitleState extends MusicBeatState {
         if (credGroup == null || textGroup == null) return;
 
         AtlasText coolText = new AtlasText(0, 0, text.trim(), AtlasFont.BOLD);
-        coolText.screenCenter();
-        coolText.setY(coolText.getY() + (textGroup.getChildren().size * 60) + 200);;
+        coolText.screenCenter(Axes.X);
+        coolText.setY(coolText.getY() - (textGroup.getChildren().size * 60) + 200);;
         textGroup.addActor(coolText);
     }
 
