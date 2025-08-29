@@ -2,16 +2,15 @@ package com.nova.fnfjava.ui;
 
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
 
-public class MusicBeatState implements Screen {
+public class MusicBeatState extends ScreenAdapter {
     protected final Main main;
     protected Stage stage;
 
@@ -57,17 +56,5 @@ public class MusicBeatState implements Screen {
 
         Conductor.beatHit.remove(this::beatHit);
         Conductor.stepHit.remove(this::stepHit);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
     }
 }

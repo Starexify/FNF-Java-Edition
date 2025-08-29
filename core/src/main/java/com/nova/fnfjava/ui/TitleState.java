@@ -3,6 +3,7 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,10 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
+import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.util.camera.CameraFlash;
-
-import java.awt.*;
 
 /**
  * Title screen of the application. Displayed after the application is created.
@@ -28,6 +29,7 @@ public class TitleState extends MusicBeatState {
 
     public AnimatedSprite ngSpr;
 
+    public Array<String> curWacky = new Array<>();
     public int lastBeat = 0;
 
     public AnimatedSprite logoBl;
@@ -45,6 +47,8 @@ public class TitleState extends MusicBeatState {
     @Override
     public void show() {
         super.show();
+
+        curWacky = Main.random.getObject(getIntroTextShit());
 
         CameraFlash.getInstance().setStage(stage);
 
@@ -71,7 +75,7 @@ public class TitleState extends MusicBeatState {
         titleText = new AnimatedSprite(100, main.viewport.getWorldHeight() * 0.2F);
         titleText.atlas = new TextureAtlas("images/titleEnter.atlas");
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
-        titleText.animation.addByPrefix("enter", "ENTER PRESSED", 24);
+        titleText.animation.addByPrefix("press", "ENTER PRESSED", 24);
         titleText.animation.play("idle");
         add(titleText);
 
@@ -95,7 +99,7 @@ public class TitleState extends MusicBeatState {
             credGroup.addActor(textGroup);
         }
 
-        ngSpr = new AnimatedSprite(0, main.viewport.getWorldHeight() * 0.52F);
+        ngSpr = new AnimatedSprite(0, main.viewport.getWorldHeight() * 0.12F);
 
         if (Main.random.bool(1)) {
             ngSpr.loadGraphic(Paths.image("newgrounds_logo_classic"));
@@ -103,7 +107,7 @@ public class TitleState extends MusicBeatState {
             ngSpr.loadGraphic(Paths.image("newgrounds_logo_animated"), true, 600);
             ngSpr.animation.add("idle", new int[]{0, 1}, 4);
             ngSpr.animation.play("idle");
-            ngSpr.setSize(ngSpr.getWidth() * 0.55f, ngSpr.getWidth() * 0.55f);
+            ngSpr.setSize(ngSpr.getWidth() * 0.55f, 0);
             ngSpr.setY(ngSpr.getY() + 25);
         } else {
             ngSpr.loadGraphic(Paths.image("newgrounds_logo"));
@@ -113,6 +117,7 @@ public class TitleState extends MusicBeatState {
         add(ngSpr);
         ngSpr.setVisible(false);
 
+        ngSpr.updateHitboxFromCurrentFrame();
         ngSpr.screenCenter(Axes.X);
 
         if (initialized) skipIntro();
@@ -124,31 +129,64 @@ public class TitleState extends MusicBeatState {
         Main.sound.playMusic(music);
     }
 
+    public Array<Array<String>> getIntroTextShit() {
+        String fullText = Assets.getText(Paths.txt("introText"));
+
+        String[] firstArray = fullText.split("\\R");
+        Array<Array<String>> swagGoodArray = new Array<>();
+
+        for (String i : firstArray) {
+            String[] parts = i.split("--");
+
+            Array<String> inner = new Array<>(parts.length);
+            for (String part : parts) inner.add(part.trim());
+            swagGoodArray.add(inner);
+        }
+
+        return swagGoodArray;
+    }
+
+    public boolean transitioning = false;
+
     @Override
     public void render(float delta) {
-        super.render(delta);
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
         Conductor.getInstance().update();
 
-        input();
-    }
-
-    public void input() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            titleText.animation.play("enter");
+        boolean pressedEnter = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
+        if (pressedEnter && transitioning && skippedIntro) {
             main.switchState(new MainMenuState(main));
         }
+
+        Screen targetState = new MainMenuState(main);
+
+        if (pressedEnter && !transitioning && skippedIntro) {
+            titleText.animation.play("press");
+            CameraFlash.getInstance().flash(Color.WHITE, 1);
+            FunkinSound.playOnce(Paths.sound("confirmMenu"), 0.7f);
+            transitioning = true;
+
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    main.switchState(targetState);
+                }
+            }, 2f);
+        }
+        if (pressedEnter && !skippedIntro && initialized) skipIntro();
+
+        super.render(delta);
     }
 
-    public void createCoolText(String[] textArray) {
+    public void createCoolText(Array<String> textArray) {
         if (credGroup == null || textGroup == null) return;
 
-        for (int i = 0; i < textArray.length; i++) {
-            AtlasText money = new AtlasText(0, 0, textArray[i], AtlasFont.BOLD);
+        for (int i = 0; i < textArray.size; i++) {
+            AtlasText money = new AtlasText(0, 0, textArray.get(i), AtlasFont.BOLD);
             money.screenCenter(Axes.X);
-            money.setY(money.getY() - (i * 60) + 200);
+            money.setY(money.getY() - (i * 60) + 400);
             textGroup.addActor(money);
         }
     }
@@ -158,7 +196,8 @@ public class TitleState extends MusicBeatState {
 
         AtlasText coolText = new AtlasText(0, 0, text.trim(), AtlasFont.BOLD);
         coolText.screenCenter(Axes.X);
-        coolText.setY(coolText.getY() - (textGroup.getChildren().size * 60) + 200);;
+        coolText.setY(coolText.getY() - (textGroup.getChildren().size * 60) + 400);
+        ;
         textGroup.addActor(coolText);
     }
 
@@ -183,7 +222,7 @@ public class TitleState extends MusicBeatState {
                 for (int i = lastBeat; i < beat; i++) {
                     switch (i + 1) {
                         case 1:
-                            createCoolText(new String[]{"The", "Funkin Crew Inc"});
+                            createCoolText(new Array<>(new String[]{"The", "Funkin Crew Inc"}));
                             break;
                         case 3:
                             addMoreText("presents");
@@ -192,7 +231,7 @@ public class TitleState extends MusicBeatState {
                             deleteCoolText();
                             break;
                         case 5:
-                            createCoolText(new String[]{"In association", "with"});
+                            createCoolText(new Array<>(new String[]{"In association", "with"}));
                             break;
                         case 7:
                             addMoreText("newgrounds");
@@ -203,10 +242,10 @@ public class TitleState extends MusicBeatState {
                             if (ngSpr != null) ngSpr.setVisible(false);
                             break;
                         case 9:
-                            //createCoolText([curWacky[0]]);
+                            createCoolText(new Array<>(new String[]{curWacky.get(0)}));
                             break;
                         case 11:
-                            //addMoreText(curWacky[1]);
+                            addMoreText(curWacky.get(1));
                             break;
                         case 12:
                             deleteCoolText();
@@ -218,9 +257,8 @@ public class TitleState extends MusicBeatState {
                             // easter egg for when the game is trending with the wrong spelling
                             // the random intro text would be "trending--only on x"
 
-                            //if (curWacky[0] == "trending") addMoreText("Nigth");
-                            //else
-                                addMoreText("Night");
+                            if (curWacky.get(0).equals("trending")) addMoreText("Nigth");
+                            else addMoreText("Night");
                             break;
                         case 15:
                             addMoreText("Funkin");
@@ -251,6 +289,7 @@ public class TitleState extends MusicBeatState {
 
             CameraFlash.getInstance().flash(Color.WHITE, initialized ? 1 : 4);
 
+            if (credGroup != null) credGroup.remove();
             skippedIntro = true;
         }
     }

@@ -245,8 +245,7 @@ class AtlasChar extends AnimatedSprite {
             if (animation.exists("anim")) {
                 animation.play("anim");
             }
-            TextureAtlas.AtlasRegion region = atlas.findRegion(prefix);
-            updateHitboxFromRegion(region);
+            updateHitboxFromCurrentFrame();
         }
         return this.character = value;
     }

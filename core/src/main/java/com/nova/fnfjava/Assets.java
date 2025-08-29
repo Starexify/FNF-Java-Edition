@@ -1,5 +1,6 @@
 package com.nova.fnfjava;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -30,6 +31,10 @@ public class Assets {
 
     public static boolean isPathLoaded(String path) {
         return Main.assetManager.isLoaded(path);
+    }
+
+    public static String getText(String path) {
+        return Gdx.files.internal(path).readString();
     }
 
     public static boolean update() {

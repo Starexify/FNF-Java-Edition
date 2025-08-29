@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.nova.fnfjava.animation.AnimationController;
 
@@ -15,6 +16,8 @@ public class AnimatedSprite extends Actor {
 
     public TextureRegion frame;
     public TextureAtlas atlas;
+
+    public Vector2 offset = new Vector2();
 
     public AnimatedSprite(float x, float y) {
         animation = new AnimationController(this);
@@ -128,13 +131,36 @@ public class AnimatedSprite extends Actor {
     }
 
     public void updateHitbox() {
-        Gdx.app.log("AnimatedSprite", "width = " + getWidth() + " height = " + getHeight());
-        Gdx.app.log("AnimatedSprite", "frameWidth = " + frameWidth + " frameHEight = " + frameHeight);
-
-        //offset.set(-0.5 * (width - frameWidth), -0.5 * (height - frameHeight));
         if (frameWidth > 0 && frameHeight > 0) {
-            setSize(Math.abs(getScaleX()) * frameWidth, Math.abs(getScaleY()) * frameHeight);
+            float newWidth = Math.abs(getScaleX()) * frameWidth;
+            float newHeight = Math.abs(getScaleY()) * frameHeight;
+
+            setSize(newWidth, newHeight);
+
+            // Calculate offset like FlxSprite
+            offset.set(-0.5f * (newWidth - frameWidth), -0.5f * (newHeight - frameHeight));
             centerOrigin();
+        }
+    }
+
+    // Similar to updateHitbox till I fix updateHitbox to be similar to Flixel's one
+    public void updateHitboxFromCurrentFrame() {
+        TextureRegion currentFrame = getCurrentDisplayFrame();
+        if (currentFrame != null) {
+            int currentFrameWidth = currentFrame.getRegionWidth();
+            int currentFrameHeight = currentFrame.getRegionHeight();
+
+            // Update size based on current frame and scale
+            float newWidth = Math.abs(getScaleX()) * currentFrameWidth;
+            float newHeight = Math.abs(getScaleY()) * currentFrameHeight;
+
+            setSize(newWidth, newHeight);
+
+            // Calculate offset like FlxSprite does
+            offset.set(-0.5f * (newWidth - currentFrameWidth), -0.5f * (newHeight - currentFrameHeight));
+
+            // Center origin on the frame
+            setOrigin(currentFrameWidth * 0.5f, currentFrameHeight * 0.5f);
         }
     }
 

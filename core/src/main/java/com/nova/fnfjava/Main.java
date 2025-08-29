@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.math.FlxRandom;
-import com.nova.fnfjava.sound.SoundManager;
+import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
@@ -15,10 +15,12 @@ import com.nova.fnfjava.util.camera.CameraFlash;
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
 public class Main extends Game {
+    public static Main instance;
+
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
 
-    public static SoundManager sound = new SoundManager();
+    public static FunkinSound sound = new FunkinSound();
     public static AssetManager assetManager = new AssetManager();
     public static FlxRandom random = new FlxRandom();
 
@@ -27,7 +29,11 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        instance = this;
+
         Preferences.init();
+        PlayerSettings.init();
+
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 

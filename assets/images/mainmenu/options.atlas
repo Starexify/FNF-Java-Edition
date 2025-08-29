@@ -1,0 +1,89 @@
+options.png
+size: 1024,1024
+format: RGBA4444
+filter: Nearest,Nearest
+repeat: none
+options idle
+  rotate: false
+  xy: 0, 488
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 0
+options idle
+  rotate: false
+  xy: 0, 488
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 1
+options idle
+  rotate: false
+  xy: 0, 488
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 2
+options idle
+  rotate: false
+  xy: 0, 603
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 3
+options idle
+  rotate: false
+  xy: 0, 603
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 4
+options idle
+  rotate: false
+  xy: 0, 603
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 5
+options idle
+  rotate: false
+  xy: 0, 718
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 6
+options idle
+  rotate: false
+  xy: 0, 718
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 7
+options idle
+  rotate: false
+  xy: 0, 718
+  size: 487, 111
+  orig: 487, 111
+  offset: 0, 0
+  index: 8
+options selected
+  rotate: false
+  xy: 0, 329
+  size: 606, 155
+  orig: 610, 163
+  offset: 2, 1
+  index: 0
+options selected
+  rotate: false
+  xy: 0, 167
+  size: 607, 158
+  orig: 610, 163
+  offset: 3, 1
+  index: 1
+options selected
+  rotate: false
+  xy: 0, 0
+  size: 610, 163
+  orig: 610, 163
+  offset: 0, 0
+  index: 2

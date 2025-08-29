@@ -1,0 +1,89 @@
+freeplay.png
+size: 1024,1024
+format: RGBA4444
+filter: Nearest,Nearest
+repeat: none
+freeplay idle
+  rotate: false
+  xy: 0, 524
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 0
+freeplay idle
+  rotate: false
+  xy: 0, 524
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 1
+freeplay idle
+  rotate: false
+  xy: 0, 524
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 2
+freeplay idle
+  rotate: false
+  xy: 0, 650
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 3
+freeplay idle
+  rotate: false
+  xy: 0, 650
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 4
+freeplay idle
+  rotate: false
+  xy: 0, 650
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 5
+freeplay idle
+  rotate: false
+  xy: 0, 776
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 6
+freeplay idle
+  rotate: false
+  xy: 0, 776
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 7
+freeplay idle
+  rotate: false
+  xy: 0, 776
+  size: 484, 122
+  orig: 484, 122
+  offset: 0, 0
+  index: 8
+freeplay selected
+  rotate: false
+  xy: 0, 351
+  size: 627, 169
+  orig: 635, 174
+  offset: 0, 0
+  index: 0
+freeplay selected
+  rotate: false
+  xy: 0, 177
+  size: 632, 170
+  orig: 635, 174
+  offset: 3, 1
+  index: 1
+freeplay selected
+  rotate: false
+  xy: 0, 0
+  size: 629, 173
+  orig: 635, 174
+  offset: 4, 1
+  index: 2
