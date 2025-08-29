@@ -9,12 +9,12 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
 
 public class AnimationController {
-    private ObjectMap<String, AnimationData> animations = new ObjectMap<>();
-    private AnimatedSprite sprite;
-    private AnimationData curAnim;
-    private float stateTime;
-    private boolean playing;
-    private boolean looping = true;
+    public ObjectMap<String, AnimationData> animations = new ObjectMap<>();
+    public AnimatedSprite sprite;
+    public AnimationData curAnim;
+    public float stateTime;
+    public boolean playing;
+    public boolean looping = true;
 
     public AnimationController(AnimatedSprite sprite) {
         this.sprite = sprite;

@@ -27,6 +27,7 @@ public class AtlasMenuItem extends MenuListItem {
         if (centered) {
             centerOrigin();
             //offset.copyFrom(origin);
+            offset.set(-getOriginX(), -getOriginY());
         }
     }
 

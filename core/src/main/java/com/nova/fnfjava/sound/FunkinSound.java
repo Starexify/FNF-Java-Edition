@@ -11,7 +11,10 @@ import java.util.Map;
 public class FunkinSound {
     public Music music;
 
-    private static Map<String, Sound> soundCache = new HashMap<>();
+    public static Map<String, Sound> soundCache = new HashMap<>();
+
+    public boolean playing;
+    public boolean paused;
 
     public void playMusic(Music newMusic) {
         if (music != null) music.stop();
@@ -41,6 +44,24 @@ public class FunkinSound {
 
     public boolean isMusicPlaying() {
         return (music != null && music.isPlaying());
+    }
+
+    public FunkinSound pauseMusic() {
+        //if (!playing) return this;
+        if (music != null && music.isPlaying()) {
+            paused = true;
+            music.pause();
+        }
+        return this;
+    }
+
+    public FunkinSound resumeMusic() {
+        //if (!playing) return this;
+        if (music != null && paused) {
+            music.play();
+            paused = false;
+        }
+        return this;
     }
 
     public static void dispose() {

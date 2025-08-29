@@ -6,11 +6,11 @@ import com.badlogic.gdx.InputAdapter;
 import com.nova.fnfjava.input.actions.GameAction;
 
 public class Controls extends InputAdapter {
-    private GameAction uiUp = new GameAction();
-    private GameAction uiDown = new GameAction();
-    private GameAction uiLeft = new GameAction();
-    private GameAction uiRight = new GameAction();
-    private GameAction accept = new GameAction();
+    public GameAction uiUp = new GameAction();
+    public GameAction uiDown = new GameAction();
+    public GameAction uiLeft = new GameAction();
+    public GameAction uiRight = new GameAction();
+    public GameAction accept = new GameAction();
 
     public boolean UI_UP_P() {
         return uiUp.isJustPressed();
@@ -33,7 +33,6 @@ public class Controls extends InputAdapter {
     }
 
     public Controls(String name, KeyboardScheme scheme) {
-
         if (scheme == null) scheme = KeyboardScheme.NONE;
     }
 

@@ -1,8 +1,6 @@
 package com.nova.fnfjava;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,6 +21,8 @@ public class Main extends Game {
     public static FunkinSound sound = new FunkinSound();
     public static AssetManager assetManager = new AssetManager();
     public static FlxRandom random = new FlxRandom();
+
+    public boolean focused = true;
 
     // Game constants
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
@@ -50,8 +50,26 @@ public class Main extends Game {
     }
 
     @Override
+    public void pause() {
+        super.pause();
+
+        sound.pauseMusic();
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+
+        sound.resumeMusic();
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
+        if (sound.music != null) sound.music.dispose();
+        FunkinSound.dispose();
+        spriteBatch.dispose();
+        assetManager.dispose();
         CameraFlash.getInstance().dispose();
     }
 }
