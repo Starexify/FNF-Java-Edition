@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.util.Constants;
 
 public class MainMenuState extends MusicBeatState {
     public MenuTypedList<AtlasMenuItem> menuItems;
@@ -25,6 +26,8 @@ public class MainMenuState extends MusicBeatState {
 
     @Override
     public void show() {
+        super.show();
+
         bg = new Image(Assets.getTexture("images/menuBG.png"));
         bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
         bg.setPosition((Gdx.graphics.getWidth() - bg.getWidth()) / 2, (Gdx.graphics.getHeight() - bg.getHeight()) / 2);
@@ -73,10 +76,9 @@ public class MainMenuState extends MusicBeatState {
 
         menuItems.selectItem(rememberedSelectedIndex);
 
-        super.show();
-
         if (this.leftWatermarkText != null) {
-
+            this.leftWatermarkText.setText(Constants.VERSION);
+            this.leftWatermarkText.toFront();
         }
     }
 

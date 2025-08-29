@@ -9,10 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.text.FlxText;
+import com.nova.fnfjava.text.FlxTextBorderStyle;
 
 public class MusicBeatState extends ScreenAdapter {
-    protected final Main main;
-    protected Stage stage;
+    public final Main main;
+    public Stage stage;
+
+    public FlxText leftWatermarkText = null;
+    public FlxText rightWatermarkText = null;
 
     public MusicBeatState(Main main) {
         this.main = main;
@@ -21,6 +26,8 @@ public class MusicBeatState extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage(main.viewport, main.spriteBatch);
+
+        createWatermarkText();
 
         Conductor.beatHit.add(this::beatHit);
         Conductor.stepHit.add(this::stepHit);
@@ -35,7 +42,19 @@ public class MusicBeatState extends ScreenAdapter {
         stage.draw();
     }
 
-    protected void add(Actor actor) {
+    public void createWatermarkText() {
+        leftWatermarkText = new FlxText(10, 10, "");
+        rightWatermarkText = new FlxText(stage.getWidth() - 10, 10, "");
+        rightWatermarkText.setX(stage.getWidth() - rightWatermarkText.getWidth());
+
+        leftWatermarkText.setFormat("VCR_OSD_MONO", 16, Color.WHITE, FlxTextBorderStyle.OUTLINE, Color.BLACK);
+        rightWatermarkText.setFormat("VCR_OSD_MONO", 16, Color.WHITE, FlxTextBorderStyle.OUTLINE, Color.BLACK);
+
+        add(leftWatermarkText);
+        add(rightWatermarkText);
+    }
+
+    public void add(Actor actor) {
         stage.addActor(actor);
     }
 

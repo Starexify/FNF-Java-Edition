@@ -18,4 +18,8 @@ public class Paths {
     public static String sound(String key) {
         return "sounds/" + key + "." + Constants.EXT_SOUND;
     }
+
+    public static String font(String key) {
+        return "fonts/" + key;
+    }
 }
