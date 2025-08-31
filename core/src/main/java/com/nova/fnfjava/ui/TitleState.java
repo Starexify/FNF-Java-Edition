@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.sound.FunkinSoundPlayMusicParams;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
 /**
@@ -125,8 +126,7 @@ public class TitleState extends MusicBeatState {
     }
 
     public void playMenuMusic() {
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("music/freakyMenu/freakyMenu.ogg"));
-        Main.sound.playMusic(music);
+        Main.sound.playMusic("freakyMenu", new FunkinSoundPlayMusicParams.Builder().build());
     }
 
     public Array<Array<String>> getIntroTextShit() {
@@ -165,7 +165,7 @@ public class TitleState extends MusicBeatState {
         if (pressedEnter && !transitioning && skippedIntro) {
             titleText.animation.play("press");
             CameraFlash.getInstance().flash(Color.WHITE, 1);
-            FunkinSound.playOnce(Paths.sound("confirmMenu"), 0.7f);
+            Main.sound.playOnce(Paths.sound("confirmMenu"), 0.7f);
             transitioning = true;
 
             Timer.schedule(new Timer.Task() {
@@ -215,8 +215,7 @@ public class TitleState extends MusicBeatState {
     public void beatHit(Signal<Integer> integerSignal, Integer beat) {
         super.beatHit(integerSignal, beat);
 
-        Gdx.app.log("Conductor Test", "Cur beat: " + beat);
-
+        Gdx.app.log("TEst", "TEST: " + beat);
         if (!skippedIntro) {
             if (beat > lastBeat) {
                 for (int i = lastBeat; i < beat; i++) {

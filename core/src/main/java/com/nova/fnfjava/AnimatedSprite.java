@@ -1,12 +1,14 @@
 package com.nova.fnfjava;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.nova.fnfjava.animation.AnimationController;
 
 public class AnimatedSprite extends Actor {
@@ -166,14 +168,5 @@ public class AnimatedSprite extends Actor {
 
     public void centerOrigin() {
         setOrigin(frameWidth * 0.5f, frameHeight * 0.5f);
-    }
-
-    public void updateHitboxFromRegion(TextureAtlas.AtlasRegion region) {
-        if (region != null) {
-            this.frameWidth = region.getRegionWidth();
-            this.frameHeight = region.getRegionHeight();
-            setSize(frameWidth, frameHeight);
-            centerOrigin();
-        }
     }
 }

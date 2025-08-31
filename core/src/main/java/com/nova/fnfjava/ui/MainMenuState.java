@@ -131,7 +131,7 @@ public class MainMenuState extends MusicBeatState {
             menuItems.busy = true;
             rememberedSelectedIndex = menuItems.selectedIndex;
             main.switchState(new TitleState(main));
-            FunkinSound.playOnce(Paths.sound("cancelMenu"));
+            Main.sound.playOnce(Paths.sound("cancelMenu"));
         }
     }
 }

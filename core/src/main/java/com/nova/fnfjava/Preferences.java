@@ -7,6 +7,7 @@ public class Preferences {
     private static com.badlogic.gdx.Preferences prefs;
 
     private static final boolean FLASHING_LIGHTS = true;
+    private static final int GLOBAL_OFFSET = 0;
 
     public static void init() {
         prefs = Gdx.app.getPreferences(PREFS_NAME);
@@ -18,6 +19,16 @@ public class Preferences {
 
     public static boolean setFlashingLights(boolean value) {
         prefs.putBoolean("flashingLights", value);
+        prefs.flush();
+        return value;
+    }
+
+    public static int getGlobalOffset() {
+        return prefs.getInteger("globalOffset", GLOBAL_OFFSET);
+    }
+
+    public static int setFlashingLights(int value) {
+        prefs.putInteger("globalOffset", value);
         prefs.flush();
         return value;
     }
