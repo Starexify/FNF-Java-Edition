@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.ui.freeplay.FreeplayState;
 import com.nova.fnfjava.util.Constants;
 
 public class MainMenuState extends MusicBeatState {
@@ -16,12 +17,19 @@ public class MainMenuState extends MusicBeatState {
     public Image bg;
     public Image magenta;
 
+    public boolean overrideMusic = false;
+
     public boolean canInteract = false;
 
     public static int rememberedSelectedIndex = 0;
 
-    public MainMenuState(Main main) {
+    public MainMenuState(Main main, boolean overrideMusic) {
         super(main);
+        this.overrideMusic = overrideMusic;
+    }
+
+    public MainMenuState(Main main) {
+        this(main, false);
     }
 
     @Override
@@ -54,7 +62,11 @@ public class MainMenuState extends MusicBeatState {
         createMenuItem("storymode", "mainmenu/storymode", () -> System.out.println("Story Mode selected!"));
         createMenuItem("freeplay", "mainmenu/freeplay", () -> {
             if (menuItems != null) rememberedSelectedIndex = menuItems.selectedIndex;
+
+            openSubState(new FreeplayState(main));
             System.out.println("Freeplay selected!");
+
+            canInteract = true;
         });
         createMenuItem("options", "mainmenu/options", () -> System.out.println("Options selected!"));
         createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Options selected!"));

@@ -37,6 +37,10 @@ public class FlxText extends Label implements Disposable {
         return this;
     }
 
+    public FlxText setFormat(String font, int size, Color color) {
+        return setFormat(font, size, color, null, Color.CLEAR);
+    }
+
     public FlxText setBorderStyling(FlxTextBorderStyle style, Color color) {
         setBorderStyle(style);
         setBorderColor(color);
