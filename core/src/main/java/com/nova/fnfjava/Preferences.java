@@ -3,11 +3,11 @@ package com.nova.fnfjava;
 import com.badlogic.gdx.Gdx;
 
 public class Preferences {
-    private static final String PREFS_NAME = "Funkin";
-    private static com.badlogic.gdx.Preferences prefs;
+    public static final String PREFS_NAME = "Funkin";
+    public static com.badlogic.gdx.Preferences prefs;
 
-    private static final boolean FLASHING_LIGHTS = true;
-    private static final int GLOBAL_OFFSET = 0;
+    public static final boolean FLASHING_LIGHTS = true;
+    public static final int GLOBAL_OFFSET = 0;
 
     public static void init() {
         prefs = Gdx.app.getPreferences(PREFS_NAME);

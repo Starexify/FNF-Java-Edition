@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Conductor {
-    private static Conductor _instance;
+    public static Conductor _instance;
 
     public static Signal<Integer> measureHit = new Signal<>();
     public Signal<Integer> onMeasureHit = new Signal<>();
@@ -50,7 +50,7 @@ public class Conductor {
         return _instance;
     }
 
-    private static void setInstance(Conductor instance) {
+    public static void setInstance(Conductor instance) {
         // Clear old instance first
         if (_instance != null) {
             clearSingleton(_instance);
@@ -64,27 +64,27 @@ public class Conductor {
         }
     }
 
-    private static void setupSingleton(Conductor input) {
+    public static void setupSingleton(Conductor input) {
         input.onMeasureHit.add(Conductor::dispatchMeasureHit);
         input.onBeatHit.add(Conductor::dispatchBeatHit);
         input.onStepHit.add(Conductor::dispatchStepHit);
     }
 
-    private static void clearSingleton(Conductor input) {
+    public static void clearSingleton(Conductor input) {
         input.onMeasureHit.remove(Conductor::dispatchMeasureHit);
         input.onBeatHit.remove(Conductor::dispatchBeatHit);
         input.onStepHit.remove(Conductor::dispatchStepHit);
     }
 
-    private static void dispatchMeasureHit(Signal<Integer> signal, Integer measure) {
+    public static void dispatchMeasureHit(Signal<Integer> signal, Integer measure) {
         measureHit.dispatch(measure);
     }
 
-    private static void dispatchBeatHit(Signal<Integer> signal, Integer beat) {
+    public static void dispatchBeatHit(Signal<Integer> signal, Integer beat) {
         beatHit.dispatch(beat);
     }
 
-    private static void dispatchStepHit(Signal<Integer> signal, Integer step) {
+    public static void dispatchStepHit(Signal<Integer> signal, Integer step) {
         stepHit.dispatch(step);
     }
 

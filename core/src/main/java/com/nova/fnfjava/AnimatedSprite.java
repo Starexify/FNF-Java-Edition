@@ -1,18 +1,18 @@
 package com.nova.fnfjava;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.nova.fnfjava.animation.AnimationController;
 
 public class AnimatedSprite extends Actor {
     public AnimationController animation;
+
+    public boolean dirty = true;
 
     public int frameWidth = 0, frameHeight = 0;
 
@@ -85,6 +85,7 @@ public class AnimatedSprite extends Actor {
         TextureRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame != null && (getWidth() == 0 || getHeight() == 0)) {
             setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+            dirty = true;
         }
     }
 
@@ -93,14 +94,18 @@ public class AnimatedSprite extends Actor {
         TextureRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame != null) {
             batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
-            batch.draw(currentFrame, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+
+            float drawX = getX() - offset.x;
+            float drawY = getY() - offset.y;
+
+            batch.draw(currentFrame, drawX, drawY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
             batch.setColor(1, 1, 1, 1);
         }
     }
 
     public AnimatedSprite screenCenter(Axes axes) {
         if (axes.hasX()) setX((Gdx.graphics.getWidth() - getWidth()) / 2f);
-        if (axes.hasY())setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
+        if (axes.hasY()) setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
         return this;
     }
 

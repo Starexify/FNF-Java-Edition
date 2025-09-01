@@ -106,7 +106,7 @@ public class TitleState extends MusicBeatState {
             ngSpr.loadGraphic(Paths.image("newgrounds_logo_classic"));
         } else if (Main.random.bool(30)) {
             ngSpr.loadGraphic(Paths.image("newgrounds_logo_animated"), true, 600);
-            ngSpr.animation.add("idle", new int[]{0, 1}, 4);
+            ngSpr.animation.add("idle", new Integer[]{0, 1}, 4);
             ngSpr.animation.play("idle");
             ngSpr.setSize(ngSpr.getWidth() * 0.55f, 0);
             ngSpr.setY(ngSpr.getY() + 25);
@@ -215,7 +215,6 @@ public class TitleState extends MusicBeatState {
     public void beatHit(Signal<Integer> integerSignal, Integer beat) {
         super.beatHit(integerSignal, beat);
 
-        Gdx.app.log("TEst", "TEST: " + beat);
         if (!skippedIntro) {
             if (beat > lastBeat) {
                 for (int i = lastBeat; i < beat; i++) {

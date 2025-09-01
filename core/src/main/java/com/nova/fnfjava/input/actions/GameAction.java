@@ -1,8 +1,8 @@
 package com.nova.fnfjava.input.actions;
 
 public class GameAction {
-    private boolean currentState = false;
-    private boolean previousState = false;
+    public boolean currentState = false;
+    public boolean previousState = false;
 
     public void update(boolean pressed) {
         previousState = currentState;

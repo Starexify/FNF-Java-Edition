@@ -5,7 +5,7 @@ enum SongTimeFormat {
     FLOAT("float"),
     MILLISECONDS("ms");
 
-    private final String id;
+    public final String id;
 
     SongTimeFormat(String id) {
         this.id = id;

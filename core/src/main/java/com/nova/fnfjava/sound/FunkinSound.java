@@ -15,6 +15,7 @@ public class FunkinSound {
     public MASound music;
     public static Map<String, MASound> soundCache = new HashMap<>();
 
+    public float currentMusicPitch = 1.0f;
     public boolean paused;
 
     public FunkinSound(MiniAudio miniAudio) {
@@ -60,7 +61,7 @@ public class FunkinSound {
     }
 
     public float getMusicPitch() {
-        return 1;
+        return currentMusicPitch;
     }
 
     public boolean isMusicPlaying() {

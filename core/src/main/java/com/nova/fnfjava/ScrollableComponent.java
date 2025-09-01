@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class ScrollableComponent {
     public Vector2 scrollFactor = new Vector2(1, 1);
     public Vector2 worldPosition = new Vector2();
-    private Actor actor;
+    public Actor actor;
 
     public ScrollableComponent(Actor actor) {
         this.actor = actor;

@@ -46,11 +46,10 @@ public class Controls extends InputAdapter {
 }
 
 enum Action {
-
     // UI
     UI_UP_P("ui_up-press");
 
-    private final String value;
+    public final String value;
 
     Action(String value) {
         this.value = value;

@@ -6,9 +6,9 @@ repeat: none
 logo bumpin
   rotate: false
   xy: 0, 0
-  size: 939, 703
-  orig: 894, 670
-  offset: 22, 16
+  size: 916, 686
+  orig: 939, 703
+  offset: 0, 0
   index: 0
 logo bumpin
   rotate: false
@@ -27,84 +27,84 @@ logo bumpin
 logo bumpin
   rotate: false
   xy: 0, 713
-  size: 939, 703
-  orig: 911, 683
-  offset: 14, 10
+  size: 925, 693
+  orig: 939, 703
+  offset: 0, 0
   index: 3
 logo bumpin
   rotate: false
   xy: 0, 713
-  size: 939, 703
-  orig: 911, 683
-  offset: 14, 10
+  size: 925, 693
+  orig: 939, 703
+  offset: 0, 0
   index: 4
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 5
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 6
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 7
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 8
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 9
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 10
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 11
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 12
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 13
 logo bumpin
   rotate: false
   xy: 921, 713
-  size: 939, 703
-  orig: 905, 679
-  offset: 17, 12
+  size: 922, 691
+  orig: 939, 703
+  offset: 0, 0
   index: 14

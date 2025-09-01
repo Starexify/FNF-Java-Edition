@@ -8,7 +8,7 @@ public class FunkinSoundPlayMusicParams {
     }
 
     public static class Builder {
-        private final FunkinSoundPlayMusicParams params = new FunkinSoundPlayMusicParams();
+        public final FunkinSoundPlayMusicParams params = new FunkinSoundPlayMusicParams();
 
         public Builder mapTimeChanges(boolean b) { params.mapTimeChanges = b; return this; }
 

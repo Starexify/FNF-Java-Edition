@@ -1,6 +1,8 @@
 package com.nova.fnfjava;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -17,8 +19,8 @@ import games.rednblack.miniaudio.MiniAudio;
 public class Main extends Game {
     public static Main instance;
 
-    public static SpriteBatch spriteBatch;
-    public static FitViewport viewport;
+    public SpriteBatch spriteBatch;
+    public FitViewport viewport;
 
     public static FunkinSound sound = new FunkinSound(new MiniAudio());
     public static AssetManager assetManager = new AssetManager();
@@ -29,30 +31,28 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        instance = this;
+        try {
+            instance = this;
 
-        Preferences.init();
-        PlayerSettings.init();
+            Preferences.init();
+            PlayerSettings.init();
 
-        spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
+            spriteBatch = new SpriteBatch();
+            viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        SongRegistry.initialize();
+            SongRegistry.initialize();
 
-        setScreen(new TitleState(this));
+            setScreen(new TitleState(this));
+        } catch (Exception e) {
+            Gdx.app.error("Main", "Error during initialization", e);
+        }
     }
 
     public void switchState(Screen screen) {
         Screen oldScreen = this.screen;
-        this.screen = null;
-
+        setScreen(null);
         if (oldScreen != null) oldScreen.dispose();
-
-        this.screen = screen;
-        if (this.screen != null) {
-            this.screen.show();
-            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        }
+        setScreen(screen);
     }
 
     @Override
@@ -72,10 +72,12 @@ public class Main extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        if (sound.music != null) sound.music.dispose();
-        sound.dispose();
-        spriteBatch.dispose();
-        assetManager.dispose();
-        CameraFlash.getInstance().dispose();
+        if (sound != null) {
+            if (sound.music != null) sound.music.dispose();
+            sound.dispose();
+        }
+        if (spriteBatch != null) spriteBatch.dispose();
+        if (assetManager != null) assetManager.dispose();
+        if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
     }
 }

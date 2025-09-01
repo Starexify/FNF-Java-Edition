@@ -17,10 +17,8 @@ public class MusicBeatState extends ScreenAdapter {
     public final Main main;
     public ScrollableStage stage;
 
-    private boolean listenersAdded = false;
-
-    private Listener<Integer> beatHitListener;
-    private Listener<Integer> stepHitListener;
+    public Listener<Integer> beatHitListener;
+    public Listener<Integer> stepHitListener;
 
     public FlxText leftWatermarkText = null;
     public FlxText rightWatermarkText = null;
@@ -31,7 +29,7 @@ public class MusicBeatState extends ScreenAdapter {
 
     @Override
     public void show() {
-        stage = new ScrollableStage(main.viewport, Main.spriteBatch);
+        stage = new ScrollableStage(main.viewport, main.spriteBatch);
 
         createWatermarkText();
 

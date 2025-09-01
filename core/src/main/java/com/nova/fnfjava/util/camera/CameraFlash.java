@@ -9,13 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class CameraFlash {
-    private static CameraFlash instance;
-    private Image flashOverlay;
-    private Texture whiteTexture;
-    private boolean flashActive = false;
-    private Stage currentStage;
+    public static CameraFlash instance;
+    public Image flashOverlay;
+    public Texture whiteTexture;
+    public boolean flashActive = false;
+    public Stage currentStage;
 
-    private CameraFlash() {
+    public CameraFlash() {
         // Create white texture
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
@@ -36,7 +36,7 @@ public class CameraFlash {
         }
     }
 
-    private void setupOverlay() {
+    public void setupOverlay() {
         if (flashOverlay != null) {
             flashOverlay.remove();
         }

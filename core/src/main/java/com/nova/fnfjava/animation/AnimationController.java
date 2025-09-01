@@ -1,78 +1,88 @@
 package com.nova.fnfjava.animation;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.data.animation.AnimationData;
 
 public class AnimationController {
-    public ObjectMap<String, AnimationData> animations = new ObjectMap<>();
-    public AnimatedSprite sprite;
     public AnimationData curAnim;
-    public float stateTime;
-    public boolean playing;
-    public boolean looping = true;
+    public String currentAnimName;
+    public AnimatedSprite sprite;
+    public ObjectMap<String, AnimationData> animations = new ObjectMap<>();
+
+    public interface FrameCallback {
+        void onFrame(String animName, int frameNumber, int frameIndex);
+    }
+
+    public interface FinishCallback {
+        void onFinish(String animName);
+    }
+
+    public interface LoopCallback {
+        void onLoop(String animName);
+    }
+
+    public FrameCallback frameCallback;
+    public FinishCallback finishCallback;
+    public LoopCallback loopCallback;
 
     public AnimationController(AnimatedSprite sprite) {
         this.sprite = sprite;
-        stateTime = 0f;
     }
 
     public void update(float delta) {
-        if (playing && curAnim != null) {
-            stateTime += delta;
+        if (curAnim != null) curAnim.update(delta, this);
+    }
+
+    public void addAnimation(AnimationData animData) {
+        if (sprite.atlas != null) {
+            animData.createAnimation(sprite.atlas);
+            animations.put(animData.name, animData);
         }
     }
 
-    public void add(String name, int[] frames, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        if (sprite.atlas == null) {
-            System.err.println("Could not create animation: " + name + ", sprite has no atlas");
-            return;
-        }
+    public void add(String name, Integer[] frames, float frameRate, boolean looped, boolean flipX, boolean flipY) {
+        AnimationData animData = new AnimationData();
+        animData.name = name;
+        animData.prefix = "frame";  // Assuming your atlas uses "frame" prefix
+        animData.frameRate = (int)frameRate;
+        animData.looped = looped;
+        animData.flipX = flipX;
+        animData.flipY = flipY;
+        animData.frameIndices = frames;
 
-        Array<Integer> frameIndices = new Array<>();
-        for (int frame : frames) frameIndices.add(frame);
-
-        addByIndices(name, "frame", frameIndices, frameRate, looped, flipX, flipY);
+        addAnimation(animData);
     }
 
-    public void add(String name, int[] frames, float frameRate) {
+    public void add(String name, Integer[] frames, float frameRate) {
         this.add(name, frames, frameRate, true, false, false);
     }
 
-        /**
-         * Adds a new animation to the sprite.
-         *
-         * @param name      What this animation should be called (e.g. `"run"`).
-         * @param prefix    Common beginning of image names in the atlas (e.g. "tiles-").
-         * @param indices   An array of numbers indicating what frames to play in what order (e.g. `[0, 1, 2]`).
-         * @param frameRate The speed in frames per second that the animation should play at (e.g. `40` fps).
-         * @param looped    Whether or not the animation is looped or just plays once.
-         * @param flipX     Whether the frames should be flipped horizontally.
-         * @param flipY     Whether the frames should be flipped vertically.
-         */
+    /**
+     * Adds a new animation to the sprite.
+     *
+     * @param name      What this animation should be called (e.g. `"run"`).
+     * @param prefix    Common beginning of image names in the atlas (e.g. "tiles-").
+     * @param indices   An array of numbers indicating what frames to play in what order (e.g. `[0, 1, 2]`).
+     * @param frameRate The speed in frames per second that the animation should play at (e.g. `40` fps).
+     * @param looped    Whether or not the animation is looped or just plays once.
+     * @param flipX     Whether the frames should be flipped horizontally.
+     * @param flipY     Whether the frames should be flipped vertically.
+     */
     public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        if (sprite.atlas != null) {
-            final Array<TextureAtlas.AtlasRegion> animFrames = new Array<TextureAtlas.AtlasRegion>();
+        AnimationData animData = new AnimationData();
+        animData.name = name;
+        animData.prefix = prefix;
+        animData.frameRate = (int) frameRate;
+        animData.looped = looped;
+        animData.flipX = flipX;
+        animData.flipY = flipY;
+        animData.frameIndices = indices.toArray();
 
-            for (int index : indices) {
-                TextureAtlas.AtlasRegion region = sprite.atlas.findRegion(prefix, index);
-                if (region != null) {
-                    TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
-                    if (flipX || flipY) frame.flip(flipX, flipY);
-                    animFrames.add(frame);
-                }
-            }
-
-            if (animFrames.size > 0) {
-                AnimationData anim = new AnimationData(new Animation<TextureRegion>(1.0f / frameRate, animFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL));
-                animations.put(name, anim);
-            } else
-                Gdx.app.log("AnimationControllerWarning", "Could not create animation: " + name + ", no frames were found with the prefix " + prefix);
-        }
+        addAnimation(animData);
     }
 
     public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate) {
@@ -82,58 +92,77 @@ public class AnimationController {
     /**
      * Adds a new animation to the sprite.
      *
-     * @param   name        What this animation should be called (e.g. `"run"`).
-     * @param   prefix      Common beginning of image names in atlas (e.g. `"tiles-"`).
-     * @param   frameRate   The animation speed in frames per second.
-     *                      Note: individual frames have their own duration, which overrides this value.
-     * @param   looped      Whether or not the animation is looped or just plays once.
-     * @param   flipX       Whether the frames should be flipped horizontally.
-     * @param   flipY       Whether the frames should be flipped vertically.
+     * @param name      What this animation should be called (e.g. `"run"`).
+     * @param prefix    Common beginning of image names in atlas (e.g. `"tiles-"`).
+     * @param frameRate The animation speed in frames per second.
+     *                  Note: individual frames have their own duration, which overrides this value.
+     * @param looped    Whether or not the animation is looped or just plays once.
+     * @param flipX     Whether the frames should be flipped horizontally.
+     * @param flipY     Whether the frames should be flipped vertically.
      */
     public void addByPrefix(String name, String prefix, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        if (sprite.atlas != null) {
-            final Array<TextureAtlas.AtlasRegion> animFrames = sprite.atlas.findRegions(prefix);
-            final Array<TextureRegion> processedFrames = new Array<>();
+        AnimationData animData = new AnimationData();
+        animData.name = name;
+        animData.prefix = prefix;
+        animData.frameRate = (int)frameRate;
+        animData.looped = looped;
+        animData.flipX = flipX;
+        animData.flipY = flipY;
+        // frameIndices is null, so it will use all frames with the prefix
 
-            for (TextureAtlas.AtlasRegion region : animFrames) {
-                TextureRegion frame = new TextureRegion(region);
-                if (flipX || flipY) frame.flip(flipX, flipY);
-                processedFrames.add(frame);
-            }
-
-            if (animFrames.size > 0) {
-                AnimationData anim = new AnimationData(new Animation<TextureRegion>(1.0f / frameRate, processedFrames, looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL));
-                animations.put(name, anim);
-            }
-        }
+        addAnimation(animData);
     }
 
     public void addByPrefix(String name, String prefix, float frameRate) {
         addByPrefix(name, prefix, frameRate, true, false, false);
     }
 
-    public void play(String name, boolean reset) {
-        if (animations.containsKey(name)) {
-            curAnim = animations.get(name);
+    public void play(String name, boolean force) {
+        if (!animations.containsKey(name)) {
+            System.err.println("No animation called: " + name);
+            return;
+        }
 
-            if (reset) {
-                stateTime = 0f;
-            }
+        AnimationData newAnim = animations.get(name);
 
-            playing = true;
+        if (force || curAnim != newAnim) {
+            curAnim = newAnim;
+            currentAnimName = name;
+            curAnim.play(force, 0);
+
+            // Apply FNF-style offsets to sprite position
+            Vector2 offsets = curAnim.getOffsets();
+            sprite.offset.set(offsets);
         }
     }
 
     public void play(String name) {
-        play(name, true);
+        play(name, false);
+    }
+
+    public TextureRegion getCurrentFrame() {
+        return curAnim != null ? curAnim.getCurrentFrame() : null;
     }
 
     public boolean exists(String name) {
         return animations.containsKey(name);
     }
 
-    public TextureRegion getCurrentFrame() {
-        if (curAnim == null) return null;
-        return curAnim.animation.getKeyFrame(stateTime, looping);
+    public void fireFrameCallback() {
+        if (frameCallback != null && curAnim != null) {
+            frameCallback.onFrame(curAnim.name, curAnim.getCurrentFrameIndex(), curAnim.getCurrentFrameIndex());
+        }
+    }
+
+    public void fireFinishCallback(String animName) {
+        if (finishCallback != null) {
+            finishCallback.onFinish(animName);
+        }
+    }
+
+    public void fireLoopCallback(String animName) {
+        if (loopCallback != null) {
+            loopCallback.onLoop(animName);
+        }
     }
 }

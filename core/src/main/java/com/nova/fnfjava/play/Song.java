@@ -4,8 +4,8 @@ import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.song.SongMetadata;
 
 public class Song implements IRegistryEntry<SongMetadata> {
-    private String id;
-    private SongMetadata metadata;
+    public String id;
+    public SongMetadata metadata;
 
     public Song(String id) {
         this.id = id;

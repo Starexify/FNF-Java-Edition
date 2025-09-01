@@ -14,11 +14,8 @@ public class SongDataUtils {
         timeChanges.sort(new Comparator<SongTimeChange>() {
             @Override
             public int compare(SongTimeChange a, SongTimeChange b) {
-                if (desc) {
-                    return Float.compare(b.timeStamp, a.timeStamp);
-                } else {
-                    return Float.compare(a.timeStamp, b.timeStamp);
-                }
+                if (desc) return Float.compare(b.timeStamp, a.timeStamp);
+                else return Float.compare(a.timeStamp, b.timeStamp);
             }
         });
         return timeChanges;

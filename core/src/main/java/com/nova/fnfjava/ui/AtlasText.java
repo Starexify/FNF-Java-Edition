@@ -242,9 +242,7 @@ class AtlasChar extends AnimatedSprite {
         if (!value.equals(this.character)) {
             String prefix = getAnimPrefix(value);
             animation.addByPrefix("anim", prefix, 24);
-            if (animation.exists("anim")) {
-                animation.play("anim");
-            }
+            if (animation.exists("anim")) animation.play("anim");
             updateHitboxFromCurrentFrame();
         }
         return this.character = value;
