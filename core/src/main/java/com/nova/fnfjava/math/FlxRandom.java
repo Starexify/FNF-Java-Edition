@@ -7,13 +7,17 @@ import java.util.Random;
 public class FlxRandom {
     public Random rand = new Random();
 
-    public boolean bool(float chance) {
-        return rand.nextFloat() * 100 < chance;
+    public boolean bool(double chance) {
+        return rand.nextDouble() * 100 < chance;
     }
 
-    public <T> T getObject(Array<T> array) {
-        if (array.size == 0) return null;
-        int index = rand.nextInt(array.size);
-        return array.get(index);
+    public boolean bool() {
+        return bool(50.0);
+    }
+
+    public <T> T getObject(Array<T> objects) {
+        if (objects == null || objects.size == 0) return null;
+        int index = rand.nextInt(objects.size);
+        return objects.get(index);
     }
 }

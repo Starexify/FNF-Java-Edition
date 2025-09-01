@@ -8,6 +8,8 @@ public class Constants {
 
     public static final String DEFAULT_VARIATION = "default";
 
+    public static final String DEFAULT_STICKER_PACK = "default";
+
     public static final float DEFAULT_BPM = 100.0f;
 
     public static final int DEFAULT_TIME_SIGNATURE_NUM = 4;

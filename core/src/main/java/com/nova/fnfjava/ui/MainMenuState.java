@@ -17,14 +17,15 @@ public class MainMenuState extends MusicBeatState {
     public Image magenta;
 
     public boolean overrideMusic = false;
-
-    public boolean canInteract = false;
+    public UIStateMachine uiStateMachine = new UIStateMachine();
 
     public static int rememberedSelectedIndex = 0;
 
     public MainMenuState(Main main, boolean overrideMusic) {
         super(main);
         this.overrideMusic = overrideMusic;
+
+        uiStateMachine.transition(UIState.ENTERING);
     }
 
     public MainMenuState(Main main) {
@@ -53,6 +54,7 @@ public class MainMenuState extends MusicBeatState {
         menuItems.onAcceptPress.add(new Listener<AtlasMenuItem>() {
             @Override
             public void receive(Signal<AtlasMenuItem> signal, AtlasMenuItem item) {
+                uiStateMachine.transition(UIState.INTERACTING);
                 System.out.println("Accept Pressed for: " + item.name);
             }
         });
@@ -60,12 +62,12 @@ public class MainMenuState extends MusicBeatState {
         menuItems.enabled = true;
         createMenuItem("storymode", "mainmenu/storymode", () -> System.out.println("Story Mode selected!"));
         createMenuItem("freeplay", "mainmenu/freeplay", () -> {
+            persistentDraw = true;
+            persistentUpdate = false;
             if (menuItems != null) rememberedSelectedIndex = menuItems.selectedIndex;
 
             openSubState(new FreeplayState(main));
             System.out.println("Freeplay selected!");
-
-            canInteract = true;
         });
         createMenuItem("options", "mainmenu/options", () -> System.out.println("Options selected!"));
         createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Options selected!"));
@@ -129,16 +131,25 @@ public class MainMenuState extends MusicBeatState {
         PlayerSettings.player1.controls.update();
 
         handleInputs();
+
+        if (menuItems != null) menuItems.busy = !getCanInteract();
     }
 
     public void handleInputs() {
+        if (!getCanInteract()) return;
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) goBack();
     }
 
     public void goBack() {
+        uiStateMachine.transition(UIState.EXITING);
         rememberedSelectedIndex = (menuItems != null) ? menuItems.selectedIndex : 0;
         Main.sound.playOnce(Paths.sound("cancelMenu"));
 
         main.switchState(new TitleState(main));
+    }
+
+    public boolean getCanInteract() {
+        return uiStateMachine.canInteract();
     }
 }

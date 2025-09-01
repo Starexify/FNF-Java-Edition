@@ -13,8 +13,8 @@ public class FreeplayState extends MusicBeatSubState {
     }
 
     @Override
-    public void create() {
-        super.create();
+    public void show() {
+        super.show();
 
         FlxText pauseText = new FlxText(0, 0, "PAUSED");
         pauseText.setFormat("VCR_OSD_MONO", 32, Color.WHITE);
@@ -25,8 +25,8 @@ public class FreeplayState extends MusicBeatSubState {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void render(float delta) {
+        super.render(delta);
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             close(); // This will call closeSubState() on the parent
         }

@@ -43,7 +43,6 @@ public class FunkinSound {
             @Override
             public void run() {
                 soundEffect.stop();
-                soundEffect.dispose();
             }
         }, soundEffect.getLength());
     }
@@ -77,9 +76,20 @@ public class FunkinSound {
     }
 
     public void dispose() {
-        for (MASound sound : soundCache.values()) sound.dispose();
+        for (MASound sound : soundCache.values()) {
+            if (sound != null) {
+                sound.stop();
+                sound.dispose();
+            }
+        }
         soundCache.clear();
-        music.dispose();
-        miniAudio.dispose();
+
+        if (music != null) {
+            music.stop();
+            music.dispose();
+            music = null;
+        }
+
+        if (miniAudio != null) miniAudio.dispose();
     }
 }

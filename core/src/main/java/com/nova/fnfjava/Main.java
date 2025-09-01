@@ -21,6 +21,7 @@ public class Main extends Game {
 
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
+    public TransitionManager transitionManager;
 
     public static FunkinSound sound = new FunkinSound(new MiniAudio());
     public static AssetManager assetManager = new AssetManager();
@@ -40,6 +41,8 @@ public class Main extends Game {
             spriteBatch = new SpriteBatch();
             viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+            transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
+
             SongRegistry.initialize();
 
             setScreen(new TitleState(this));
@@ -48,11 +51,8 @@ public class Main extends Game {
         }
     }
 
-    public void switchState(Screen screen) {
-        Screen oldScreen = this.screen;
-        setScreen(null);
-        if (oldScreen != null) oldScreen.dispose();
-        setScreen(screen);
+    public void switchState(Screen newScreen) {
+        transitionManager.setScreen(newScreen);
     }
 
     @Override
@@ -72,10 +72,7 @@ public class Main extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        if (sound != null) {
-            if (sound.music != null) sound.music.dispose();
-            sound.dispose();
-        }
+        if (sound != null) sound.dispose();
         if (spriteBatch != null) spriteBatch.dispose();
         if (assetManager != null) assetManager.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();

@@ -12,9 +12,10 @@ public class MusicBeatSubState extends MusicBeatState {
 
     public MusicBeatState parentState;
 
-    private Color backgroundColor = Color.CLEAR;
+    public Color bgColor;
+    public boolean bgVisible;
 
-    private boolean created = false;
+    public boolean created = false;
 
     public MusicBeatSubState(Main main) {
         this(main, Color.CLEAR);
@@ -22,35 +23,43 @@ public class MusicBeatSubState extends MusicBeatState {
 
     public MusicBeatSubState(Main main, Color bgColor) {
         super(main);
-        this.backgroundColor = bgColor;
+        setBgColor(bgColor);
         this.openCallback = null;
         this.closeCallback = null;
+
+        this.persistentDraw = false;
+        this.persistentUpdate = false;
     }
 
     @Override
     public void show() {
         super.show();
-        if (!created) {
-            created = true;
-            create();
-        }
 
-        if (openCallback != null) {
-            openCallback.run();
-        }
+        if (openCallback != null) openCallback.run();
     }
-
-    public void create() {}
 
     @Override
     public void render(float delta) {
-        if (backgroundColor.a > 0) ScreenUtils.clear(backgroundColor);
+        if (bgVisible && bgColor.a > 0) ScreenUtils.clear(bgColor);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
             main.switchState(new MainMenuState(main));
         }
 
-        super.render(delta);
+        tryUpdate(delta);
+
+
+        if (subState != null) subState.render(delta);
+    }
+
+    public void close() {
+        if (closeCallback != null) closeCallback.run();
+        if (parentState != null && parentState.subState == this) parentState.closeSubState();
+    }
+
+    public void switchSubState(MusicBeatSubState newSubState) {
+        this.close();
+        if (parentState != null) parentState.openSubState(newSubState);
     }
 
     @Override
@@ -61,21 +70,12 @@ public class MusicBeatSubState extends MusicBeatState {
         parentState = null;
     }
 
-    public void close() {
-        if (closeCallback != null) {
-            closeCallback.run();
-        }
-
-        if (parentState != null && parentState.currentSubState == this) {
-            parentState.closeSubState();
-        }
+    public Color getBgColor() {
+        return bgColor;
     }
 
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(Color color) {
-        this.backgroundColor = color;
+    public void setBgColor(Color bgColor) {
+        this.bgColor = bgColor;
+        this.bgVisible = bgColor.a > 0;
     }
 }

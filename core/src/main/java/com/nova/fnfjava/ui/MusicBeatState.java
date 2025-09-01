@@ -3,7 +3,6 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -12,8 +11,9 @@ import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ScrollableStage;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.text.FlxTextBorderStyle;
+import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
 
-public class MusicBeatState extends ScreenAdapter {
+public class MusicBeatState extends TransitionableScreenAdapter {
     public final Main main;
     public ScrollableStage stage;
 
@@ -26,7 +26,7 @@ public class MusicBeatState extends ScreenAdapter {
     public boolean persistentUpdate = false;
     public boolean persistentDraw = true;
 
-    public MusicBeatSubState currentSubState = null;
+    public MusicBeatSubState subState = null;
     private MusicBeatSubState requestedSubState = null;
     private boolean requestSubStateReset = false;
 
@@ -37,7 +37,6 @@ public class MusicBeatState extends ScreenAdapter {
     @Override
     public void show() {
         stage = new ScrollableStage(main.viewport, main.spriteBatch);
-
         createWatermarkText();
 
         beatHitListener = new Listener<Integer>() {
@@ -68,27 +67,18 @@ public class MusicBeatState extends ScreenAdapter {
 
         tryUpdate(delta);
 
-        ScreenUtils.clear(Color.BLACK);
-
-        if (persistentDraw || currentSubState == null) stage.draw();
-
-        if (currentSubState != null) currentSubState.render(delta);
+        if (subState == null || subState.getBgColor().a > 0) ScreenUtils.clear(Color.BLACK);
+        if (persistentDraw || subState == null) stage.draw();
+        if (subState != null) subState.render(delta);
     }
 
     public void tryUpdate(float delta) {
         // Update this state if no substate or if persistentUpdate is true
-        if (persistentUpdate || currentSubState == null) {
-            stage.act(delta);
-            update(delta);
-        }
+        if (persistentUpdate || subState == null) stage.act(delta);
 
         // Update substate if it exists
-        if (currentSubState != null) {
-            currentSubState.tryUpdate(delta);
-        }
+        if (subState != null) subState.tryUpdate(delta);
     }
-
-    public void update(float delta) {}
 
     public void openSubState(MusicBeatSubState subState) {
         requestSubStateReset = true;
@@ -102,21 +92,24 @@ public class MusicBeatState extends ScreenAdapter {
 
     private void resetSubState() {
         // Close old substate
-        if (currentSubState != null) {
-            if (currentSubState.closeCallback != null) {
-                currentSubState.closeCallback.run();
+        if (subState != null) {
+            if (subState.closeCallback != null) {
+                subState.closeCallback.run();
             }
-            currentSubState.dispose();
+            subState.dispose();
         }
 
         // Set new substate
-        currentSubState = requestedSubState;
+        subState = requestedSubState;
         requestedSubState = null;
 
         // Initialize new substate
-        if (currentSubState != null) {
-            currentSubState.parentState = this;
-            currentSubState.show();
+        if (subState != null) {
+            subState.parentState = this;
+            if (!subState.created) {
+                subState.created = true;
+                subState.show();
+            }
         }
     }
 
@@ -138,9 +131,11 @@ public class MusicBeatState extends ScreenAdapter {
         stage.addActor(actor);
     }
 
-    public void stepHit(Signal<Integer> integerSignal, Integer step) {}
+    public void stepHit(Signal<Integer> integerSignal, Integer step) {
+    }
 
-    public void beatHit(Signal<Integer> integerSignal, Integer beat) {}
+    public void beatHit(Signal<Integer> integerSignal, Integer beat) {
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -159,9 +154,9 @@ public class MusicBeatState extends ScreenAdapter {
             stepHitListener = null;
         }
 
-        if (currentSubState != null) {
-            currentSubState.dispose();
-            currentSubState = null;
+        if (subState != null) {
+            subState.dispose();
+            subState = null;
         }
 
         stage.dispose();
