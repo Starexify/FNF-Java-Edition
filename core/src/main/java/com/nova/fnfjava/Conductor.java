@@ -104,7 +104,7 @@ public class Conductor {
         float oldStep = this.currentStep;
 
         if (Main.sound.isMusicPlaying()) {
-            this.songPosition = MathUtils.clamp(songPos, Math.min(getCombinedOffset(), 0), currentLength);
+            this.songPosition = MathUtils.clamp(Math.min(getCombinedOffset(), 0), songPos, currentLength);
             this.songPositionDelta += Gdx.graphics.getDeltaTime() * 1000f * Main.sound.getMusicPitch();
         } else {
             this.songPosition = songPos;

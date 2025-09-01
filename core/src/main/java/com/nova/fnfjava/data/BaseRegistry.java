@@ -3,7 +3,7 @@ package com.nova.fnfjava.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 
-public abstract class BaseRegistry<T extends IRegistryEntry<D>, D> {
+public abstract class BaseRegistry<T extends IRegistryEntry<D>, D, P> {
     public final String registryId;
     public final String dataFilePath;
     public final ObjectMap<String, T> entries;

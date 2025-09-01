@@ -130,17 +130,17 @@ public class MenuTypedList<T extends MenuListItem> extends Group {
     }
 
     public void accept() {
-        T selected = (T) getChild(selectedIndex);
+        T menuItem = (T) getChild(selectedIndex);
 
-        if (!selected.available) return;
+        if (!menuItem.available) return;
 
-        onAcceptPress.dispatch(selected);
+        onAcceptPress.dispatch(menuItem);
 
-        if (selected.fireInstantly) selected.callback();
+        if (menuItem.fireInstantly) menuItem.callback();
         else {
             busy = true;
             //FunkinSound.playOnce(Paths.sound('confirmMenu'));
-            selected.callback();
+            menuItem.callback();
         }
     }
 
@@ -162,9 +162,9 @@ public class MenuTypedList<T extends MenuListItem> extends Group {
 
         selectedIndex = index;
 
-        T selected = (T) getChild(selectedIndex);
-        selected.select();
-        onChange.dispatch(selected);
+        T selectedMenuItem = (T) getChild(selectedIndex);
+        selectedMenuItem.select();
+        onChange.dispatch(selectedMenuItem);
     }
 
     @Override

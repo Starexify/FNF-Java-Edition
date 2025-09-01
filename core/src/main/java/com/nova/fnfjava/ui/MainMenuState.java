@@ -7,7 +7,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.nova.fnfjava.*;
-import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
 import com.nova.fnfjava.util.Constants;
 
@@ -71,27 +70,30 @@ public class MainMenuState extends MusicBeatState {
         createMenuItem("options", "mainmenu/options", () -> System.out.println("Options selected!"));
         createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Options selected!"));
 
-        var spacing = 160;
-        var top = (main.viewport.getWorldHeight() + (spacing * (menuItems.getChildren().size - 1))) / 2;
-        for (int i = 0; i < menuItems.getChildren().size; i++) {
-            var menuItem = menuItems.items.get(i);
+        final float spacing = 160;
+        final float top = (main.viewport.getWorldHeight() + (spacing * (menuItems.getChildren().size - 1))) / 2;
+        for (int index = 0; index < menuItems.getChildren().size; index++) {
+            var menuItem = menuItems.items.get(index);
             menuItem.setX(main.viewport.getWorldWidth() / 2);
-            menuItem.setY(top - spacing * i);
+            menuItem.setY(top - spacing * index);
             //menuItem.scrollFactor.x = #if !mobile 0.0 #else 0.4 #end; // we want a lil scroll on mobile, for the cute gyro effect
             // This one affects how much the menu items move when you scroll between them.
             //menuItem.scrollFactor.y = 0.4;
 
-            if (i == 1) {
+            if (index == 1) {
                 //camFollow.setPosition(menuItem.getGraphicMidpoint().x, menuItem.getGraphicMidpoint().y);
             }
         }
 
         menuItems.selectItem(rememberedSelectedIndex);
 
-        if (this.leftWatermarkText != null) {
-            this.leftWatermarkText.setText(Constants.VERSION);
-            this.leftWatermarkText.toFront();
-        }
+        initLeftWatermarkText();
+    }
+
+    public void initLeftWatermarkText() {
+        if (leftWatermarkText == null) return;
+        leftWatermarkText.setText(Constants.VERSION);
+        leftWatermarkText.toFront();
     }
 
     public Listener<AtlasMenuItem> onMenuItemChange() {
@@ -104,18 +106,15 @@ public class MainMenuState extends MusicBeatState {
     }
 
     public void createMenuItem(String name, String atlas, Runnable callback, boolean fireInstantly) {
-        if (menuItems != null) {
-            var item = new AtlasMenuItem(name, new TextureAtlas(Paths.getAtlas(atlas)), callback);
-            item.fireInstantly = fireInstantly;
-            //item.ID = menuItems.length;
+        if (menuItems == null) return;
 
-            //item.scrollFactor.set();
-
-            item.centered = true;
-            item.changeAnim("idle");
-
-            menuItems.addItem(name, item);
-        }
+        AtlasMenuItem item = new AtlasMenuItem(name, new TextureAtlas(Paths.getAtlas(atlas)), callback);
+        item.fireInstantly = fireInstantly;
+        //item.ID = menuItems.length;
+        //item.scrollFactor.set();
+        item.centered = true;
+        item.changeAnim("idle");
+        menuItems.addItem(name, item);
     }
 
     public void createMenuItem(String name, String atlas, Runnable callback) {
@@ -137,13 +136,9 @@ public class MainMenuState extends MusicBeatState {
     }
 
     public void goBack() {
-        if (menuItems == null) return;
-        if (canInteract && !menuItems.busy) {
-            canInteract = false;
-            menuItems.busy = true;
-            rememberedSelectedIndex = menuItems.selectedIndex;
-            main.switchState(new TitleState(main));
-            Main.sound.playOnce(Paths.sound("cancelMenu"));
-        }
+        rememberedSelectedIndex = (menuItems != null) ? menuItems.selectedIndex : 0;
+        Main.sound.playOnce(Paths.sound("cancelMenu"));
+
+        main.switchState(new TitleState(main));
     }
 }

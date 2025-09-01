@@ -6,10 +6,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.nova.fnfjava.data.BaseRegistry;
+import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.util.Constants;
 
-public class SongRegistry extends BaseRegistry<Song, SongMetadata> {
+public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryParams> {
     public static SongRegistry instance;
 
     public final Json parser;
@@ -70,7 +71,7 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata> {
     public SongMusicData parseMusicData(String id, String variation) {
         parseErrors.clear();
 
-        MusicFileResult fileResult = loadMusicDataFile(id, variation);
+        JsonFile fileResult = loadMusicDataFile(id, variation);
         if (fileResult == null) return null;
         try {
             SongMusicData musicData = parser.fromJson(SongMusicData.class, fileResult.contents());
@@ -93,7 +94,7 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata> {
         return this.parseMusicData(id, Constants.DEFAULT_VARIATION);
     }
 
-    public MusicFileResult loadMusicDataFile(String id, String variation) {
+    public JsonFile loadMusicDataFile(String id, String variation) {
         if (variation == null) variation = Constants.DEFAULT_VARIATION;
         String variationSuffix = variation.equals(Constants.DEFAULT_VARIATION) ? "" : "-" + variation;
         String entryFilePath = "music/" + id + "/" + id + "-metadata" + variationSuffix + ".json";
@@ -103,7 +104,7 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata> {
             String rawJson = file.readString("UTF-8");
             if (rawJson == null) return null;
             rawJson = rawJson.trim();
-            return new MusicFileResult(entryFilePath, rawJson);
+            return new JsonFile(entryFilePath, rawJson);
         } catch (Exception e) {
             Gdx.app.error("SongRegistry", "Error reading file " + entryFilePath + ": " + e.getMessage());
             return null;
@@ -118,4 +119,12 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata> {
     }
 }
 
-record MusicFileResult(String fileName, String contents) { }
+record SongEntryParams(String variation) {
+    public static SongEntryParams withVariation(String variation) {
+        return new SongEntryParams(variation);
+    }
+
+    public static SongEntryParams defaultVariation() {
+        return new SongEntryParams(null);
+    }
+}

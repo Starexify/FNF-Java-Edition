@@ -158,9 +158,8 @@ public class TitleState extends MusicBeatState {
         boolean pressedEnter = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
         if (pressedEnter && transitioning && skippedIntro) {
             main.switchState(new MainMenuState(main));
+            moveToMainMenu();
         }
-
-        Screen targetState = new MainMenuState(main);
 
         if (pressedEnter && !transitioning && skippedIntro) {
             titleText.animation.play("press");
@@ -171,13 +170,17 @@ public class TitleState extends MusicBeatState {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    main.switchState(targetState);
+                    moveToMainMenu();
                 }
             }, 2f);
         }
         if (pressedEnter && !skippedIntro && initialized) skipIntro();
 
         super.render(delta);
+    }
+
+    public void moveToMainMenu() {
+        main.switchState(new MainMenuState(main));
     }
 
     public void createCoolText(Array<String> textArray) {

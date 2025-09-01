@@ -1,5 +1,7 @@
 package com.nova.fnfjava.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Main;
@@ -43,6 +45,10 @@ public class MusicBeatSubState extends MusicBeatState {
     @Override
     public void render(float delta) {
         if (backgroundColor.a > 0) ScreenUtils.clear(backgroundColor);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+            main.switchState(new MainMenuState(main));
+        }
 
         super.render(delta);
     }
