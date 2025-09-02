@@ -6,18 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
 /**
- * Simple state machine for UI components
- * Replaces scattered boolean flags with clean state management
- */
-enum UIState {
-    IDLE,
-    INTERACTING,
-    ENTERING,
-    EXITING,
-    DISABLED
-}
-
-/**
  * Note: Not to be confust with FlxState or FlxSubState!
  * State as in the design pattern!
  * https://refactoring.guru/design-patterns/state
@@ -99,5 +87,17 @@ public class UIStateMachine {
     public boolean canInteract() {
         // Entering is an enabled state since we want to be able to interact even during screen transitions
         return currentState == UIState.IDLE || currentState == UIState.ENTERING;
+    }
+
+    /**
+     * Simple state machine for UI components
+     * Replaces scattered boolean flags with clean state management
+     */
+    public enum UIState {
+        IDLE,
+        INTERACTING,
+        ENTERING,
+        EXITING,
+        DISABLED
     }
 }

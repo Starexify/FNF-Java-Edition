@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
-import com.nova.fnfjava.sound.FunkinSoundPlayMusicParams;
+import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.AtlasText;
-import com.nova.fnfjava.ui.MainMenuState;
+import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
@@ -126,7 +126,13 @@ public class TitleState extends MusicBeatState {
     }
 
     public void playMenuMusic() {
-        Main.sound.playMusic("freakyMenu", new FunkinSoundPlayMusicParams.Builder().build());
+        boolean shouldFadeIn = (Main.sound.music == null);
+        Main.sound.playMusic("freakyMenu", new FunkinSound.FunkinSoundPlayMusicParams.Builder()
+            .overrideExisting(true)
+            .restartTrack(false)
+            .persist(true)
+            .build());
+        if (shouldFadeIn) Main.sound.music.fadeIn(4000f);
     }
 
     public Array<Array<String>> getIntroTextShit() {

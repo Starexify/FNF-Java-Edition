@@ -11,7 +11,7 @@ import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.util.Constants;
 
-public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryParams> {
+public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, SongEntryParams> {
     public static SongRegistry instance;
 
     public final Json parser;
@@ -75,38 +75,38 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
             }
         });
 
-        parser.setSerializer(SongTimeChange.class, new Json.Serializer<SongTimeChange>() {
+        parser.setSerializer(SongData.SongTimeChange.class, new Json.Serializer<SongData.SongTimeChange>() {
             @Override
-            public void write(Json json, SongTimeChange object, Class knownType) {
+            public void write(Json json, SongData.SongTimeChange object, Class knownType) {
                 object.toJson(json);
             }
 
             @Override
-            public SongTimeChange read(Json json, JsonValue jsonData, Class type) {
-                return SongTimeChange.fromJson(jsonData);
+            public SongData.SongTimeChange read(Json json, JsonValue jsonData, Class type) {
+                return SongData.SongTimeChange.fromJson(jsonData);
             }
         });
 
-        parser.setSerializer(SongMusicData.class, new Json.Serializer<SongMusicData>() {
+        parser.setSerializer(SongData.SongMusicData.class, new Json.Serializer<SongData.SongMusicData>() {
             @Override
-            public void write(Json json, SongMusicData object, Class knownType) {
+            public void write(Json json, SongData.SongMusicData object, Class knownType) {
                 object.toJson(json);
             }
 
             @Override
-            public SongMusicData read(Json json, JsonValue jsonData, Class type) {
-                return SongMusicData.fromJson(jsonData);
+            public SongData.SongMusicData read(Json json, JsonValue jsonData, Class type) {
+                return SongData.SongMusicData.fromJson(jsonData);
             }
         });
     }
 
-    public SongMusicData parseMusicData(String id, String variation) {
+    public SongData.SongMusicData parseMusicData(String id, String variation) {
         parseErrors.clear();
 
         JsonFile fileResult = loadMusicDataFile(id, variation);
         if (fileResult == null) return null;
         try {
-            SongMusicData musicData = parser.fromJson(SongMusicData.class, fileResult.contents());
+            SongData.SongMusicData musicData = parser.fromJson(SongData.SongMusicData.class, fileResult.contents());
             if (musicData == null) {
                 parseErrors.add("Failed to parse JSON from file: " + fileResult.fileName());
                 printErrors(id);
@@ -122,7 +122,7 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
         }
     }
 
-    public SongMusicData parseMusicData(String id) {
+    public SongData.SongMusicData parseMusicData(String id) {
         return this.parseMusicData(id, Constants.DEFAULT_VARIATION);
     }
 
@@ -151,11 +151,11 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
     }
 
     @Override
-    public SongMetadata parseEntryData(String id) {
+    public SongData.SongMetadata parseEntryData(String id) {
         return parseEntryMetadata(id);
     }
 
-    public SongMetadata parseEntryMetadata(String id) {
+    public SongData.SongMetadata parseEntryMetadata(String id) {
         return null;
     }
 }

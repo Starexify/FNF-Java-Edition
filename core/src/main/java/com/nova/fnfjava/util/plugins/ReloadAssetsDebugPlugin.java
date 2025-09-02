@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
+import com.nova.fnfjava.data.story.level.LevelRegistry;
 
 public class ReloadAssetsDebugPlugin {
     public static void initialize() {
@@ -20,8 +21,9 @@ public class ReloadAssetsDebugPlugin {
         Gdx.app.log("DEBUG", "Reloading registries...");
 
         // Reload registries
-        StickerRegistry.instance.loadEntries();
         SongRegistry.instance.loadEntries();
+        LevelRegistry.instance.loadEntries();
+        StickerRegistry.instance.loadEntries();
 
         Gdx.app.log("DEBUG", "Registries reloaded!");
     }

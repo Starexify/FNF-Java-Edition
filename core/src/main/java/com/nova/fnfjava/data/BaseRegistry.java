@@ -45,6 +45,10 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         }
     }
 
+    public Array<String> listEntryIds() {
+        return entries.keys().toArray();
+    }
+
     public JsonFile loadEntryFile(String id) {
         String entryFilePath = Paths.json(dataFilePath + "/" + id);
         String rawJson = Gdx.files.internal(entryFilePath).readString("UTF-8").trim();

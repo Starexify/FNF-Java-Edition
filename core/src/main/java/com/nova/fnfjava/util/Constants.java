@@ -1,10 +1,11 @@
 package com.nova.fnfjava.util;
 
 public class Constants {
-
     public static final String TITLE = "Friday Night Funkin': Java Edition";
 
     public static String VERSION = "v0.0.1b";
+
+    public static final String DEFAULT_DIFFICULTY = "normal";
 
     public static final String DEFAULT_VARIATION = "default";
 

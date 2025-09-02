@@ -26,6 +26,10 @@ public class AnimatedSprite extends Actor {
         setPosition(x, y);
     }
 
+    public AnimatedSprite() {
+       this(0, 0);
+    }
+
     /**
      * Load a graphic/texture similar to FlxSprite's loadGraphic method
      * @param graphicPath Path to the texture file

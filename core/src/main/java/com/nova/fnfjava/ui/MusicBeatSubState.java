@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 
 public class MusicBeatSubState extends MusicBeatState {
     public Runnable openCallback;

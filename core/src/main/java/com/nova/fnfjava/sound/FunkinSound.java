@@ -1,8 +1,10 @@
 package com.nova.fnfjava.sound;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.Conductor;
-import com.nova.fnfjava.data.song.SongMusicData;
+import com.nova.fnfjava.Paths;
+import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongRegistry;
 import games.rednblack.miniaudio.MASound;
 import games.rednblack.miniaudio.MiniAudio;
@@ -17,20 +19,50 @@ public class FunkinSound {
 
     public float currentMusicPitch = 1.0f;
 
+    public String label = "unknown";
+
     public FunkinSound(MiniAudio miniAudio) {
         this.miniAudio = miniAudio;
     }
 
-    public void playMusic(String key, FunkinSoundPlayMusicParams params) {
+    public boolean playMusic(String key, FunkinSoundPlayMusicParams params) {
+        if (!params.overrideExisting && music != null && music.isPlaying()) return false;
+
+        // Check if we're trying to play the same music that's already playing
+        if (!params.restartTrack && music != null && music.isPlaying())
+            if (label.equals(Paths.music(key + "/" + key))) return false;
+
         if (music != null) music.stop();
-        if (params == null || params.isMapTimeChanges()) {
-            SongMusicData songMusicData = SongRegistry.instance.parseMusicData(key);
+
+        if (params.mapTimeChanges) {
+            SongData.SongMusicData songMusicData = SongRegistry.instance.parseMusicData(key);
             if (songMusicData != null) {
                 Conductor.getInstance().mapTimeChanges(songMusicData.timeChanges);
+                if (songMusicData.looped != null && !params.hasExplicitLoop) params.loop = songMusicData.looped;
+            } else {
+                Gdx.app.log("FunkinSound", "Warning: Tried and failed to find music metadata for " + key);
             }
         }
-        music = miniAudio.createSound("music/" + key + "/" + key + ".ogg");
-        music.play();
+
+        Paths.PathsFunction pathsFunction = params.pathsFunction != null ? params.pathsFunction : Paths.PathsFunction.MUSIC;
+        String suffix = params.suffix != null ? params.suffix : "";
+        String pathToUse = pathsFunction == Paths.PathsFunction.INST ? Paths.inst(key, suffix) : Paths.music(key + "/" + key);
+
+        try {
+            music = miniAudio.createSound(pathToUse);
+            if (music != null) {
+                label = pathToUse;
+                music.setVolume(params.startingVolume);
+                music.setLooping(params.loop);
+                music.play();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            Gdx.app.error("FunkinSound", "Failed to load music: " + pathToUse + " - " + e.getMessage());
+            return false;
+        }
     }
 
     public void playOnce(String key, float volume) {
@@ -90,5 +122,33 @@ public class FunkinSound {
         }
 
         if (miniAudio != null) miniAudio.dispose();
+    }
+
+    public static class FunkinSoundPlayMusicParams {
+        public float startingVolume = 1.0f;
+        public String suffix = "";
+        public boolean overrideExisting = false;
+        public boolean restartTrack = false;
+        public boolean loop = true;
+        public boolean mapTimeChanges = true;
+        public Paths.PathsFunction pathsFunction = Paths.PathsFunction.MUSIC;
+        public boolean persist;
+
+        public boolean hasExplicitLoop = false;
+
+        public static class Builder {
+            private final FunkinSoundPlayMusicParams params = new FunkinSoundPlayMusicParams();
+
+            public Builder startingVolume(float v) { params.startingVolume = v; return this; }
+            public Builder suffix(String s) { params.suffix = s; return this; }
+            public Builder overrideExisting(boolean b) { params.overrideExisting = b; return this; }
+            public Builder restartTrack(boolean b) { params.restartTrack = b; return this; }
+            public Builder loop(boolean b) { params.loop = b; return this; }
+            public Builder mapTimeChanges(boolean b) { params.mapTimeChanges = b; return this; }
+            public Builder pathsFunction(Paths.PathsFunction b) { params.pathsFunction = b; return this; }
+            public Builder persist(boolean b) { params.persist = b; return this; }
+
+            public FunkinSoundPlayMusicParams build() { return params; }
+        }
     }
 }

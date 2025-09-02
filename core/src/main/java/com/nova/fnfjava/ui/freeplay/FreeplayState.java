@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.text.FlxText;
-import com.nova.fnfjava.ui.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.ui.MusicBeatSubState;
 import com.nova.fnfjava.ui.transition.stickers.StickerSubState;

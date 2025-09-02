@@ -1,15 +1,25 @@
-package com.nova.fnfjava.ui;
+package com.nova.fnfjava.ui.mainmenu;
 
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
+import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.ui.AtlasMenuItem;
+import com.nova.fnfjava.ui.MenuTypedList;
+import com.nova.fnfjava.ui.MusicBeatState;
+import com.nova.fnfjava.ui.UIStateMachine;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
+import com.nova.fnfjava.ui.story.StoryMenuState;
 import com.nova.fnfjava.ui.title.TitleState;
 import com.nova.fnfjava.util.Constants;
+import com.nova.fnfjava.util.effects.FlickerUtil;
 
 public class MainMenuState extends MusicBeatState {
     public MenuTypedList<AtlasMenuItem> menuItems;
@@ -26,7 +36,7 @@ public class MainMenuState extends MusicBeatState {
         super(main);
         this.overrideMusic = overrideMusic;
 
-        uiStateMachine.transition(UIState.ENTERING);
+        uiStateMachine.transition(UIStateMachine.UIState.ENTERING);
     }
 
     public MainMenuState(Main main) {
@@ -36,6 +46,8 @@ public class MainMenuState extends MusicBeatState {
     @Override
     public void show() {
         super.show();
+
+        if (!overrideMusic) playMenuMusic();
 
         bg = new Image(Assets.getTexture("images/menuBG.png"));
         bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
@@ -55,13 +67,15 @@ public class MainMenuState extends MusicBeatState {
         menuItems.onAcceptPress.add(new Listener<AtlasMenuItem>() {
             @Override
             public void receive(Signal<AtlasMenuItem> signal, AtlasMenuItem item) {
-                uiStateMachine.transition(UIState.INTERACTING);
-                System.out.println("Accept Pressed for: " + item.name);
+                FlickerUtil.flicker(magenta, 1.1f, 0.15f, false, true);
+                uiStateMachine.transition(UIStateMachine.UIState.INTERACTING);
             }
         });
 
         menuItems.enabled = true;
-        createMenuItem("storymode", "mainmenu/storymode", () -> System.out.println("Story Mode selected!"));
+        createMenuItem("storymode", "mainmenu/storymode", () -> {
+            startExitState(new StoryMenuState(main));
+        });
         createMenuItem("freeplay", "mainmenu/freeplay", () -> {
             persistentDraw = true;
             persistentUpdate = false;
@@ -100,6 +114,14 @@ public class MainMenuState extends MusicBeatState {
         leftWatermarkText.toFront();
     }
 
+    public void playMenuMusic() {
+        Main.sound.playMusic("freakyMenu", new FunkinSound.FunkinSoundPlayMusicParams.Builder()
+            .overrideExisting(true)
+            .restartTrack(false)
+            .persist(true)
+            .build());
+    }
+
     public Listener<AtlasMenuItem> onMenuItemChange() {
         return new Listener<AtlasMenuItem>() {
             @Override
@@ -125,6 +147,30 @@ public class MainMenuState extends MusicBeatState {
         this.createMenuItem(name, atlas, callback, false);
     }
 
+    public void startExitState(Screen nextScreen) {
+        if (menuItems == null) return;
+
+        uiStateMachine.transition(UIStateMachine.UIState.EXITING);
+        rememberedSelectedIndex = menuItems.selectedIndex;
+
+        float fadeOutDuration = 0.4f;
+
+        for (int i = 0; i < menuItems.items.size; i++) {
+            AtlasMenuItem item = menuItems.items.get(i);
+
+            if (rememberedSelectedIndex != i) item.addAction(Actions.fadeOut(fadeOutDuration));
+            else item.setVisible(false);
+        }
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                System.out.println("Exiting MainMenuState...");
+                main.switchState(nextScreen);
+            }
+        }, fadeOutDuration);
+    }
+
     @Override
     public void render(float delta) {
         super.render(delta);
@@ -144,7 +190,7 @@ public class MainMenuState extends MusicBeatState {
     }
 
     public void goBack() {
-        uiStateMachine.transition(UIState.EXITING);
+        uiStateMachine.transition(UIStateMachine.UIState.EXITING);
         rememberedSelectedIndex = (menuItems != null) ? menuItems.selectedIndex : 0;
         Main.sound.playOnce(Paths.sound("cancelMenu"));
 

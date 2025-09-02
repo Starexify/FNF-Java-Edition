@@ -4,8 +4,8 @@ import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongDataUtils;
-import com.nova.fnfjava.data.song.SongTimeChange;
 import com.nova.fnfjava.util.Constants;
 
 import java.math.BigDecimal;
@@ -21,8 +21,8 @@ public class Conductor {
     public static Signal<Integer> stepHit = new Signal<>();
     public Signal<Integer> onStepHit = new Signal<>();
 
-    public Array<SongTimeChange> timeChanges = new Array<>();
-    public SongTimeChange currentTimeChange;
+    public Array<SongData.SongTimeChange> timeChanges = new Array<>();
+    public SongData.SongTimeChange currentTimeChange;
 
     public float songPosition = 0f;
     public float songPositionDelta = 0f;
@@ -156,12 +156,12 @@ public class Conductor {
         }
     }
 
-    public void mapTimeChanges(Array<SongTimeChange> songTimeChanges) {
+    public void mapTimeChanges(Array<SongData.SongTimeChange> songTimeChanges) {
         timeChanges = new Array<>();
 
         SongDataUtils.sortTimeChanges(songTimeChanges);
 
-        for (SongTimeChange songTimeChange : songTimeChanges) {
+        for (SongData.SongTimeChange songTimeChange : songTimeChanges) {
             // TODO: Maybe handle this different?
             // Do we care about BPM at negative timestamps?
             if (songTimeChange.timeStamp < 0.0f) songTimeChange.timeStamp = 0.0f;
@@ -173,7 +173,7 @@ public class Conductor {
                 songTimeChange.beatTime = 0.0f;
 
                 if (songTimeChange.timeStamp > 0.0f && timeChanges.size > 0) {
-                    SongTimeChange prevTimeChange = timeChanges.get(timeChanges.size - 1);
+                    SongData.SongTimeChange prevTimeChange = timeChanges.get(timeChanges.size - 1);
                     songTimeChange.beatTime = roundDecimal(
                         prevTimeChange.beatTime +
                             ((songTimeChange.timeStamp - prevTimeChange.timeStamp) * prevTimeChange.bpm / Constants.SECS_PER_MIN / Constants.MS_PER_SEC),

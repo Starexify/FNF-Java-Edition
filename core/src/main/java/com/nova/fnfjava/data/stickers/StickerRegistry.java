@@ -23,14 +23,14 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
         if (instance == null) instance = new StickerRegistry();
     }
 
+    public void setupParser() {
+        parser.setIgnoreUnknownFields(true);
+    }
+
     public StickerPack fetchDefault() {
         StickerPack stickerPack = fetchEntry(Constants.DEFAULT_STICKER_PACK);
         if (stickerPack == null) throw new IllegalArgumentException("Default sticker pack was null! This should not happen!");
         return stickerPack;
-    }
-
-    public void setupParser() {
-        parser.setIgnoreUnknownFields(true);
     }
 
     @Override

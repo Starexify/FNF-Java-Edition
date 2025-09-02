@@ -8,6 +8,7 @@ import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.PlayerSettings;
 import com.nova.fnfjava.input.Controls;
+import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 
 public class MenuTypedList<T extends MenuListItem> extends Group {
     public static boolean pauseInput = false;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
+import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.title.TitleState;
@@ -47,6 +48,9 @@ public class Main extends Game {
 
             SongRegistry.initialize();
             SongRegistry.instance.loadEntries();
+
+            LevelRegistry.initialize();
+            LevelRegistry.instance.loadEntries();
 
             StickerRegistry.initialize();
             StickerRegistry.instance.loadEntries();
