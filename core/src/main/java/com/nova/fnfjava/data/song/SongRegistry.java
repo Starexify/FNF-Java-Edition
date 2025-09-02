@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.nova.fnfjava.data.BaseRegistry;
+import com.nova.fnfjava.data.DataAssets;
 import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.util.Constants;
@@ -22,6 +23,37 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
         parseErrors = new Array<>();
 
         setupParser();
+    }
+
+    @Override
+    public void loadEntries() {
+        clearEntries();
+
+        Array<String> rawPaths = DataAssets.listDataFilesInPath("songs", "-metadata.json");
+
+        Array<String> entryIdList = new Array<>();
+        for (String path : rawPaths) {
+            String entryId = path.contains("/") ? path.split("/")[0] : path;
+            if (!entryIdList.contains(entryId, false)) entryIdList.add(entryId);
+        }
+
+        Array<String> unscriptedEntryIds = new Array<>();
+        for (String entryId : entryIdList) if (!entries.containsKey(entryId)) unscriptedEntryIds.add(entryId);
+
+        Gdx.app.log(registryId, "Parsing " + unscriptedEntryIds.size + " unscripted entries...");
+
+        for (String entryId : unscriptedEntryIds) {
+            try {
+                Song entry = createEntry(entryId, parseEntryData(entryId));
+                if (entry != null) {
+                    entries.put(entry.id, entry);
+
+                    Gdx.app.log(registryId, "Loaded entry data: " + entryId);
+                }
+            } catch (Exception e) {
+                Gdx.app.error(registryId, "Failed to load entry data: " + entryId, e);
+            }
+        }
     }
 
     public static void initialize() {
@@ -120,6 +152,10 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
 
     @Override
     public SongMetadata parseEntryData(String id) {
+        return parseEntryMetadata(id);
+    }
+
+    public SongMetadata parseEntryMetadata(String id) {
         return null;
     }
 }

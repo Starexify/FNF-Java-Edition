@@ -10,4 +10,11 @@ public class FunkinSprite extends AnimatedSprite {
         sprite.atlas = Assets.getAtlas(atlasPath);
         return sprite;
     }
+
+    public FunkinSprite loadTexture(String key) {
+        String graphicKey = Paths.image(key);
+        loadGraphic(graphicKey);
+
+        return this;
+    }
 }

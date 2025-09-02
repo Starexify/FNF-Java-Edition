@@ -27,8 +27,8 @@ public class MusicBeatState extends TransitionableScreenAdapter {
     public boolean persistentDraw = true;
 
     public MusicBeatSubState subState = null;
-    private MusicBeatSubState requestedSubState = null;
-    private boolean requestSubStateReset = false;
+    public MusicBeatSubState requestedSubState = null;
+    public boolean requestSubStateReset = false;
 
     public MusicBeatState(Main main) {
         this.main = main;
@@ -90,7 +90,7 @@ public class MusicBeatState extends TransitionableScreenAdapter {
         requestedSubState = null;
     }
 
-    private void resetSubState() {
+    public void resetSubState() {
         // Close old substate
         if (subState != null) {
             if (subState.closeCallback != null) {

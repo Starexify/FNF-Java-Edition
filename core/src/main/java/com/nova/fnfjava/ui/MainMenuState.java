@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
+import com.nova.fnfjava.ui.story.StoryMenuState;
+import com.nova.fnfjava.ui.transition.stickers.StickerSubState;
 import com.nova.fnfjava.util.Constants;
 
 public class MainMenuState extends MusicBeatState {
@@ -66,6 +68,7 @@ public class MainMenuState extends MusicBeatState {
             persistentUpdate = false;
             if (menuItems != null) rememberedSelectedIndex = menuItems.selectedIndex;
 
+            //openSubState(new FreeplayState(main));
             openSubState(new FreeplayState(main));
             System.out.println("Freeplay selected!");
         });

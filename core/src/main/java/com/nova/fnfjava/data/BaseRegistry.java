@@ -51,6 +51,10 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         return new JsonFile(entryFilePath, rawJson);
     }
 
+    public T fetchEntry(String id) {
+        return entries.get(id);
+    }
+
     public abstract J parseEntryData(String id);
 
     public void printErrors(Array<String> errors, String id) {
@@ -59,7 +63,7 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         for (String error : errors) Gdx.app.error(registryId, error);
     }
 
-    protected T createEntry(String id, J data, Object... params) {
+    public T createEntry(String id, J data, Object... params) {
         T entry = constructor.create(id, params);
         entry.loadData(data);
         return entry;

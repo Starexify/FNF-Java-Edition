@@ -1,8 +1,9 @@
 package com.nova.fnfjava.ui.transition.stickers;
 
+import com.badlogic.gdx.utils.Array;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.stickers.StickerData;
-import com.nova.fnfjava.data.stickers.StickerRegistry;
 
 public class StickerPack implements IRegistryEntry<StickerData> {
     public final String id;
@@ -12,14 +13,17 @@ public class StickerPack implements IRegistryEntry<StickerData> {
         this.id = id;
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public Array<String> getStickers() {
+        return data.stickers;
+    }
+
+    public String getRandomStickerPath(boolean last) {
+        return Main.random.getObject(getStickers());
     }
 
     @Override
-    public void destroy() {
-
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -33,13 +37,8 @@ public class StickerPack implements IRegistryEntry<StickerData> {
         this.data = data;
     }
 
-    public static StickerData fetchData(String id) {
-        StickerRegistry registry = StickerRegistry.instance;
-        if (registry == null) throw new IllegalStateException("StickerRegistry is not initialized!");
+    @Override
+    public void destroy() {
 
-        StickerPack entry = registry.entries.get(id);
-        if (entry != null) return entry.getData();
-
-        return registry.parseEntryData(id);
     }
 }

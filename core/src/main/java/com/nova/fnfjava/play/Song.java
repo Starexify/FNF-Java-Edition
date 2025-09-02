@@ -23,7 +23,8 @@ public class Song implements IRegistryEntry<SongMetadata> {
 
     @Override
     public void loadData(SongMetadata data) {
-
+        if (data == null) throw new IllegalArgumentException("SongMetadata cannot be null");
+        this.metadata = data;
     }
 
     @Override

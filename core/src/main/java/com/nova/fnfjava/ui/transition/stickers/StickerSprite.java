@@ -7,7 +7,8 @@ public class StickerSprite extends FunkinSprite {
 
     public StickerSprite(float x, float y, String filePath) {
         super(x, y);
-        loadGraphic(filePath);
-        updateHitbox();
+        loadTexture(filePath);
+        //updateHitbox();
+        updateHitboxFromCurrentFrame();
     }
 }

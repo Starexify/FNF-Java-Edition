@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Json;
 import com.nova.fnfjava.data.BaseRegistry;
 import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.transition.stickers.StickerPack;
+import com.nova.fnfjava.util.Constants;
 
 public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, StickerEntryParams> {
     public static StickerRegistry instance;
@@ -20,6 +21,12 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
 
     public static void initialize() {
         if (instance == null) instance = new StickerRegistry();
+    }
+
+    public StickerPack fetchDefault() {
+        StickerPack stickerPack = fetchEntry(Constants.DEFAULT_STICKER_PACK);
+        if (stickerPack == null) throw new IllegalArgumentException("Default sticker pack was null! This should not happen!");
+        return stickerPack;
     }
 
     public void setupParser() {

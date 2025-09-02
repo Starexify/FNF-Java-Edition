@@ -23,6 +23,10 @@ public class Paths {
         return "sounds/" + key + "." + Constants.EXT_SOUND;
     }
 
+    public static String sharedSound(String key) {
+        return "shared/sounds/" + key + "." + Constants.EXT_SOUND;
+    }
+
     public static String font(String key) {
         return "fonts/" + key;
     }

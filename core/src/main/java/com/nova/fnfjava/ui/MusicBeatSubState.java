@@ -48,6 +48,7 @@ public class MusicBeatSubState extends MusicBeatState {
 
         tryUpdate(delta);
 
+        stage.draw();
 
         if (subState != null) subState.render(delta);
     }

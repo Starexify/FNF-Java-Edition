@@ -5,9 +5,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.text.FlxText;
+import com.nova.fnfjava.ui.MainMenuState;
+import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.ui.MusicBeatSubState;
+import com.nova.fnfjava.ui.transition.stickers.StickerSubState;
 
 public class FreeplayState extends MusicBeatSubState {
+    public FreeplayState(Main main, FreeplayStateParams params, StickerSubState stickers) {
+        super(main);
+    }
+
     public FreeplayState(Main main) {
         super(main);
     }
@@ -31,4 +38,10 @@ public class FreeplayState extends MusicBeatSubState {
             close(); // This will call closeSubState() on the parent
         }
     }
+
+    public static MusicBeatState build(Main main,FreeplayStateParams params, StickerSubState stickers) {
+        return new FreeplayState(main, params, stickers);
+    }
+
+    public record FreeplayStateParams(String character) {}
 }

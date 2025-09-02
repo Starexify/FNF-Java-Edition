@@ -3,8 +3,6 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
-import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.sound.FunkinSoundPlayMusicParams;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
@@ -156,10 +153,7 @@ public class TitleState extends MusicBeatState {
         Conductor.getInstance().update();
 
         boolean pressedEnter = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
-        if (pressedEnter && transitioning && skippedIntro) {
-            main.switchState(new MainMenuState(main));
-            moveToMainMenu();
-        }
+        if (pressedEnter && transitioning && skippedIntro) moveToMainMenu();
 
         if (pressedEnter && !transitioning && skippedIntro) {
             titleText.animation.play("press");
