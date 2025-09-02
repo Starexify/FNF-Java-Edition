@@ -16,7 +16,6 @@ public class FunkinSound {
     public static Map<String, MASound> soundCache = new HashMap<>();
 
     public float currentMusicPitch = 1.0f;
-    public boolean paused;
 
     public FunkinSound(MiniAudio miniAudio) {
         this.miniAudio = miniAudio;

@@ -4,4 +4,5 @@ public interface IRegistryEntry<T> {
     String getId();
     void destroy();
     T getData();
+    void loadData(T data);
 }

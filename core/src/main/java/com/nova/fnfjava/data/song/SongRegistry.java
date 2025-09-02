@@ -17,7 +17,7 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
     public final Array<String> parseErrors;
 
     public SongRegistry() {
-        super("SONG", "songs");
+        super("SONG", "songs", Song::new);
         parser = new Json();
         parseErrors = new Array<>();
 
@@ -116,6 +116,11 @@ public class SongRegistry extends BaseRegistry<Song, SongMetadata, SongEntryPara
             Gdx.app.error("SongRegistry", "Errors parsing music data for ID: " + id);
             for (String error : parseErrors) Gdx.app.error("SongRegistry", "  - " + error);
         }
+    }
+
+    @Override
+    public SongMetadata parseEntryData(String id) {
+        return null;
     }
 }
 

@@ -15,6 +15,10 @@ public class Paths {
         return "data/" + key + ".txt";
     }
 
+    public static String json(String key) {
+        return "data/" + key + ".json";
+    }
+
     public static String sound(String key) {
         return "sounds/" + key + "." + Constants.EXT_SOUND;
     }

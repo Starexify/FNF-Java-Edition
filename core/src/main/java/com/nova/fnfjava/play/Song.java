@@ -7,7 +7,7 @@ public class Song implements IRegistryEntry<SongMetadata> {
     public String id;
     public SongMetadata metadata;
 
-    public Song(String id) {
+    public Song(String id, Object... params) {
         this.id = id;
     }
 
@@ -19,6 +19,11 @@ public class Song implements IRegistryEntry<SongMetadata> {
     @Override
     public SongMetadata getData() {
         return metadata;
+    }
+
+    @Override
+    public void loadData(SongMetadata data) {
+
     }
 
     @Override

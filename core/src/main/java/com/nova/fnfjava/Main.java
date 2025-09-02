@@ -7,10 +7,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.data.song.SongRegistry;
+import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
+import com.nova.fnfjava.util.plugins.ReloadAssetsDebugPlugin;
 import games.rednblack.miniaudio.MiniAudio;
 
 /**
@@ -44,6 +46,12 @@ public class Main extends Game {
             transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
             SongRegistry.initialize();
+            SongRegistry.instance.loadEntries();
+
+            StickerRegistry.initialize();
+            StickerRegistry.instance.loadEntries();
+
+            ReloadAssetsDebugPlugin.initialize();
 
             setScreen(new TitleState(this));
         } catch (Exception e) {
@@ -53,6 +61,13 @@ public class Main extends Game {
 
     public void switchState(Screen newScreen) {
         transitionManager.setScreen(newScreen);
+    }
+
+    @Override
+    public void render() {
+        super.render();
+
+        ReloadAssetsDebugPlugin.update();
     }
 
     @Override
