@@ -1,4 +1,4 @@
-package com.nova.fnfjava.ui;
+package com.nova.fnfjava.ui.title;
 
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.sound.FunkinSoundPlayMusicParams;
+import com.nova.fnfjava.ui.AtlasText;
+import com.nova.fnfjava.ui.MainMenuState;
+import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
 /**
@@ -46,7 +49,7 @@ public class TitleState extends MusicBeatState {
     public void show() {
         super.show();
 
-        curWacky = Main.random.getObject(getIntroTextShit());
+        curWacky = getIntroTextShit().random();
 
         CameraFlash.getInstance().setStage(stage);
 
@@ -144,6 +147,7 @@ public class TitleState extends MusicBeatState {
     }
 
     public boolean transitioning = false;
+    private Timer.Task timer;
 
     @Override
     public void render(float delta) {
@@ -153,7 +157,10 @@ public class TitleState extends MusicBeatState {
         Conductor.getInstance().update();
 
         boolean pressedEnter = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
-        if (pressedEnter && transitioning && skippedIntro) moveToMainMenu();
+        if (pressedEnter && transitioning && skippedIntro) {
+            if (timer != null) timer.cancel();
+            moveToMainMenu();
+        }
 
         if (pressedEnter && !transitioning && skippedIntro) {
             titleText.animation.play("press");
@@ -161,7 +168,7 @@ public class TitleState extends MusicBeatState {
             Main.sound.playOnce(Paths.sound("confirmMenu"), 0.7f);
             transitioning = true;
 
-            Timer.schedule(new Timer.Task() {
+            timer = Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     moveToMainMenu();
@@ -181,7 +188,7 @@ public class TitleState extends MusicBeatState {
         if (credGroup == null || textGroup == null) return;
 
         for (int i = 0; i < textArray.size; i++) {
-            AtlasText money = new AtlasText(0, 0, textArray.get(i), AtlasFont.BOLD);
+            AtlasText money = new AtlasText(0, 0, textArray.get(i), AtlasText.AtlasFont.BOLD);
             money.screenCenter(Axes.X);
             money.setY(money.getY() - (i * 60) + 400);
             textGroup.addActor(money);
@@ -191,7 +198,7 @@ public class TitleState extends MusicBeatState {
     public void addMoreText(String text) {
         if (credGroup == null || textGroup == null) return;
 
-        AtlasText coolText = new AtlasText(0, 0, text.trim(), AtlasFont.BOLD);
+        AtlasText coolText = new AtlasText(0, 0, text.trim(), AtlasText.AtlasFont.BOLD);
         coolText.screenCenter(Axes.X);
         coolText.setY(coolText.getY() - (textGroup.getChildren().size * 60) + 400);
         ;

@@ -10,7 +10,7 @@ import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.sound.FunkinSound;
-import com.nova.fnfjava.ui.TitleState;
+import com.nova.fnfjava.ui.title.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
 import com.nova.fnfjava.util.plugins.ReloadAssetsDebugPlugin;
 import games.rednblack.miniaudio.MiniAudio;

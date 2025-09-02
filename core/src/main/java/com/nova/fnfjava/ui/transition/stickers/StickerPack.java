@@ -1,7 +1,6 @@
 package com.nova.fnfjava.ui.transition.stickers;
 
 import com.badlogic.gdx.utils.Array;
-import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.stickers.StickerData;
 
@@ -18,7 +17,7 @@ public class StickerPack implements IRegistryEntry<StickerData> {
     }
 
     public String getRandomStickerPath(boolean last) {
-        return Main.random.getObject(getStickers());
+        return getStickers().random();
     }
 
     @Override
