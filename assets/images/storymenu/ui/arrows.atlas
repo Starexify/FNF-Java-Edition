@@ -1,0 +1,33 @@
+arrows.png
+size: 256,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+leftIdle
+  rotate: false
+  xy: 4, 4
+  size: 48, 85
+  orig: 48, 85
+  offset: 0, 0
+  index: 0
+rightIdle
+  rotate: false
+  xy: 56, 4
+  size: 47, 85
+  orig: 47, 85
+  offset: 0, 0
+  index: 0
+leftConfirm
+  rotate: false
+  xy: 107, 4
+  size: 42, 75
+  orig: 42, 75
+  offset: 0, 0
+  index: 0
+rightConfirm
+  rotate: false
+  xy: 153, 4
+  size: 41, 74
+  orig: 41, 74
+  offset: 0, 0
+  index: 0

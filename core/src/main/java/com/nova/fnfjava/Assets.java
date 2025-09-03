@@ -38,6 +38,10 @@ public class Assets {
         Main.assetManager.load(path, Texture.class);
     }
 
+    public static boolean exists(String path) {
+        return Gdx.files.internal(path).exists();
+    }
+
     public static boolean isPathLoaded(String path) {
         return Main.assetManager.isLoaded(path);
     }

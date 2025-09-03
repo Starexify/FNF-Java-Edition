@@ -120,6 +120,10 @@ public class FlxText extends Label implements Disposable {
         }
     }
 
+    public void addText(String text) {
+        setText(getText() + text);
+    }
+
     public enum FlxTextBorderStyle {
         NONE,
 

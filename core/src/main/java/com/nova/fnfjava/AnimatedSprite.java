@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 import com.nova.fnfjava.animation.AnimationController;
 
 public class AnimatedSprite extends Actor {
@@ -24,18 +25,19 @@ public class AnimatedSprite extends Actor {
 
     public AnimatedSprite(float x, float y) {
         animation = new AnimationController(this);
-        setPosition(x, y);
+        setPosition(x, y, Align.bottom);
     }
 
     public AnimatedSprite() {
-       this(0, 0);
+        this(0, 0);
     }
 
     /**
      * Load a graphic/texture similar to FlxSprite's loadGraphic method
+     *
      * @param graphicPath Path to the texture file
-     * @param animated Whether the graphic should be treated as an animated spritesheet
-     * @param frameWidth Width of individual frames (0 = auto-detect)
+     * @param animated    Whether the graphic should be treated as an animated spritesheet
+     * @param frameWidth  Width of individual frames (0 = auto-detect)
      * @param frameHeight Height of individual frames (0 = auto-detect)
      * @return This AnimatedSprite for method chaining
      */
@@ -47,14 +49,14 @@ public class AnimatedSprite extends Actor {
             frameWidth = animated ? texture.getHeight() : texture.getWidth();
             frameWidth = Math.min(frameWidth, texture.getWidth());
         } else if (frameWidth > texture.getWidth()) {
-            System.err.println("Warning: frameWidth " + frameWidth + " is larger than texture width " + texture.getWidth());
+            Gdx.app.error("AnimatedSprite", "Warning: frameWidth " + frameWidth + " is larger than texture width " + texture.getWidth());
         }
 
         if (frameHeight == 0) {
             frameHeight = animated ? frameWidth : texture.getHeight();
             frameHeight = Math.min(frameHeight, texture.getHeight());
         } else if (frameHeight > texture.getHeight()) {
-            System.err.println("Warning: frameHeight " + frameHeight + " is larger than texture height " + texture.getHeight());
+            Gdx.app.error("AnimatedSprite", "Warning: frameHeight " + frameHeight + " is larger than texture height " + texture.getHeight());
         }
 
         this.frameWidth = frameWidth;
@@ -195,5 +197,49 @@ public class AnimatedSprite extends Actor {
 
     public void centerOrigin() {
         setOrigin(frameWidth * 0.5f, frameHeight * 0.5f);
+    }
+
+    public void resetHelpers() {
+        resetFrameSize();
+        centerOrigin();
+        dirty = true;
+    }
+
+    public void resetFrameSize() {
+        if (atlas != null && atlas.getRegions().size > 0) {
+            // Get the first frame like HaxeFlixel does
+            TextureAtlas.AtlasRegion firstFrame = atlas.getRegions().first();
+            frameWidth = firstFrame.getRegionWidth();
+            frameHeight = firstFrame.getRegionHeight();
+
+            // Set the current frame to the first one
+            frame = firstFrame;
+
+            resetSizeFromFrame();
+        }
+    }
+
+    public void resetSizeFromFrame() {
+        if (frameWidth > 0 && frameHeight > 0) setSize(frameWidth, frameHeight);
+    }
+
+    // Helper Methods
+
+    public void setAtlas(String path) {
+        atlas = Assets.getAtlas(path);
+        if (atlas != null) resetHelpers();
+    }
+
+    public void addX(float amount) {
+        setX(getX() + amount);
+    }
+
+    public void addY(float amount) {
+        setY(getY() + amount);
+    }
+
+    public void setFlxY(float flxY) {
+        float libgdxY = Gdx.graphics.getHeight() - flxY - getHeight();
+        setY(libgdxY, Align.bottom);
     }
 }

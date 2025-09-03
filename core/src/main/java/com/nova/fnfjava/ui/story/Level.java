@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
+import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.story.level.LevelData;
+import com.nova.fnfjava.play.Song;
+import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.ImageUtil;
 
 public class Level implements IRegistryEntry<LevelData> {
@@ -34,10 +38,42 @@ public class Level implements IRegistryEntry<LevelData> {
         this.levelData = data;
     }
 
+    /**
+     * Get the list of songs in this level, as an array of IDs.
+     * @return Array<String>
+     */
+    public Array<String> getSongs() {
+        // Copy the array so that it can't be modified on accident
+        return new Array<>(getData().songs);
+    }
+
+    /**
+     * Construct the title graphic for the level.
+     * @return The constructed graphic as a sprite.
+     */
     public AnimatedSprite buildTitleGraphic() {
         AnimatedSprite result = new AnimatedSprite().loadGraphic(Paths.image(getData().titleAsset));
 
         return result;
+    }
+
+    /**
+     * Get the list of songs in this level, as an array of names, for display on the menu.
+     * @param difficulty The difficulty of the level being displayed
+     * @return The display names of the songs in this level
+     */
+    public Array<String> getSongDisplayNames(String difficulty) {
+        Array<String> songList = getSongs() != null ? getSongs() : new Array<>();
+        Array<String> songNameList = new Array<>();
+        for (String songId : songList) songNameList.add(getSongDisplayName(songId, difficulty));
+        return songNameList;
+    }
+
+    public static String getSongDisplayName(String songId, String difficulty) {
+        Song song = SongRegistry.instance.fetchEntry(songId);
+        if (song == null) return "Unknown";
+
+        return song.songName;
     }
 
     public boolean isUnlocked() {

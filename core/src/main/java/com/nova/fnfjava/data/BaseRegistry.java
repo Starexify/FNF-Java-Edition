@@ -55,7 +55,7 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         return new JsonFile(entryFilePath, rawJson);
     }
 
-    public T fetchEntry(String id) {
+    public T fetchEntry(String id, Object... params) {
         return entries.get(id);
     }
 

@@ -11,6 +11,7 @@ import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.math.FlxRandom;
+import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.title.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
@@ -31,6 +32,8 @@ public class Main extends Game {
     public static AssetManager assetManager = new AssetManager();
     public static FlxRandom random = new FlxRandom();
 
+    public static Save save;
+
     // Game constants
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 
@@ -38,6 +41,9 @@ public class Main extends Game {
     public void create() {
         try {
             instance = this;
+
+            Save.load();
+            save = Save.getInstance();
 
             spriteBatch = new SpriteBatch();
             viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);

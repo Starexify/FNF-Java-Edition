@@ -113,8 +113,16 @@ public class AnimationController {
         addAnimation(animData);
     }
 
+    public void addByPrefix(String name, String prefix, float frameRate, boolean looped) {
+        addByPrefix(name, prefix, frameRate, looped, false, false);
+    }
+
     public void addByPrefix(String name, String prefix, float frameRate) {
         addByPrefix(name, prefix, frameRate, true, false, false);
+    }
+
+    public void addByPrefix(String name, String prefix) {
+        addByPrefix(name, prefix, 30f, true, false, false);
     }
 
     public void play(String name, boolean force) {

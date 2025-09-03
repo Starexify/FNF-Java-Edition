@@ -1,0 +1,54 @@
+nightmare.png
+size: 503,440
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 342, 8
+  size: 69, 303
+  orig: 318, 78
+  offset: 12, 5
+  index: 1
+idle
+  rotate: false
+  xy: 8, 182
+  size: 305, 76
+  orig: 318, 78
+  offset: 13, 0
+  index: 2
+idle
+  rotate: false
+  xy: 8, 274
+  size: 305, 73
+  orig: 318, 78
+  offset: 13, 0
+  index: 3
+idle
+  rotate: false
+  xy: 8, 363
+  size: 303, 69
+  orig: 318, 78
+  offset: 9, 5
+  index: 4
+idle
+  rotate: false
+  xy: 8, 8
+  size: 318, 73
+  orig: 318, 78
+  offset: 0, 5
+  index: 5
+idle
+  rotate: false
+  xy: 8, 97
+  size: 315, 69
+  orig: 318, 78
+  offset: 0, 5
+  index: 6
+idle
+  rotate: false
+  xy: 427, 8
+  size: 68, 302
+  orig: 318, 78
+  offset: 16, 4
+  index: 7

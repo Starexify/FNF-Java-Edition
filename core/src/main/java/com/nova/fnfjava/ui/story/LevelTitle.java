@@ -1,14 +1,12 @@
 package com.nova.fnfjava.ui.story;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.nova.fnfjava.AnimatedSprite;
-import com.nova.fnfjava.Axes;
 import com.nova.fnfjava.Paths;
+import com.nova.fnfjava.group.TypedActorGroup;
+import com.nova.fnfjava.util.MathUtil;
 
-public class LevelTitle extends Group {
+public class LevelTitle extends TypedActorGroup<AnimatedSprite> {
     static final int LOCK_PAD = 4;
 
     public final Level level;
@@ -38,7 +36,7 @@ public class LevelTitle extends Group {
     public void act(float delta) {
         super.act(delta);
 
-        this.setY(MathUtils.lerp(getY(), targetY, delta * 0.451f));
+        this.setY(MathUtil.smoothLerpPrecision(getY(), targetY, delta, 0.451f));
 
         if (isFlashing) {
             flashTick += delta;
@@ -62,19 +60,13 @@ public class LevelTitle extends Group {
 
     public void buildLevelTitle() {
         title = level.buildTitleGraphic();
-        addActor(title);
+        add(title);
     }
 
     public void buildLevelLock() {
         lock = new AnimatedSprite(0, 0).loadGraphic(Paths.image("storymenu/ui/lock"));
         lock.setX(title.getX() + title.getWidth() + LOCK_PAD);
+        add(lock);
         lock.setVisible(false);
-        addActor(lock);
-    }
-
-    public LevelTitle screenCenter(Axes axes) {
-        if (axes.hasX()) setX((Gdx.graphics.getWidth() - getWidth()) / 2f);
-        if (axes.hasY()) setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
-        return this;
     }
 }

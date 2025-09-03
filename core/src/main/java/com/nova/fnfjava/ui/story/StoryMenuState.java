@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.nova.fnfjava.AnimatedSprite;
-import com.nova.fnfjava.Axes;
-import com.nova.fnfjava.Main;
+import com.nova.fnfjava.*;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.group.TypedActorGroup;
+import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.MusicBeatState;
@@ -104,14 +104,15 @@ public class StoryMenuState extends MusicBeatState {
 
         updateProps();
 
-        tracklistText = new FlxText(Gdx.graphics.getWidth() * 0.05f,  Gdx.graphics.getHeight() - (levelBackground.getX() + levelBackground.getHeight() + 100), "Tracks");
+        tracklistText = new FlxText(Gdx.graphics.getWidth() * 0.05f,  0, "Tracks");
+        tracklistText.setY(Gdx.graphics.getHeight() - tracklistText.getHeight() - (levelBackground.getX() + levelBackground.getHeight() + 100));
         tracklistText.setFormat("VCR OSD Mono", 32);
         //tracklistText.alignment = CENTER;
         tracklistText.setColor("#E55777FF");
         add(tracklistText);
 
         scoreText = new FlxText(Math.max(0, 10), 10, "HIGH SCORE: 42069420");
-        scoreText.setY(Gdx.graphics.getHeight() - scoreText.getHeight() - 10);
+        scoreText.setY(Gdx.graphics.getHeight() - scoreText.getHeight() - scoreText.getY());
         scoreText.setFormat("VCR OSD Mono", 32);
         scoreText.setZIndex(1000);
         add(scoreText);
@@ -124,6 +125,28 @@ public class StoryMenuState extends MusicBeatState {
         add(levelTitleText);
 
         buildLevelTitles();
+
+        leftDifficultyArrow = new AnimatedSprite(Gdx.graphics.getWidth() - 410, 480);
+        leftDifficultyArrow.setAtlas(Paths.getAtlas("storymenu/ui/arrows"));
+        leftDifficultyArrow.setFlxY(480);
+        leftDifficultyArrow.animation.addByPrefix("idle", "leftIdle");
+        leftDifficultyArrow.animation.addByPrefix("press", "leftConfirm");
+        leftDifficultyArrow.animation.play("idle");
+        add(leftDifficultyArrow);
+
+        buildDifficultySprite(Constants.DEFAULT_DIFFICULTY);
+        buildDifficultySprite();
+
+        rightDifficultyArrow = new AnimatedSprite(Gdx.graphics.getWidth() - 35, leftDifficultyArrow.getY());
+        rightDifficultyArrow.atlas = leftDifficultyArrow.atlas;
+        rightDifficultyArrow.animation.addByPrefix("idle", "rightIdle0");
+        rightDifficultyArrow.animation.addByPrefix("press", "rightConfirm0");
+        rightDifficultyArrow.animation.play("idle");
+        add(rightDifficultyArrow);
+
+        add(difficultySprite);
+
+        updateText();
 
         DiscordClient.instance.setPresence(new DiscordClient.DiscordPresenceParams("In the Menus", null));
     }
@@ -147,9 +170,41 @@ public class StoryMenuState extends MusicBeatState {
         isLevelUnlocked = currentLevel == null ? false : currentLevel.isUnlocked();
     }
 
+    public void buildDifficultySprite(String diff) {
+        if (diff == null) diff = currentDifficultyId;
+        if (difficultySprite != null) difficultySprite.remove();
+        difficultySprite = difficultySprites.get(diff);
+
+        if (difficultySprite == null) {
+            difficultySprite = new AnimatedSprite(leftDifficultyArrow.getX() + leftDifficultyArrow.getWidth() + 10, leftDifficultyArrow.getY());
+            if (Assets.exists(Paths.getAtlas("storymenu/difficulties/" + diff))) {
+                difficultySprite.setAtlas(Paths.getAtlas("storymenu/difficulties/" + diff));
+                difficultySprite.animation.addByPrefix("idle", "idle0", 24, true);
+                if (Preferences.getFlashingLights()) difficultySprite.animation.play("idle");
+            } else difficultySprite.loadGraphic(Paths.image("storymenu/difficulties/" + diff));
+
+            difficultySprites.put(diff, difficultySprite);
+            difficultySprite.addX((difficultySprites.get(Constants.DEFAULT_DIFFICULTY).getWidth() - difficultySprite.getWidth()) / 2);
+        }
+        difficultySprite.getColor().a = 0;
+
+        difficultySprite.setY(leftDifficultyArrow.getY() - 15);
+        float targetY = leftDifficultyArrow.getY() + 10;
+        targetY -= (difficultySprite.getHeight() - difficultySprites.get(Constants.DEFAULT_DIFFICULTY).getHeight()) / 2;
+        difficultySprite.addAction(Actions.parallel(
+            Actions.moveTo(difficultySprite.getX(), targetY, 0.07f),
+            Actions.alpha(1f, 0.07f)
+        ));
+
+        add(difficultySprite);
+    }
+
+    public void buildDifficultySprite() {
+        buildDifficultySprite(null);
+    }
+
     public void buildLevelTitles() {
         levelTitles.clear();
-
         for (int levelIndex = 0; levelIndex < levelList.size; levelIndex++) {
             String levelId = levelList.get(levelIndex);
             Level level = LevelRegistry.instance.fetchEntry(levelId);
@@ -157,8 +212,10 @@ public class StoryMenuState extends MusicBeatState {
 
             // TODO: Readd lock icon if unlocked is false.
 
-            LevelTitle levelTitleItem = new LevelTitle(0, (int) (levelBackground.getY() + levelBackground.getHeight() + 10), level);
-            levelTitleItem.targetY = ((levelTitleItem.getHeight() + 20) * levelIndex);
+            LevelTitle levelTitleItem = new LevelTitle(0, 0, level);
+            float baseY = levelBackground.getY() - levelTitleItem.getHeight() - 10;
+            levelTitleItem.setY((int) baseY);
+            levelTitleItem.targetY = baseY - (levelTitleItem.getHeight() + 20) * levelIndex;
             levelTitleItem.screenCenter(Axes.X);
             levelTitles.add(levelTitleItem);
         }
@@ -210,5 +267,17 @@ public class StoryMenuState extends MusicBeatState {
 */
 
         //refresh();
+    }
+
+    public void updateText() {
+        tracklistText.setText("TRACKS\n\n");
+        tracklistText.addText(currentLevel.getSongDisplayNames(currentDifficultyId).toString());
+
+        //tracklistText.screenCenter(X);
+        //tracklistText.setX(tracklistText.getX() - (Gdx.graphics.getWidth() * 0.35f));
+
+        Save.SaveScoreData levelScore = Save.instance.getLevelScore(currentLevelId, currentDifficultyId);
+        highScore = levelScore != null ? levelScore.score() : 0;
+        // levelScore.accuracy
     }
 }
