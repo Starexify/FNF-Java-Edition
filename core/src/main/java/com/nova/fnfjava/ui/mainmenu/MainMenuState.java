@@ -49,6 +49,9 @@ public class MainMenuState extends MusicBeatState {
 
         if (!overrideMusic) playMenuMusic();
 
+        persistentUpdate = true;
+        persistentDraw = true;
+
         bg = new Image(Assets.getTexture("images/menuBG.png"));
         bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
         bg.setPosition((Gdx.graphics.getWidth() - bg.getWidth()) / 2, (Gdx.graphics.getHeight() - bg.getHeight()) / 2);

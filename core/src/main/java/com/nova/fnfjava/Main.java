@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
@@ -43,6 +44,8 @@ public class Main extends Game {
 
             spriteBatch = new SpriteBatch();
             viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+            DiscordClient.getInstance().init();
 
             transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -91,6 +94,7 @@ public class Main extends Game {
     @Override
     public void dispose() {
         super.dispose();
+        if (DiscordClient.instance != null) DiscordClient.shutdown();
         if (sound != null) sound.dispose();
         if (spriteBatch != null) spriteBatch.dispose();
         if (assetManager != null) assetManager.dispose();
