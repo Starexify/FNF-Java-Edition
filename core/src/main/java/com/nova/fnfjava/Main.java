@@ -39,9 +39,6 @@ public class Main extends Game {
         try {
             instance = this;
 
-            Preferences.init();
-            PlayerSettings.init();
-
             spriteBatch = new SpriteBatch();
             viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -59,6 +56,9 @@ public class Main extends Game {
             StickerRegistry.instance.loadEntries();
 
             ReloadAssetsDebugPlugin.initialize();
+
+            PlayerSettings.init();
+            Preferences.init();
 
             setScreen(new TitleState(this));
         } catch (Exception e) {
@@ -99,5 +99,7 @@ public class Main extends Game {
         if (spriteBatch != null) spriteBatch.dispose();
         if (assetManager != null) assetManager.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
+
+        Assets.dispose();
     }
 }

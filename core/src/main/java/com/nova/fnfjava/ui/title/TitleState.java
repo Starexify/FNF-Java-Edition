@@ -4,13 +4,9 @@ import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
@@ -18,6 +14,7 @@ import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.AtlasText;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;
+import com.nova.fnfjava.util.ImageUtil;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
 /**
@@ -87,13 +84,7 @@ public class TitleState extends MusicBeatState {
 
         textGroup = new Group();
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 1); // black with full alpha
-        pixmap.fill();
-        Texture blackTexture = new Texture(pixmap);
-        pixmap.dispose();
-        blackScreen = new Image(new TextureRegionDrawable(new TextureRegion(blackTexture)));
-        blackScreen.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        blackScreen = ImageUtil.blackScreen();
 
         if (credGroup != null) {
             credGroup.addActor(blackScreen);
@@ -207,7 +198,6 @@ public class TitleState extends MusicBeatState {
         AtlasText coolText = new AtlasText(0, 0, text.trim(), AtlasText.AtlasFont.BOLD);
         coolText.screenCenter(Axes.X);
         coolText.setY(coolText.getY() - (textGroup.getChildren().size * 60) + 400);
-        ;
         textGroup.addActor(coolText);
     }
 

@@ -1,8 +1,9 @@
 package com.nova.fnfjava.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.nova.fnfjava.Axes;
 
-public class AtlasMenuItem extends MenuListItem {
+public class AtlasMenuItem extends MenuTypedList.MenuListItem {
     public TextureAtlas frames;
 
     public boolean centered = false;
@@ -26,6 +27,7 @@ public class AtlasMenuItem extends MenuListItem {
 
         if (centered) {
             centerOrigin();
+            screenCenter(Axes.X); // TODO: fix this to to center the AtlasMenuItem similarly to Funkin
             //offset.copyFrom(origin);
             offset.set(-getOriginX(), -getOriginY());
         }

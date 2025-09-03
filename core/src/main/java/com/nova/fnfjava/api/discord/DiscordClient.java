@@ -37,7 +37,7 @@ public class DiscordClient {
 
                 createCallbackDaemon();
 
-                setPresence(new DiscordPresenceParams(null, "In Main Menu", null, null));
+                setPresence(new DiscordPresenceParams(null, "Just Started"));
             } catch (Exception e) {
                 Gdx.app.error("DISCORD", "" + e);
                 initialized = false;
@@ -49,7 +49,7 @@ public class DiscordClient {
         Gdx.app.log("DISCORD", "Shutting down...");
         try {
             if (callbackExecutor != null) callbackExecutor.shutdown();
-            if (core != null)core.close();
+            if (core != null) core.close();
         } catch (Exception e) {
             Gdx.app.error("DISCORD", "Error during shutdown: " + e.getMessage());
         }
@@ -69,21 +69,17 @@ public class DiscordClient {
     public static Activity buildActivity(DiscordPresenceParams params) {
         Activity activity = new Activity();
 
-        if (params.state != null && !params.state.isEmpty()) activity.setState(params.state);
-        if (params.details != null && !params.details.isEmpty()) activity.setDetails(params.details);
         activity.timestamps().setStart(Instant.now());
 
-        if (params.largeImageKey != null && !params.largeImageKey.isEmpty()) {
-            activity.assets().setLargeImage(params.largeImageKey);
-            activity.assets().setLargeText("Friday Night Funkin': Java Edition");
-        } else {
-            activity.assets().setLargeImage("icon");
-            activity.assets().setLargeText("Friday Night Funkin': Java Edition");
-        }
+        activity.assets().setLargeText("Friday Night Funkin': Java Edition");
 
-        if (params.smallImageKey != null && !params.smallImageKey.isEmpty()) {
+        if (params.state != null && !params.state.isEmpty()) activity.setState(params.state);
+        if (params.details != null && !params.details.isEmpty()) activity.setDetails(params.details);
+        if (params.largeImageKey != null && !params.largeImageKey.isEmpty())
+            activity.assets().setLargeImage(params.largeImageKey);
+        else activity.assets().setLargeImage("icon");
+        if (params.smallImageKey != null && !params.smallImageKey.isEmpty())
             activity.assets().setSmallImage(params.smallImageKey);
-        }
 
         return activity;
     }
@@ -112,6 +108,10 @@ public class DiscordClient {
             this.details = details;
             this.largeImageKey = largeImageKey;
             this.smallImageKey = smallImageKey;
+        }
+
+        public DiscordPresenceParams(String state, String details) {
+            this(state, details, null, null);
         }
     }
 }

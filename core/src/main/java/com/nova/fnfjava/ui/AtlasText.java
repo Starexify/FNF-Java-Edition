@@ -3,15 +3,14 @@ package com.nova.fnfjava.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Assets;
-import com.nova.fnfjava.Axes;
+import com.nova.fnfjava.group.TypedActorGroup;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AtlasText extends Group {
+public class AtlasText extends TypedActorGroup<AtlasText.AtlasChar> {
     public static Map<AtlasFont, AtlasFontData> fonts = new HashMap<>();
     public Case getCaseAllowed() {
         return font != null ? font.caseAllowed : Case.BOTH;
@@ -109,119 +108,6 @@ public class AtlasText extends Group {
                     charCount++;
             }
         }
-    }
-
-    public AtlasText screenCenter(Axes axes) {
-        if (axes.hasX()) setX((Gdx.graphics.getWidth() - getWidth()) / 2f);
-        if (axes.hasY()) setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
-        return this;
-    }
-
-    public AtlasText screenCenter() {
-        return screenCenter(Axes.XY);
-    }
-
-    public int countLiving() {
-        int count = -1;
-        for (Actor child : getChildren()) {
-            if (child != null) {
-                if (count < 0) count = 0;
-                if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    public void kill() {
-        for (Actor child : getChildren()) if (child instanceof AtlasChar) killCharacter((AtlasChar) child);
-    }
-
-    public void killCharacter(AtlasChar character) {
-        // Similar to Flixel's kill() - hide but don't remove for reuse
-        character.setVisible(false);
-        character.getColor().a = 0f;
-    }
-
-    public boolean isCharacterAlive(AtlasChar character) {
-        // In libGDX, we use visibility and alpha to simulate Flixel's exists/alive
-        return character.isVisible() && character.getColor().a > 0f;
-    }
-
-    public void reviveCharacter(AtlasChar character) {
-        // Similar to Flixel's revive() - make visible again
-        character.setVisible(true);
-        character.getColor().a = 1f;
-    }
-
-    public void add(AtlasChar character) {
-        if (!getChildren().contains(character, true)) {
-            addActor(character);
-        }
-        character.setVisible(true);
-    }
-
-    @Override
-    public float getWidth() {
-        if (getChildren().size == 0) return 0;
-        return findMaxX() - findMinX();
-    }
-
-    @Override
-    public float getHeight() {
-        if (getChildren().size == 0) return 0;
-        return findMaxY() - findMinY();
-    }
-
-    public float findMinX() {
-        float value = Float.POSITIVE_INFINITY;
-        for (Actor child : getChildren()) {
-            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
-                if (child.getX() < value) {
-                    value = child.getX();
-                }
-            }
-        }
-        return value == Float.POSITIVE_INFINITY ? getX() : value;
-    }
-
-    public float findMaxX() {
-        float value = Float.NEGATIVE_INFINITY;
-        for (Actor child : getChildren()) {
-            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
-                float maxX = child.getX() + child.getWidth();
-                if (maxX > value) {
-                    value = maxX;
-                }
-            }
-        }
-        return value == Float.NEGATIVE_INFINITY ? getX() : value;
-    }
-
-    public float findMinY() {
-        float value = Float.POSITIVE_INFINITY;
-        for (Actor child : getChildren()) {
-            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
-                if (child.getY() < value) {
-                    value = child.getY();
-                }
-            }
-        }
-        return value == Float.POSITIVE_INFINITY ? getY() : value;
-    }
-
-    public float findMaxY() {
-        float value = Float.NEGATIVE_INFINITY;
-        for (Actor child : getChildren()) {
-            if (child instanceof AtlasChar && isCharacterAlive((AtlasChar) child)) {
-                float maxY = child.getY() + child.getHeight();
-                if (maxY > value) {
-                    value = maxY;
-                }
-            }
-        }
-        return value == Float.NEGATIVE_INFINITY ? getY() : value;
     }
 
     public class AtlasChar extends AnimatedSprite {

@@ -10,7 +10,6 @@ import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ScrollableStage;
 import com.nova.fnfjava.text.FlxText;
-import com.nova.fnfjava.text.FlxTextBorderStyle;
 import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
 
 public class MusicBeatState extends TransitionableScreenAdapter {
@@ -120,8 +119,8 @@ public class MusicBeatState extends TransitionableScreenAdapter {
 
 /*        leftWatermarkText.setScrollFactor(0, 0);
         rightWatermarkText.setScrollFactor(0, 0);*/
-        leftWatermarkText.setFormat("VCR_OSD_MONO", 16, Color.WHITE, FlxTextBorderStyle.OUTLINE, Color.BLACK);
-        rightWatermarkText.setFormat("VCR_OSD_MONO", 16, Color.WHITE, FlxTextBorderStyle.OUTLINE, Color.BLACK);
+        leftWatermarkText.setFormat("VCR OSD Mono", 16, Color.WHITE, FlxText.FlxTextBorderStyle.OUTLINE, Color.BLACK);
+        rightWatermarkText.setFormat("VCR OSD Mono", 16, Color.WHITE, FlxText.FlxTextBorderStyle.OUTLINE, Color.BLACK);
 
         add(leftWatermarkText);
         add(rightWatermarkText);

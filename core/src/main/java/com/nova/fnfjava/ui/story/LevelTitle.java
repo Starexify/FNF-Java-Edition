@@ -1,8 +1,11 @@
 package com.nova.fnfjava.ui.story;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.Axes;
 import com.nova.fnfjava.Paths;
 
 public class LevelTitle extends Group {
@@ -14,7 +17,7 @@ public class LevelTitle extends Group {
     public AnimatedSprite title;
     public AnimatedSprite lock;
 
-    public LevelTitle(int x, int y, Level level){
+    public LevelTitle(int x, int y, Level level) {
         super();
         this.setPosition(x, y);
 
@@ -41,7 +44,8 @@ public class LevelTitle extends Group {
             flashTick += delta;
             if (flashTick >= 1 / flashFramerate) {
                 flashTick %= 1 / flashFramerate;
-                //title.color = (title.color == FlxColor.WHITE) ? 0xFF33ffff : FlxColor.WHITE;
+                if (title.getColor().equals(Color.WHITE)) title.setColor(Color.valueOf("#33ffffFF"));
+                else title.setColor(Color.WHITE);
             }
         }
     }
@@ -66,5 +70,11 @@ public class LevelTitle extends Group {
         lock.setX(title.getX() + title.getWidth() + LOCK_PAD);
         lock.setVisible(false);
         addActor(lock);
+    }
+
+    public LevelTitle screenCenter(Axes axes) {
+        if (axes.hasX()) setX((Gdx.graphics.getWidth() - getWidth()) / 2f);
+        if (axes.hasY()) setY((Gdx.graphics.getHeight() - getHeight()) / 2f);
+        return this;
     }
 }

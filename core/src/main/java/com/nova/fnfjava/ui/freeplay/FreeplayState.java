@@ -23,7 +23,7 @@ public class FreeplayState extends MusicBeatSubState {
         super.show();
 
         FlxText pauseText = new FlxText(0, 0, "PAUSED");
-        pauseText.setFormat("VCR_OSD_MONO", 32, Color.WHITE);
+        pauseText.setFormat("VCR OSD Mono", 32, Color.WHITE);
         add(pauseText);
 
         openCallback = () -> System.out.println("Freeplay opened!");

@@ -1,9 +1,14 @@
 package com.nova.fnfjava.ui.story;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.story.level.LevelData;
+import com.nova.fnfjava.util.ImageUtil;
 
 public class Level implements IRegistryEntry<LevelData> {
     public String id;
@@ -29,6 +34,12 @@ public class Level implements IRegistryEntry<LevelData> {
         this.levelData = data;
     }
 
+    public AnimatedSprite buildTitleGraphic() {
+        AnimatedSprite result = new AnimatedSprite().loadGraphic(Paths.image(getData().titleAsset));
+
+        return result;
+    }
+
     public boolean isUnlocked() {
         return true;
     }
@@ -37,11 +48,31 @@ public class Level implements IRegistryEntry<LevelData> {
         return levelData.visible;
     }
 
-    public AnimatedSprite buildTitleGraphic() {
-        AnimatedSprite result = new AnimatedSprite().loadGraphic(Paths.image(levelData.titleAsset));
+    public Actor buildBackground() {
+        // Image specified
+        if (!getData().background.startsWith("#")) return new AnimatedSprite().loadGraphic(Paths.image(getData().background));
 
+        // Color specified
+        Image result = ImageUtil.createColored(Gdx.graphics.getWidth(), 400, Color.WHITE);
+        result.setColor(getBackgroundColor());
         return result;
     }
+
+    public boolean isBackgroundSimple() {
+        return getData().background.startsWith("#");
+    }
+
+    public Color getBackgroundColor() {
+        return Color.valueOf(getData().background);
+    }
+
+/*    public Array<LevelProp> buildProps(Array<LevelProp> existingProps){
+        return null;
+    }
+
+    public Array<LevelProp> buildProps(){
+        return buildProps(null);
+    }*/
 
     @Override
     public void destroy() {

@@ -1,6 +1,7 @@
 package com.nova.fnfjava;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -79,6 +80,23 @@ public class AnimatedSprite extends Actor {
 
     public AnimatedSprite loadGraphic(String graphicPath) {
         return loadGraphic(graphicPath, false, 0, 0);
+    }
+
+    public AnimatedSprite makeGraphic(int width, int height, Color color, boolean unique, String key) {
+        Texture texture = Assets.createColoredTexture(width, height, color, unique, key);
+        this.frameWidth = width;
+        this.frameHeight = height;
+        this.frame = new TextureRegion(texture, 0, 0, width, height);
+        this.atlas = null;
+
+        setSize(width, height);
+        centerOrigin();
+
+        return this;
+    }
+
+    public AnimatedSprite makeGraphic(int width, int height, Color color) {
+        return makeGraphic(width, height, color, false, null);
     }
 
     @Override

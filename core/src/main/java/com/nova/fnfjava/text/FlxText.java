@@ -26,6 +26,10 @@ public class FlxText extends Label implements Disposable {
         setPosition(x, y);
     }
 
+    public void setColor(String color) {
+        this.setColor(Color.valueOf(color));
+    }
+
     public FlxText setFormat(String font, int size, Color color, FlxTextBorderStyle borderStyle, Color borderColor) {
         this.font = font;
         this.size = size;
@@ -38,7 +42,11 @@ public class FlxText extends Label implements Disposable {
     }
 
     public FlxText setFormat(String font, int size, Color color) {
-        return setFormat(font, size, color, null, Color.CLEAR);
+        return setFormat(font, size, color, FlxTextBorderStyle.NONE, Color.CLEAR);
+    }
+
+    public FlxText setFormat(String font, int size) {
+        return setFormat(font, size, Color.WHITE, FlxTextBorderStyle.NONE, Color.CLEAR);
     }
 
     public FlxText setBorderStyling(FlxTextBorderStyle style, Color color) {
@@ -109,6 +117,33 @@ public class FlxText extends Label implements Disposable {
         if (currentFont != null) {
             currentFont.dispose();
             currentFont = null;
+        }
+    }
+
+    public enum FlxTextBorderStyle {
+        NONE,
+
+        /** A simple shadow to the lower-right */
+        SHADOW,
+
+        /** A shadow that allows custom placement */
+        SHADOW_XY,
+
+        /** Outline on all 8 sides */
+        OUTLINE,
+
+        /** Outline, optimized using only 4 draw calls */
+        OUTLINE_FAST;
+
+        // For SHADOW_XY style
+        public float offsetX = 1.0f;
+        public float offsetY = -1.0f;
+
+        public static FlxTextBorderStyle shadowXY(float offsetX, float offsetY) {
+            FlxTextBorderStyle style = SHADOW_XY;
+            style.offsetX = offsetX;
+            style.offsetY = offsetY;
+            return style;
         }
     }
 }

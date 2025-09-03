@@ -17,7 +17,7 @@ public class ReloadAssetsDebugPlugin {
         }
     }
 
-    private static void reload() {
+    public static void reload() {
         Gdx.app.log("DEBUG", "Reloading registries...");
 
         // Reload registries

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
+import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.sound.FunkinSound;
 import com.nova.fnfjava.ui.AtlasMenuItem;
 import com.nova.fnfjava.ui.MenuTypedList;
@@ -46,6 +47,8 @@ public class MainMenuState extends MusicBeatState {
     @Override
     public void show() {
         super.show();
+
+        DiscordClient.instance.setPresence(new DiscordClient.DiscordPresenceParams("In the Menus", null));
 
         if (!overrideMusic) playMenuMusic();
 
@@ -89,11 +92,11 @@ public class MainMenuState extends MusicBeatState {
             System.out.println("Freeplay selected!");
         });
         createMenuItem("options", "mainmenu/options", () -> System.out.println("Options selected!"));
-        createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Options selected!"));
+        createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Credits selected!"));
 
         final float spacing = 160;
-        final float top = (main.viewport.getWorldHeight() + (spacing * (menuItems.getChildren().size - 1))) / 2;
-        for (int index = 0; index < menuItems.getChildren().size; index++) {
+        final float top = (main.viewport.getWorldHeight() + (spacing * (menuItems.members.size - 1))) / 2;
+        for (int index = 0; index < menuItems.members.size; index++) {
             var menuItem = menuItems.items.get(index);
             menuItem.setX(main.viewport.getWorldWidth() / 2);
             menuItem.setY(top - spacing * index);

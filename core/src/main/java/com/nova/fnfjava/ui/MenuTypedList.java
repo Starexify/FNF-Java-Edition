@@ -1,22 +1,19 @@
 package com.nova.fnfjava.ui;
 
 import com.badlogic.ashley.signals.Signal;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.PlayerSettings;
+import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.input.Controls;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 
-public class MenuTypedList<T extends MenuListItem> extends Group {
+public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedActorGroup<T> {
     public static boolean pauseInput = false;
 
     public int selectedIndex = 0;
-    public T getSelectedItem() {
-        return (T) getChild(selectedIndex);
-    }
 
     public Signal<T> onChange = new Signal<>();
     public Signal<T> onAcceptPress = new Signal<>();
@@ -28,8 +25,6 @@ public class MenuTypedList<T extends MenuListItem> extends Group {
     public ObjectMap<String, T> byName = new ObjectMap<>();
 
     public boolean busy = false;
-
-    public PageName currentPage;
 
     public boolean isMainMenuState = false;
 
@@ -54,11 +49,11 @@ public class MenuTypedList<T extends MenuListItem> extends Group {
     }
 
     public T addItem(String name, T item) {
-        if (getChildren().size == selectedIndex) item.select();
+        if (members.size == selectedIndex) item.select();
 
         byName.put(name, item);
         items.add(item);
-        addActor(item);
+        add(item);
         return item;
     }
 
@@ -175,73 +170,73 @@ public class MenuTypedList<T extends MenuListItem> extends Group {
         onAcceptPress.removeAllListeners();
         return super.remove();
     }
-}
 
-class MenuListItem extends AnimatedSprite {
-    public Runnable callback;
-    public String name;
-    public boolean available;
+    public static class MenuListItem extends AnimatedSprite {
+        public Runnable callback;
+        public String name;
+        public boolean available;
 
-    public boolean fireInstantly = false;
+        public boolean fireInstantly = false;
 
-    public boolean getSelected() {
-        return getColor().a == 1.0f;
-    }
-
-    public MenuListItem(float x, float y, String name, Runnable callback, boolean available) {
-        super(x, y);
-
-        this.name = name;
-        this.callback = callback;
-        this.available = available;
-        setData(name, callback, available);
-        idle();
-    }
-
-    public void setData(String name, Runnable callback, boolean available) {
-        this.name = name;
-        if (callback != null) this.callback = callback;
-        this.available = available;
-    }
-
-    public void setItem(String name, Runnable callback) {
-        setData(name, callback, this.available);
-
-        if (getSelected()) select();
-        else idle();
-    }
-
-    public void idle() {
-        getColor().a = 0.6f;
-    }
-
-    public void select() {
-        getColor().a = 1.0f;
-    }
-
-    public void callback() {
-        if (callback != null && available) callback.run();
-    }
-}
-
-enum NavControls {
-    HORIZONTAL,
-    VERTICAL,
-    BOTH,
-    COLUMNS,
-    ROWS
-}
-
-enum WrapMode {
-    NONE,
-    HORIZONTAL,
-    VERTICAL,
-    BOTH;
-
-    public boolean match(WrapMode... modes) {
-        for (WrapMode mode : modes) {
-            if (this == mode) return true;
+        public boolean getSelected() {
+            return getColor().a == 1.0f;
         }
-        return false;
+
+        public MenuListItem(float x, float y, String name, Runnable callback, boolean available) {
+            super(x, y);
+
+            this.name = name;
+            this.callback = callback;
+            this.available = available;
+            setData(name, callback, available);
+            idle();
+        }
+
+        public void setData(String name, Runnable callback, boolean available) {
+            this.name = name;
+            if (callback != null) this.callback = callback;
+            this.available = available;
+        }
+
+        public void setItem(String name, Runnable callback) {
+            setData(name, callback, this.available);
+
+            if (getSelected()) select();
+            else idle();
+        }
+
+        public void idle() {
+            getColor().a = 0.6f;
+        }
+
+        public void select() {
+            getColor().a = 1.0f;
+        }
+
+        public void callback() {
+            if (callback != null && available) callback.run();
+        }
+    }
+
+    public enum NavControls {
+        HORIZONTAL,
+        VERTICAL,
+        BOTH,
+        COLUMNS,
+        ROWS
+    }
+
+    public enum WrapMode {
+        NONE,
+        HORIZONTAL,
+        VERTICAL,
+        BOTH;
+
+        public boolean match(WrapMode... modes) {
+            for (WrapMode mode : modes) {
+                if (this == mode) return true;
+            }
+            return false;
+        }
     }
 }

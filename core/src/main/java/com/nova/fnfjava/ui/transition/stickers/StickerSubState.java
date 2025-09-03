@@ -14,8 +14,6 @@ import com.nova.fnfjava.ui.MusicBeatSubState;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
 import com.nova.fnfjava.util.Constants;
 
-import java.util.Collections;
-
 public class StickerSubState extends MusicBeatSubState {
     public Group grpStickers;
 
