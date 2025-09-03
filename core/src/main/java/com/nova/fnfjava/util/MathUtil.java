@@ -31,4 +31,19 @@ public class MathUtil {
     public static float smoothLerpPrecision(float base, float target, float deltaTime, float duration) {
         return smoothLerpPrecision(base, target, deltaTime, duration, 0.01f);
     }
+
+    /**
+     * Snap a value to another if it's within a certain distance (inclusive).
+     *
+     * Helpful when using functions like `smoothLerpPrecision` to ensure the value actually reaches the target.
+     *
+     * @param base The base value to conditionally snap.
+     * @param target The target value to snap to.
+     * @param threshold Maximum distance between the two for snapping to occur.
+     *
+     * @return `target` if `base` is within `threshold` of it, otherwise `base`.
+     */
+    public static float snap(float base, float target, float threshold) {
+        return MathUtils.isEqual(base, target, threshold) ? target : base;
+    }
 }

@@ -12,7 +12,7 @@ import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.save.Save;
-import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.title.TitleState;
 import com.nova.fnfjava.util.camera.CameraFlash;
 import com.nova.fnfjava.util.plugins.ReloadAssetsDebugPlugin;

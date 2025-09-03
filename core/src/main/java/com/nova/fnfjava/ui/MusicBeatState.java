@@ -3,6 +3,8 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -11,6 +13,8 @@ import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ScrollableStage;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
+
+import java.util.Comparator;
 
 public class MusicBeatState extends TransitionableScreenAdapter {
     public final Main main;
@@ -36,6 +40,7 @@ public class MusicBeatState extends TransitionableScreenAdapter {
     @Override
     public void show() {
         stage = new ScrollableStage(main.viewport, main.spriteBatch);
+        ((ScrollableStage) stage).setParentState(this);
         createWatermarkText();
 
         beatHitListener = new Listener<Integer>() {
@@ -134,6 +139,14 @@ public class MusicBeatState extends TransitionableScreenAdapter {
     }
 
     public void beatHit(Signal<Integer> integerSignal, Integer beat) {
+    }
+
+    public boolean handleMouseWheel(float amountY) {
+        return false;
+    }
+
+    public void refresh() {
+        stage.getActors().sort(Comparator.comparingInt(Actor::getZIndex));
     }
 
     @Override

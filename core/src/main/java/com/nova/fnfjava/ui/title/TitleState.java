@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
-import com.nova.fnfjava.sound.FunkinSound;
+import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.AtlasText;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;

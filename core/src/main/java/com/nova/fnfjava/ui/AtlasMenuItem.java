@@ -6,13 +6,19 @@ import com.nova.fnfjava.Axes;
 public class AtlasMenuItem extends MenuTypedList.MenuListItem {
     public TextureAtlas frames;
 
+    public boolean ownsAtlas = false;
+
     public boolean centered = false;
 
     public AtlasMenuItem(float x, float y, String name, TextureAtlas frames, Runnable callback, boolean available) {
         super(x, y, name, callback, available);
         this.frames = frames;
 
-        if (frames != null) atlas = frames;
+        if (frames != null) {
+            atlas = frames;
+            ownsAtlas = true;
+        }
+
         animation.addByPrefix("idle", name + " idle", 24);
         animation.addByPrefix("selected", name + " selected", 24);
     }
@@ -45,7 +51,12 @@ public class AtlasMenuItem extends MenuTypedList.MenuListItem {
 
     @Override
     public boolean remove() {
-        atlas.dispose();
+        // Fix: Only dispose if we own the atlas
+        if (ownsAtlas && atlas != null) {
+            atlas.dispose();
+            atlas = null;
+        }
+        frames = null;
         return super.remove();
     }
 }

@@ -47,6 +47,10 @@ public class Level implements IRegistryEntry<LevelData> {
         return new Array<>(getData().songs);
     }
 
+    public String getTitle() {
+        return getData().name;
+    }
+
     /**
      * Construct the title graphic for the level.
      * @return The constructed graphic as a sprite.

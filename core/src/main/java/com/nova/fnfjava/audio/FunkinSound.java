@@ -1,4 +1,4 @@
-package com.nova.fnfjava.sound;
+package com.nova.fnfjava.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;

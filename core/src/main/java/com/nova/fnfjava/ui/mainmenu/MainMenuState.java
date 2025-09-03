@@ -11,11 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.api.discord.DiscordClient;
-import com.nova.fnfjava.sound.FunkinSound;
-import com.nova.fnfjava.ui.AtlasMenuItem;
-import com.nova.fnfjava.ui.MenuTypedList;
-import com.nova.fnfjava.ui.MusicBeatState;
-import com.nova.fnfjava.ui.UIStateMachine;
+import com.nova.fnfjava.audio.FunkinSound;
+import com.nova.fnfjava.ui.*;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
 import com.nova.fnfjava.ui.story.StoryMenuState;
 import com.nova.fnfjava.ui.title.TitleState;
@@ -87,7 +84,6 @@ public class MainMenuState extends MusicBeatState {
             persistentUpdate = false;
             if (menuItems != null) rememberedSelectedIndex = menuItems.selectedIndex;
 
-            //openSubState(new FreeplayState(main));
             openSubState(new FreeplayState(main));
             System.out.println("Freeplay selected!");
         });
