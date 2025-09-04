@@ -1,0 +1,103 @@
+dad.png
+size: 661,1143
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 8, 8
+  size: 206, 364
+  orig: 206, 368
+  offset: 0, 4
+  index: 1
+idle
+  rotate: false
+  xy: 8, 388
+  size: 205, 363
+  orig: 206, 368
+  offset: 0, 5
+  index: 3
+idle
+  rotate: false
+  xy: 230, 8
+  size: 204, 364
+  orig: 206, 368
+  offset: 1, 4
+  index: 5
+idle
+  rotate: false
+  xy: 8, 767
+  size: 202, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 7
+idle
+  rotate: false
+  xy: 229, 388
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 9
+idle
+  rotate: false
+  xy: 450, 8
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 11
+idle
+  rotate: false
+  xy: 8, 8
+  size: 206, 364
+  orig: 206, 368
+  offset: 0, 4
+  index: 2
+idle
+  rotate: false
+  xy: 8, 388
+  size: 205, 363
+  orig: 206, 368
+  offset: 0, 5
+  index: 4
+idle
+  rotate: false
+  xy: 230, 8
+  size: 204, 364
+  orig: 206, 368
+  offset: 1, 4
+  index: 6
+idle
+  rotate: false
+  xy: 8, 767
+  size: 202, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 8
+idle
+  rotate: false
+  xy: 229, 388
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 10
+idle
+  rotate: false
+  xy: 450, 8
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 12
+idle
+  rotate: false
+  xy: 450, 8
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 13
+idle
+  rotate: false
+  xy: 450, 8
+  size: 203, 368
+  orig: 206, 368
+  offset: 2, 0
+  index: 14

@@ -106,13 +106,42 @@ public class Level implements IRegistryEntry<LevelData> {
         return Color.valueOf(getData().background);
     }
 
-/*    public Array<LevelProp> buildProps(Array<LevelProp> existingProps){
-        return null;
-    }
+    public Array<LevelProp> buildProps(Array<LevelProp> existingProps) {
+        Array<LevelProp> props = existingProps == null ? new Array<>() : new Array<>(existingProps);
+        if (getData().props.size == 0) return props;
 
-    public Array<LevelProp> buildProps(){
-        return buildProps(null);
-    }*/
+        Array<LevelProp> hiddenProps = new Array<>();
+        if (props.size > getData().props.size) {
+            for (int i = getData().props.size; i < props.size; i++) hiddenProps.add(props.get(i));
+            props.removeRange(getData().props.size, props.size - 1);
+        }
+
+        for (LevelProp hiddenProp : hiddenProps) hiddenProp.setVisible(false);
+
+        for (int propIndex = 0; propIndex < getData().props.size; propIndex++) {
+            LevelData.LevelPropData propData = getData().props.get(propIndex);
+
+            LevelProp existingProp = null;
+            if (propIndex < props.size) existingProp = props.get(propIndex);
+
+            if (existingProp != null) {
+                existingProp.propData = propData;
+                if (existingProp.propData == null) existingProp.setVisible(false);
+                else {
+                    existingProp.setVisible(true);
+                    existingProp.setX(propData.offsets.get(0) + Gdx.graphics.getWidth() * 0.25f * propIndex);
+                }
+            } else {
+                LevelProp propSprite = LevelProp.build(propData);
+                if (propSprite == null) continue;
+
+                propSprite.setX(propData.offsets.get(0) + Gdx.graphics.getWidth() * 0.25f * propIndex);
+                props.add(propSprite);
+            }
+        }
+
+        return props;
+    }
 
     @Override
     public void destroy() {

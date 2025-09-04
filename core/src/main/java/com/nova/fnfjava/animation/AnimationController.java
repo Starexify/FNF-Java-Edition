@@ -148,6 +148,10 @@ public class AnimationController {
         play(name, false);
     }
 
+    public AnimationData getByName(String name) {
+        return animations.get(name);
+    }
+
     public TextureRegion getCurrentFrame() {
         return curAnim != null ? curAnim.getCurrentFrame() : null;
     }
@@ -172,5 +176,14 @@ public class AnimationController {
         if (loopCallback != null) {
             loopCallback.onLoop(animName);
         }
+    }
+
+    // Getters and Setters
+    public boolean setPaused(boolean value) {
+        if (curAnim != null) {
+            if (value) curAnim.pause();
+            else curAnim.resume();
+        }
+        return value;
     }
 }

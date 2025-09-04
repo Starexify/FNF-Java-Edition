@@ -1,0 +1,103 @@
+tankman.png
+size: 1882,246
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 8, 8
+  size: 292, 228
+  orig: 231, 302
+  offset: 3, 10
+  index: 1
+idle
+  rotate: false
+  xy: 316, 8
+  size: 295, 228
+  orig: 231, 302
+  offset: 1, 7
+  index: 5
+idle
+  rotate: false
+  xy: 627, 8
+  size: 293, 229
+  orig: 231, 302
+  offset: 2, 9
+  index: 3
+idle
+  rotate: false
+  xy: 936, 8
+  size: 302, 229
+  orig: 231, 302
+  offset: 0, 0
+  index: 7
+idle
+  rotate: false
+  xy: 1254, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 8
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 9
+idle
+  rotate: false
+  xy: 8, 8
+  size: 292, 228
+  orig: 231, 302
+  offset: 3, 10
+  index: 2
+idle
+  rotate: false
+  xy: 627, 8
+  size: 293, 229
+  orig: 231, 302
+  offset: 2, 9
+  index: 4
+idle
+  rotate: false
+  xy: 316, 8
+  size: 295, 228
+  orig: 231, 302
+  offset: 1, 7
+  index: 6
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 10
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 11
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 12
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 13
+idle
+  rotate: false
+  xy: 1572, 8
+  size: 302, 230
+  orig: 231, 302
+  offset: 0, 0
+  index: 14

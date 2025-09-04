@@ -33,9 +33,7 @@ public class FreeplayState extends MusicBeatSubState {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            close(); // This will call closeSubState() on the parent
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) close();
     }
 
     public static MusicBeatState build(Main main,FreeplayStateParams params, StickerSubState stickers) {

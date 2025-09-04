@@ -1,0 +1,103 @@
+parents-xmas.png
+size: 1769,786
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 8, 8
+  size: 427, 370
+  orig: 431, 381
+  offset: 0, 11
+  index: 3
+idle
+  rotate: false
+  xy: 451, 8
+  size: 428, 373
+  orig: 431, 381
+  offset: 2, 8
+  index: 5
+idle
+  rotate: false
+  xy: 895, 8
+  size: 427, 378
+  orig: 431, 381
+  offset: 2, 3
+  index: 1
+idle
+  rotate: false
+  xy: 1338, 8
+  size: 423, 379
+  orig: 431, 381
+  offset: 8, 2
+  index: 7
+idle
+  rotate: false
+  xy: 8, 394
+  size: 422, 380
+  orig: 431, 381
+  offset: 9, 1
+  index: 9
+idle
+  rotate: false
+  xy: 446, 397
+  size: 422, 381
+  orig: 431, 381
+  offset: 9, 0
+  index: 11
+idle
+  rotate: false
+  xy: 895, 8
+  size: 427, 378
+  orig: 431, 381
+  offset: 2, 3
+  index: 2
+idle
+  rotate: false
+  xy: 8, 8
+  size: 427, 370
+  orig: 431, 381
+  offset: 0, 11
+  index: 4
+idle
+  rotate: false
+  xy: 451, 8
+  size: 428, 373
+  orig: 431, 381
+  offset: 2, 8
+  index: 6
+idle
+  rotate: false
+  xy: 1338, 8
+  size: 423, 379
+  orig: 431, 381
+  offset: 8, 2
+  index: 8
+idle
+  rotate: false
+  xy: 8, 394
+  size: 422, 380
+  orig: 431, 381
+  offset: 9, 1
+  index: 10
+idle
+  rotate: false
+  xy: 446, 397
+  size: 422, 381
+  orig: 431, 381
+  offset: 9, 0
+  index: 12
+idle
+  rotate: false
+  xy: 446, 397
+  size: 422, 381
+  orig: 431, 381
+  offset: 9, 0
+  index: 13
+idle
+  rotate: false
+  xy: 446, 397
+  size: 422, 381
+  orig: 431, 381
+  offset: 9, 0
+  index: 14

@@ -14,6 +14,7 @@ import com.nova.fnfjava.animation.AnimationController;
 public class AnimatedSprite extends Actor {
     public AnimationController animation;
 
+    public boolean active = true;
     public boolean dirty = true;
 
     public int frameWidth = 0, frameHeight = 0;
@@ -102,18 +103,6 @@ public class AnimatedSprite extends Actor {
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
-        animation.update(delta);
-
-        TextureRegion currentFrame = getCurrentDisplayFrame();
-        if (currentFrame != null && (getWidth() == 0 || getHeight() == 0)) {
-            setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-            dirty = true;
-        }
-    }
-
-    @Override
     public void draw(Batch batch, float parentAlpha) {
         TextureRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame != null) {
@@ -124,6 +113,19 @@ public class AnimatedSprite extends Actor {
 
             batch.draw(currentFrame, drawX, drawY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
             batch.setColor(1, 1, 1, 1);
+        }
+    }
+
+    @Override
+    public void act(float delta) {
+        if (!active) return;
+        super.act(delta);
+        animation.update(delta);
+
+        TextureRegion currentFrame = getCurrentDisplayFrame();
+        if (currentFrame != null && (getWidth() == 0 || getHeight() == 0)) {
+            setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+            dirty = true;
         }
     }
 

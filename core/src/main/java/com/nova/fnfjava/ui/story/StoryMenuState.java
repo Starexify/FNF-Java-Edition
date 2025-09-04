@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -46,7 +45,7 @@ public class StoryMenuState extends MusicBeatState {
     public FlxText modeText;
     public FlxText tracklistText;
     public TypedActorGroup<LevelTitle> levelTitles;
-    public Group levelProps;
+    public TypedActorGroup<LevelProp> levelProps;
     public Actor levelBackground;
     public AnimatedSprite leftDifficultyArrow;
     public AnimatedSprite rightDifficultyArrow;
@@ -108,7 +107,7 @@ public class StoryMenuState extends MusicBeatState {
         black.setZIndex(levelBackground.getZIndex() - 1);
         add(black);*/
 
-        levelProps = new Group();
+        levelProps = new TypedActorGroup<>();
         levelProps.setZIndex(1000);
         add(levelProps);
 
@@ -392,11 +391,9 @@ public class StoryMenuState extends MusicBeatState {
 
         currentLevelTitle.isFlashing = true;
 
-/*        for (prop in levelProps.members)
-        {
-            prop.playConfirm();
-        }
+        for (LevelProp prop : levelProps.members) prop.playConfirm();
 
+        /*
         Paths.setCurrentLevel(currentLevel.id);
 
         PlayStatePlaylist.playlistSongIds = currentLevel.getSongs();
@@ -467,13 +464,21 @@ public class StoryMenuState extends MusicBeatState {
     }
 
     public void updateProps() {
-/*
-        for (ind => prop in currentLevel.buildProps(levelProps.members)){
-            prop.x += (FullScreenScaleMode.gameCutoutSize.x / 4);
-            prop.zIndex = 1000;
-            if (levelProps.members[ind] != prop) levelProps.replace(levelProps.members[ind], prop) ?? levelProps.add(prop);
+        Array<LevelProp> builtProps = currentLevel.buildProps(levelProps.members);
+
+        for (int ind = 0; ind < builtProps.size; ind++) {
+            LevelProp prop = builtProps.get(ind);
+
+            //prop.addX(Gdx.graphics.getWidth() / 4);
+            prop.setZIndex(1000);
+            LevelProp existingProp = null;
+            if (ind < levelProps.members.size) existingProp = levelProps.members.get(ind);
+
+            if (existingProp != prop) {
+                if (existingProp != null) levelProps.replace(existingProp, prop);
+                else levelProps.add(prop);
+            }
         }
-*/
 
         //refresh();
     }

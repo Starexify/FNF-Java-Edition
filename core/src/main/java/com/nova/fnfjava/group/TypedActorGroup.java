@@ -168,6 +168,26 @@ public class TypedActorGroup<T extends Actor> extends Group {
         return actor;
     }
 
+    public T replace(T oldActor, T newActor) {
+        if (oldActor == null) {
+            Gdx.app.error("TypedActorGroup", "Cannot replace a `null` object.");
+            return null;
+        }
+
+        int index = members.indexOf(oldActor, true);
+        if (index < 0) return null;
+
+        if (members.contains(oldActor, true)) removeActor(oldActor);
+        members.set(index, newActor);
+
+        if (newActor != null) {
+            if (!members.contains(newActor, true)) add(newActor);
+            newActor.setVisible(true);
+        }
+
+        return newActor;
+    }
+
     public int getFirstNull() {
         return members.indexOf(null, true);
     }

@@ -1,0 +1,1769 @@
+GF_assets.png
+size: 8192,8192
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+GF Cheer
+  rotate: false
+  xy: 0, 0
+  size: 699, 657
+  orig: 703, 657
+  offset: 2, 0
+  index: 0
+GF Cheer
+  rotate: false
+  xy: 709, 0
+  size: 703, 657
+  orig: 703, 657
+  offset: 0, 0
+  index: 1
+GF Cheer
+  rotate: false
+  xy: 1422, 0
+  size: 703, 654
+  orig: 703, 657
+  offset: 0, 3
+  index: 2
+GF Cheer
+  rotate: false
+  xy: 2135, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 3
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 4
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 5
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 6
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 7
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 8
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 9
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 10
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 11
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 12
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 13
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 14
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 15
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 16
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 17
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 18
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 19
+GF Cheer
+  rotate: false
+  xy: 2844, 0
+  size: 699, 654
+  orig: 703, 657
+  offset: 2, 3
+  index: 20
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 7098, 1325
+  size: 701, 636
+  orig: 748, 649
+  offset: 45, 13
+  index: 0
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 0, 1978
+  size: 703, 636
+  orig: 748, 649
+  offset: 45, 13
+  index: 1
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 713, 1978
+  size: 748, 628
+  orig: 748, 649
+  offset: 0, 21
+  index: 2
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 1471, 1978
+  size: 699, 627
+  orig: 748, 649
+  offset: 47, 22
+  index: 3
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2180, 1978
+  size: 701, 638
+  orig: 748, 649
+  offset: 45, 11
+  index: 4
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2891, 1978
+  size: 701, 638
+  orig: 748, 649
+  offset: 45, 11
+  index: 5
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 3602, 1978
+  size: 739, 636
+  orig: 748, 649
+  offset: 7, 13
+  index: 6
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 4351, 1978
+  size: 699, 647
+  orig: 748, 649
+  offset: 47, 2
+  index: 7
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 5060, 1978
+  size: 728, 639
+  orig: 748, 649
+  offset: 18, 10
+  index: 8
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 5798, 1978
+  size: 699, 638
+  orig: 748, 649
+  offset: 47, 11
+  index: 9
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 6507, 1978
+  size: 699, 649
+  orig: 748, 649
+  offset: 47, 0
+  index: 10
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 6507, 1978
+  size: 699, 649
+  orig: 748, 649
+  offset: 47, 0
+  index: 11
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 7216, 1978
+  size: 726, 641
+  orig: 748, 649
+  offset: 20, 8
+  index: 12
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 0, 2637
+  size: 699, 648
+  orig: 748, 649
+  offset: 47, 1
+  index: 13
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 709, 2637
+  size: 725, 640
+  orig: 748, 649
+  offset: 21, 9
+  index: 14
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 1444, 2637
+  size: 699, 625
+  orig: 748, 649
+  offset: 47, 24
+  index: 15
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2153, 2637
+  size: 703, 634
+  orig: 748, 649
+  offset: 45, 15
+  index: 16
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2866, 2637
+  size: 703, 631
+  orig: 748, 649
+  offset: 45, 18
+  index: 17
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 3579, 2637
+  size: 709, 623
+  orig: 748, 649
+  offset: 37, 26
+  index: 18
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 4298, 2637
+  size: 699, 634
+  orig: 748, 649
+  offset: 47, 15
+  index: 19
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 5007, 2637
+  size: 710, 626
+  orig: 748, 649
+  offset: 36, 23
+  index: 20
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 5727, 2637
+  size: 699, 630
+  orig: 748, 649
+  offset: 47, 19
+  index: 21
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 6436, 2637
+  size: 699, 646
+  orig: 748, 649
+  offset: 47, 3
+  index: 22
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 6436, 2637
+  size: 699, 646
+  orig: 748, 649
+  offset: 47, 3
+  index: 23
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 7145, 2637
+  size: 715, 638
+  orig: 748, 649
+  offset: 31, 11
+  index: 24
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 0, 3295
+  size: 699, 647
+  orig: 748, 649
+  offset: 47, 2
+  index: 25
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 709, 3295
+  size: 716, 639
+  orig: 748, 649
+  offset: 30, 10
+  index: 26
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 1435, 3295
+  size: 699, 638
+  orig: 748, 649
+  offset: 47, 11
+  index: 27
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2144, 3295
+  size: 699, 646
+  orig: 748, 649
+  offset: 47, 3
+  index: 28
+GF Dancing Beat Hair blowing
+  rotate: false
+  xy: 2144, 3295
+  size: 699, 646
+  orig: 748, 649
+  offset: 47, 3
+  index: 29
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 2127, 1325
+  size: 699, 635
+  orig: 703, 648
+  offset: 2, 13
+  index: 0
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 2836, 1325
+  size: 703, 635
+  orig: 703, 648
+  offset: 0, 13
+  index: 1
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 3549, 1325
+  size: 703, 619
+  orig: 703, 648
+  offset: 0, 29
+  index: 2
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 4262, 1325
+  size: 699, 619
+  orig: 703, 648
+  offset: 2, 29
+  index: 3
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 4971, 1325
+  size: 699, 607
+  orig: 703, 648
+  offset: 2, 41
+  index: 4
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 5680, 1325
+  size: 699, 607
+  orig: 703, 648
+  offset: 2, 41
+  index: 5
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 6389, 1325
+  size: 699, 626
+  orig: 703, 648
+  offset: 2, 22
+  index: 6
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 7
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 8
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 9
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 10
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 11
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 12
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 2127, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 13
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 2127, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 14
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 2836, 667
+  size: 699, 636
+  orig: 703, 648
+  offset: 2, 12
+  index: 15
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 3545, 667
+  size: 703, 636
+  orig: 703, 648
+  offset: 0, 12
+  index: 16
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 4258, 667
+  size: 703, 636
+  orig: 703, 648
+  offset: 0, 12
+  index: 17
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 4971, 667
+  size: 699, 636
+  orig: 703, 648
+  offset: 2, 12
+  index: 18
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 5680, 667
+  size: 699, 637
+  orig: 703, 648
+  offset: 2, 11
+  index: 19
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 6389, 667
+  size: 699, 637
+  orig: 703, 648
+  offset: 2, 11
+  index: 20
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 7098, 667
+  size: 699, 638
+  orig: 703, 648
+  offset: 2, 10
+  index: 21
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 22
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 23
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 24
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 25
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 26
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 27
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 1418, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 28
+GF Dancing Beat Hair Landing
+  rotate: false
+  xy: 1418, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 29
+GF Dancing Beat
+  rotate: false
+  xy: 3553, 0
+  size: 699, 634
+  orig: 703, 648
+  offset: 2, 14
+  index: 0
+GF Dancing Beat
+  rotate: false
+  xy: 4262, 0
+  size: 703, 634
+  orig: 703, 648
+  offset: 0, 14
+  index: 1
+GF Dancing Beat
+  rotate: false
+  xy: 4975, 0
+  size: 703, 632
+  orig: 703, 648
+  offset: 0, 16
+  index: 2
+GF Dancing Beat
+  rotate: false
+  xy: 5688, 0
+  size: 699, 632
+  orig: 703, 648
+  offset: 2, 16
+  index: 3
+GF Dancing Beat
+  rotate: false
+  xy: 6397, 0
+  size: 699, 635
+  orig: 703, 648
+  offset: 2, 13
+  index: 4
+GF Dancing Beat
+  rotate: false
+  xy: 7106, 0
+  size: 699, 635
+  orig: 703, 648
+  offset: 2, 13
+  index: 5
+GF Dancing Beat
+  rotate: false
+  xy: 0, 667
+  size: 699, 637
+  orig: 703, 648
+  offset: 2, 11
+  index: 6
+GF Dancing Beat
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 7
+GF Dancing Beat
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 8
+GF Dancing Beat
+  rotate: false
+  xy: 709, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 9
+GF Dancing Beat
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 10
+GF Dancing Beat
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 11
+GF Dancing Beat
+  rotate: false
+  xy: 1418, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 12
+GF Dancing Beat
+  rotate: false
+  xy: 2127, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 13
+GF Dancing Beat
+  rotate: false
+  xy: 2127, 667
+  size: 699, 648
+  orig: 703, 648
+  offset: 2, 0
+  index: 14
+GF Dancing Beat
+  rotate: false
+  xy: 2836, 667
+  size: 699, 636
+  orig: 703, 648
+  offset: 2, 12
+  index: 15
+GF Dancing Beat
+  rotate: false
+  xy: 3545, 667
+  size: 703, 636
+  orig: 703, 648
+  offset: 0, 12
+  index: 16
+GF Dancing Beat
+  rotate: false
+  xy: 4258, 667
+  size: 703, 636
+  orig: 703, 648
+  offset: 0, 12
+  index: 17
+GF Dancing Beat
+  rotate: false
+  xy: 4971, 667
+  size: 699, 636
+  orig: 703, 648
+  offset: 2, 12
+  index: 18
+GF Dancing Beat
+  rotate: false
+  xy: 5680, 667
+  size: 699, 637
+  orig: 703, 648
+  offset: 2, 11
+  index: 19
+GF Dancing Beat
+  rotate: false
+  xy: 6389, 667
+  size: 699, 637
+  orig: 703, 648
+  offset: 2, 11
+  index: 20
+GF Dancing Beat
+  rotate: false
+  xy: 7098, 667
+  size: 699, 638
+  orig: 703, 648
+  offset: 2, 10
+  index: 21
+GF Dancing Beat
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 22
+GF Dancing Beat
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 23
+GF Dancing Beat
+  rotate: false
+  xy: 0, 1325
+  size: 699, 643
+  orig: 703, 648
+  offset: 2, 5
+  index: 24
+GF Dancing Beat
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 25
+GF Dancing Beat
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 26
+GF Dancing Beat
+  rotate: false
+  xy: 709, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 27
+GF Dancing Beat
+  rotate: false
+  xy: 1418, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 28
+GF Dancing Beat
+  rotate: false
+  xy: 1418, 1325
+  size: 699, 642
+  orig: 703, 648
+  offset: 2, 6
+  index: 29
+GF Down Note
+  rotate: false
+  xy: 2853, 3295
+  size: 699, 631
+  orig: 703, 637
+  offset: 2, 6
+  index: 0
+GF Down Note
+  rotate: false
+  xy: 3562, 3295
+  size: 703, 631
+  orig: 703, 637
+  offset: 0, 6
+  index: 1
+GF Down Note
+  rotate: false
+  xy: 4275, 3295
+  size: 703, 636
+  orig: 703, 637
+  offset: 0, 1
+  index: 2
+GF Down Note
+  rotate: false
+  xy: 4988, 3295
+  size: 699, 636
+  orig: 703, 637
+  offset: 2, 1
+  index: 3
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 4
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 5
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 6
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 7
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 8
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 9
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 10
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 11
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 12
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 13
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 14
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 15
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 16
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 17
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 18
+GF Down Note
+  rotate: false
+  xy: 5697, 3295
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 19
+GF FEAR
+  rotate: false
+  xy: 6406, 3295
+  size: 699, 640
+  orig: 699, 640
+  offset: 0, 0
+  index: 0
+GF FEAR
+  rotate: false
+  xy: 7115, 3295
+  size: 699, 640
+  orig: 699, 640
+  offset: 0, 0
+  index: 1
+GF FEAR
+  rotate: false
+  xy: 0, 3952
+  size: 699, 638
+  orig: 699, 640
+  offset: 0, 2
+  index: 2
+GF FEAR
+  rotate: false
+  xy: 709, 3952
+  size: 699, 640
+  orig: 699, 640
+  offset: 0, 0
+  index: 3
+GF left note
+  rotate: false
+  xy: 2844, 4623
+  size: 699, 633
+  orig: 703, 638
+  offset: 2, 5
+  index: 0
+GF left note
+  rotate: false
+  xy: 3553, 4623
+  size: 703, 631
+  orig: 703, 638
+  offset: 0, 7
+  index: 1
+GF left note
+  rotate: false
+  xy: 4266, 4623
+  size: 703, 638
+  orig: 703, 638
+  offset: 0, 0
+  index: 2
+GF left note
+  rotate: false
+  xy: 4979, 4623
+  size: 699, 638
+  orig: 703, 638
+  offset: 2, 0
+  index: 3
+GF left note
+  rotate: false
+  xy: 5688, 4623
+  size: 699, 638
+  orig: 703, 638
+  offset: 2, 0
+  index: 4
+GF left note
+  rotate: false
+  xy: 6397, 4623
+  size: 699, 638
+  orig: 703, 638
+  offset: 2, 0
+  index: 5
+GF left note
+  rotate: false
+  xy: 7106, 4623
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 6
+GF left note
+  rotate: false
+  xy: 7106, 4623
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 7
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 8
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 9
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 10
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 11
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 12
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 13
+GF left note
+  rotate: false
+  xy: 0, 5294
+  size: 699, 637
+  orig: 703, 638
+  offset: 2, 1
+  index: 14
+GF Right Note
+  rotate: false
+  xy: 1418, 3952
+  size: 699, 632
+  orig: 703, 637
+  offset: 2, 5
+  index: 0
+GF Right Note
+  rotate: false
+  xy: 2127, 3952
+  size: 703, 632
+  orig: 703, 637
+  offset: 0, 5
+  index: 1
+GF Right Note
+  rotate: false
+  xy: 2840, 3952
+  size: 703, 637
+  orig: 703, 637
+  offset: 0, 0
+  index: 2
+GF Right Note
+  rotate: false
+  xy: 3553, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 3
+GF Right Note
+  rotate: false
+  xy: 4262, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 4
+GF Right Note
+  rotate: false
+  xy: 4971, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 5
+GF Right Note
+  rotate: false
+  xy: 5680, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 6
+GF Right Note
+  rotate: false
+  xy: 5680, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 7
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 8
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 9
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 10
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 11
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 12
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 13
+GF Right Note
+  rotate: false
+  xy: 6389, 3952
+  size: 699, 637
+  orig: 703, 637
+  offset: 2, 0
+  index: 14
+gf sad
+  rotate: false
+  xy: 709, 5294
+  size: 699, 633
+  orig: 699, 636
+  offset: 0, 3
+  index: 0
+gf sad
+  rotate: false
+  xy: 709, 5294
+  size: 699, 633
+  orig: 699, 636
+  offset: 0, 3
+  index: 1
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 2
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 3
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 4
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 5
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 6
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 7
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 8
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 9
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 10
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 11
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 12
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 13
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 14
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 15
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 16
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 17
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 18
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 19
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 20
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 21
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 22
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 23
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 24
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 25
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 26
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 27
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 28
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 29
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 30
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 31
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 32
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 33
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 34
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 35
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 36
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 37
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 38
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 39
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 40
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 41
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 42
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 43
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 44
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 45
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 46
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 47
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 48
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 49
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 50
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 51
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 52
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 53
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 54
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 55
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 56
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 57
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 58
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 59
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 60
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 61
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 62
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 63
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 64
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 65
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 66
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 67
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 68
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 69
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 70
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 71
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 72
+gf sad
+  rotate: false
+  xy: 3545, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 73
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 74
+gf sad
+  rotate: false
+  xy: 1418, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 75
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 76
+gf sad
+  rotate: false
+  xy: 2127, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 77
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 78
+gf sad
+  rotate: false
+  xy: 2836, 5294
+  size: 699, 636
+  orig: 699, 636
+  offset: 0, 0
+  index: 79
+GF Up Note
+  rotate: false
+  xy: 7098, 3952
+  size: 699, 661
+  orig: 703, 661
+  offset: 2, 0
+  index: 0
+GF Up Note
+  rotate: false
+  xy: 0, 4623
+  size: 703, 661
+  orig: 703, 661
+  offset: 0, 0
+  index: 1
+GF Up Note
+  rotate: false
+  xy: 713, 4623
+  size: 703, 661
+  orig: 703, 661
+  offset: 0, 0
+  index: 2
+GF Up Note
+  rotate: false
+  xy: 1426, 4623
+  size: 699, 661
+  orig: 703, 661
+  offset: 2, 0
+  index: 3
+GF Up Note
+  rotate: false
+  xy: 2135, 4623
+  size: 699, 661
+  orig: 703, 661
+  offset: 2, 0
+  index: 4
+GF Up Note
+  rotate: false
+  xy: 2135, 4623
+  size: 699, 661
+  orig: 703, 661
+  offset: 2, 0
+  index: 5
+GF Up Note
+  rotate: false
+  xy: 2135, 4623
+  size: 699, 661
+  orig: 703, 661
+  offset: 2, 0
+  index: 6

@@ -42,7 +42,7 @@ public class LevelData {
         public float scale;
         public float alpha;
         public boolean isPixel;
-        public float danceEvery;
+        public Float danceEvery;
         public Array<Float> offsets;
         public Array<AnimationData> animations;
 

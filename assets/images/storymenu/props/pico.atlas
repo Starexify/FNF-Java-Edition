@@ -1,0 +1,103 @@
+pico.png
+size: 475,1004
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 9
+idle
+  rotate: false
+  xy: 8, 261
+  size: 222, 236
+  orig: 226, 237
+  offset: 4, 1
+  index: 7
+idle
+  rotate: false
+  xy: 245, 8
+  size: 221, 236
+  orig: 226, 237
+  offset: 5, 1
+  index: 8
+idle
+  rotate: false
+  xy: 8, 513
+  size: 221, 234
+  orig: 226, 237
+  offset: 0, 3
+  index: 3
+idle
+  rotate: false
+  xy: 8, 763
+  size: 224, 233
+  orig: 226, 237
+  offset: 2, 4
+  index: 5
+idle
+  rotate: false
+  xy: 245, 513
+  size: 222, 233
+  orig: 226, 237
+  offset: 4, 4
+  index: 6
+idle
+  rotate: false
+  xy: 246, 260
+  size: 217, 230
+  orig: 226, 237
+  offset: 0, 7
+  index: 1
+idle
+  rotate: false
+  xy: 246, 260
+  size: 217, 230
+  orig: 226, 237
+  offset: 0, 7
+  index: 2
+idle
+  rotate: false
+  xy: 8, 513
+  size: 221, 234
+  orig: 226, 237
+  offset: 0, 3
+  index: 4
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 10
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 11
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 12
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 13
+idle
+  rotate: false
+  xy: 8, 8
+  size: 221, 237
+  orig: 226, 237
+  offset: 5, 0
+  index: 14

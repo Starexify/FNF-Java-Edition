@@ -12,10 +12,10 @@ public class AnimationData {
     public String prefix;
     public String assetPath;
     public float[] offsets = {0f, 0f};
-    public boolean looped = false;
-    public boolean flipX = false;
-    public boolean flipY = false;
-    public int frameRate = 24;
+    public Boolean looped = false;
+    public Boolean flipX = false;
+    public Boolean flipY = false;
+    public Integer frameRate = 24;
     public Integer[] frameIndices;
 
     public transient Animation<TextureRegion> gdxAnimation;
