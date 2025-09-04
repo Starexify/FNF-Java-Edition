@@ -65,7 +65,7 @@ public class ScrollableStage extends Stage {
         }
     }
 
-    private void updateCameraTarget() {
+    public void updateCameraTarget() {
         if (target != null) {
             float targetX = target.getX() + target.getWidth() / 2 - getCamera().viewportWidth / 2;
             float targetY = target.getY() + target.getHeight() / 2 - getCamera().viewportHeight / 2;
@@ -73,7 +73,7 @@ public class ScrollableStage extends Stage {
         }
     }
 
-    private void updateFollow() {
+    public void updateFollow() {
         // Apply bounds
         float clampedX = MathUtils.clamp(cameraPosition.x, minX, maxX);
         float clampedY = MathUtils.clamp(cameraPosition.y, minY, maxY);
@@ -100,6 +100,8 @@ public class ScrollableStage extends Stage {
 
         // Draw all actors
         for (Actor actor : getActors()) {
+            if (!actor.isVisible()) continue;
+
             if (actor instanceof ScrollableActor) {
                 ScrollableActor scrollableActor = (ScrollableActor) actor;
 
@@ -118,11 +120,6 @@ public class ScrollableStage extends Stage {
 
                 actor.draw(getBatch(), 1.0f);
             } else {
-                // For regular actors, keep camera at original position (static)
-                camera.position.set(originalPosition);
-                camera.update();
-                getBatch().setProjectionMatrix(camera.combined);
-
                 actor.draw(getBatch(), 1.0f);
             }
         }
@@ -134,7 +131,6 @@ public class ScrollableStage extends Stage {
         camera.update();
     }
 
-
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -145,7 +141,7 @@ public class ScrollableStage extends Stage {
         }
     }
 
-    private void updateLerp(float delta) {
+    public void updateLerp(float delta) {
         if (followLerp >= 1.0f) {
             cameraPosition.set(cameraTarget);
         } else if (followLerp > 0f) {
