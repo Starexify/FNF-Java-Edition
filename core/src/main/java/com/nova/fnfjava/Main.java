@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.api.discord.DiscordClient;
@@ -42,8 +43,13 @@ public class Main extends Game {
         try {
             instance = this;
 
-            Save.load();
+            setupGame();
+
             save = Save.getInstance();
+            Preferences.init();
+
+            Gdx.graphics.setVSync(Preferences.getVSyncMode());
+            Gdx.graphics.setForegroundFPS(Preferences.getFramerate());
 
             spriteBatch = new SpriteBatch();
             viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -64,12 +70,19 @@ public class Main extends Game {
             ReloadAssetsDebugPlugin.initialize();
 
             PlayerSettings.init();
-            Preferences.init();
 
             setScreen(new TitleState(this));
         } catch (Exception e) {
             Gdx.app.error("Main", "Error during initialization", e);
         }
+    }
+
+    public static BitmapFont fpsCounter;
+    public static BitmapFont memoryCounter;
+
+    public void setupGame() {
+        fpsCounter = new BitmapFont();
+        memoryCounter = new BitmapFont();
     }
 
     public void switchState(Screen newScreen) {
@@ -81,6 +94,18 @@ public class Main extends Game {
         assetManager.update(16);
         super.render();
         ReloadAssetsDebugPlugin.update();
+
+        if (Preferences.getDebugDisplay()) {
+            spriteBatch.begin();
+            fpsCounter.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 3);
+
+            long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024;
+            long totalMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
+            long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+            memoryCounter.draw(spriteBatch, "Memory: " + usedMemory + "MB / " + totalMemory + "MB (max: " + maxMemory + "MB)", 10, Gdx.graphics.getHeight() - fpsCounter.getCapHeight() - 6);
+
+            spriteBatch.end();
+        }
     }
 
     @Override

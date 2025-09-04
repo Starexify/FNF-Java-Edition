@@ -37,7 +37,7 @@ public class DiscordClient {
 
                 createCallbackDaemon();
 
-                setPresence(new DiscordPresenceParams(null, "Just Started"));
+                setPresence(new DiscordPresenceParams(null, "Just Started Playing"));
             } catch (Exception e) {
                 Gdx.app.error("DISCORD", "" + e);
                 initialized = false;
