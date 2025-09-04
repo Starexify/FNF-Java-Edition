@@ -8,7 +8,7 @@ import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.story.Level;
 import com.nova.fnfjava.util.SortUtil;
 
-public class LevelRegistry extends BaseRegistry<Level, LevelData, LevelEntryParams> {
+public class LevelRegistry extends BaseRegistry<Level, LevelData, LevelRegistry.LevelEntryParams> {
     public static LevelRegistry instance;
 
     public final Json parser = new Json();
@@ -58,6 +58,6 @@ public class LevelRegistry extends BaseRegistry<Level, LevelData, LevelEntryPara
             return null;
         }
     }
-}
 
-record LevelEntryParams() {}
+    public record LevelEntryParams() {}
+}

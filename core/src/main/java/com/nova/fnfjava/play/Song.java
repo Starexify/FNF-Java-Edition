@@ -44,15 +44,15 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
     }
 
     @Override
+    public void destroy() {
+
+    }
+
+    @Override
     public String toString() {
         return "Song{" +
             "id='" + id + '\'' +
             ", metadata=" + metadata +
             '}';
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }

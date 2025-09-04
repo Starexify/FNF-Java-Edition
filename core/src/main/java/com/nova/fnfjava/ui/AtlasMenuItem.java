@@ -5,9 +5,7 @@ import com.nova.fnfjava.Axes;
 
 public class AtlasMenuItem extends MenuTypedList.MenuListItem {
     public TextureAtlas frames;
-
     public boolean ownsAtlas = false;
-
     public boolean centered = false;
 
     public AtlasMenuItem(float x, float y, String name, TextureAtlas frames, Runnable callback, boolean available) {
@@ -33,9 +31,9 @@ public class AtlasMenuItem extends MenuTypedList.MenuListItem {
 
         if (centered) {
             centerOrigin();
-            screenCenter(Axes.X); // TODO: fix this to to center the AtlasMenuItem similarly to Funkin
+            //screenCenter(Axes.X); // TODO: fix this to to center the AtlasMenuItem similarly to Funkin
             //offset.copyFrom(origin);
-            offset.set(-getOriginX(), -getOriginY());
+            //offset.set(-getOriginX(), -getOriginY());
         }
     }
 

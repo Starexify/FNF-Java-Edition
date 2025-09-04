@@ -7,7 +7,7 @@ import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.transition.stickers.StickerPack;
 import com.nova.fnfjava.util.Constants;
 
-public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, StickerEntryParams> {
+public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, StickerRegistry.StickerEntryParams> {
     public static StickerRegistry instance;
 
     public final Json parser = new Json();
@@ -55,6 +55,6 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
             return null;
         }
     }
-}
 
-record StickerEntryParams() {}
+    public record StickerEntryParams() {}
+}

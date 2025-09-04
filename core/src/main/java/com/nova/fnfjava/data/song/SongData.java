@@ -3,95 +3,140 @@ package com.nova.fnfjava.data.song;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.util.Constants;
 
 public class SongData {
     public class SongMetadata {
-        public String songName;
-        public String artist;
-        public String charter;
-        public float bpm;
-        public String difficulty;
+        // Required
+        public String songName = "Unknown";
+        public String artist = "Unknown";
+        public SongPlayData playData = new SongPlayData();
 
-        public SongMetadata() {
-        }
-
-        public SongMetadata(String songName, String artist, float bpm) {
-            this.songName = songName;
-            this.artist = artist;
-            this.bpm = bpm;
-        }
-    }
-
-    public static class SongMusicData {
-        public static final String DEFAULT_GENERATEDBY = "Friday Night Funkin': Java Edition";
-
-        public String songName;
-        public String artist;
-        public String charter;
-        public Integer divisions;
-        public Boolean looped;
-        public String generatedBy;
-        public SongTimeFormat timeFormat;
-        public Array<SongTimeChange> timeChanges;
-
+        // Optional
+        public String charter = null;
+        public Integer divisions = 96;
+        public Boolean looped = false;
+        //public SongOffsets offsets;
+        public String generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
+        public SongTimeFormat timeFormat = SongTimeFormat.MILLISECONDS;
+        public Array<SongTimeChange> timeChanges = new Array<>(new SongTimeChange[]{new SongTimeChange(0, 100)});
         public transient String variation;
 
-        public SongMusicData(String songName, String artist) {
-            this(songName, artist, null, Constants.DEFAULT_VARIATION);
-        }
+        public SongMetadata() {}
 
-        public SongMusicData(String songName, String artist, String charter, String variation) {
+        public SongMetadata(String songName, String artist, String charter, String variation) {
             this.songName = songName != null ? songName : "Unknown";
             this.artist = artist != null ? artist : "Unknown";
             this.charter = charter;
             this.timeFormat = SongTimeFormat.MILLISECONDS;
-            this.divisions = null;
-            this.timeChanges = new Array<>();
-            this.timeChanges.add(new SongTimeChange.Builder(0, 100).build());
+            this.divisions = 96;
             this.looped = false;
-            this.generatedBy = DEFAULT_GENERATEDBY;
+            this.playData = new SongPlayData();
+            this.timeChanges = new Array<>(new SongTimeChange[]{new SongTimeChange(0, 100)});
+            this.generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
             this.variation = variation != null ? variation : Constants.DEFAULT_VARIATION;
         }
 
-        public void toJson(Json json) {
-            json.writeObjectStart();
-            json.writeValue("songName", songName);
-            json.writeValue("artist", artist);
-            json.writeValue("divisions", divisions);
-            json.writeValue("looped", looped);
-            json.writeValue("generatedBy", generatedBy);
-            json.writeValue("timeFormat", timeFormat);
-            json.writeValue("timeChanges", timeChanges);
-            json.writeObjectEnd();
+        @Override
+        public String toString() {
+            return "SongMetadata{" +
+                "songName='" + songName + '\'' +
+                ", artist='" + artist + '\'' +
+                ", playData=" + playData +
+                ", charter='" + charter + '\'' +
+                ", divisions=" + divisions +
+                ", looped=" + looped +
+                ", generatedBy='" + generatedBy + '\'' +
+                ", timeFormat=" + timeFormat +
+                ", timeChanges=" + timeChanges +
+                ", variation='" + variation + '\'' +
+                '}';
+        }
+    }
+
+    public enum SongTimeFormat {
+        TICKS("ticks"),
+        FLOAT("float"),
+        MILLISECONDS("ms");
+
+        public final String id;
+
+        SongTimeFormat(String id) {
+            this.id = id;
         }
 
-        public static SongMusicData fromJson(JsonValue jsonData) {
-            String songName = jsonData.getString("songName", "Unknown");
-            String artist = jsonData.getString("artist", "Unknown");
-            String charter = jsonData.getString("charter", null);
-            String variation = Constants.DEFAULT_VARIATION;
+        public String getId() {
+            return id;
+        }
 
-            SongMusicData data = new SongMusicData(songName, artist, charter, variation);
-            data.divisions = jsonData.has("divisions") ? jsonData.getInt("divisions") : null;
-            data.looped = jsonData.getBoolean("looped", false);
-            data.generatedBy = jsonData.getString("generatedBy", DEFAULT_GENERATEDBY);
+        public static SongTimeFormat fromString(String id) {
+            for (SongTimeFormat format : values()) if (format.getId().equals(id)) return format;
+            return MILLISECONDS;
+        }
 
-            String timeFormatStr = jsonData.getString("timeFormat", "ms");
-            data.timeFormat = SongTimeFormat.fromString(timeFormatStr);
+        @Override
+        public String toString() {
+            return id;
+        }
+    }
 
-            if (jsonData.has("timeChanges")) {
-                JsonValue timeChangesJson = jsonData.get("timeChanges");
-                if (timeChangesJson.isArray()) {
-                    data.timeChanges.clear(); // Clear the default one added in constructor
-                    for (JsonValue timeChangeJson : timeChangesJson) {
-                        SongTimeChange timeChange = SongTimeChange.fromJson(timeChangeJson);
-                        data.timeChanges.add(timeChange);
-                    }
-                }
-            }
+    public static class SongTimeChange {
+        public static final Array<Integer> DEFAULT_BEAT_TUPLETS = new Array<Integer>(new Integer[]{4, 4, 4, 4});
+        public static final SongTimeChange DEFAULT_SONGTIMECHANGE = new SongTimeChange(0, 100);
+        public static final Array<SongTimeChange> DEFAULT_SONGTIMECHANGES = new Array<SongTimeChange>(new SongTimeChange[]{DEFAULT_SONGTIMECHANGE});
 
-            return data;
+        // Required
+        public float timeStamp;
+        public float bpm;
+
+        // Optional
+        public Float beatTime = null;
+        public int timeSignatureNum = 4;
+        public int timeSignatureDen = 4;
+        public Array<Integer> beatTuplets = new Array<>(DEFAULT_BEAT_TUPLETS);
+
+        public SongTimeChange() {}
+
+        public SongTimeChange(float timeStamp, float bpm) {
+            this.timeStamp = timeStamp;
+            this.bpm = bpm;
+        }
+
+        public SongTimeChange(float timeStamp, float bpm, int timeSignatureNum, int timeSignatureDen, Float beatTime, Array<Integer> beatTuplets) {
+            this.timeStamp = timeStamp;
+            this.bpm = bpm;
+            this.timeSignatureNum = timeSignatureNum;
+            this.timeSignatureDen = timeSignatureDen;
+            this.beatTime = beatTime;
+            this.beatTuplets = (beatTuplets != null) ? new Array<>(beatTuplets) : new Array<>(DEFAULT_BEAT_TUPLETS);
+        }
+    }
+
+    public static class SongMusicData {
+        // Required fields
+        public String songName = "Unknown";
+        public String artist = "Unknown";
+
+        // Optional fields
+        public Integer divisions = 96;
+        public Boolean looped = false;
+
+        public String generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
+
+        public SongTimeFormat timeFormat = SongTimeFormat.MILLISECONDS;
+        public Array<SongTimeChange> timeChanges = new Array<>(new SongTimeChange[]{new SongTimeChange(0, 100)});
+
+        public transient String variation;
+
+        public SongMusicData() {
+            this("Unknown", "Unknown", Constants.DEFAULT_VARIATION);
+        }
+
+        public SongMusicData(String songName, String artist, String variation) {
+            this.songName = songName != null ? songName : "Unknown";
+            this.artist = artist != null ? artist : "Unknown";
+            this.variation = variation != null ? variation : Constants.DEFAULT_VARIATION;
         }
 
         @Override
@@ -109,110 +154,39 @@ public class SongData {
         }
     }
 
-    public static class SongTimeChange {
-        public static final Array<Integer> DEFAULT_BEAT_TUPLETS = new Array<Integer>(new Integer[]{4, 4, 4, 4});
-        public static final SongTimeChange DEFAULT_SONGTIMECHANGE = new Builder(0, 100).build();
-        public static final Array<SongTimeChange> DEFAULT_SONGTIMECHANGES = new Array<SongTimeChange>(new SongTimeChange[]{DEFAULT_SONGTIMECHANGE});
+    public static class SongPlayData {
+        // Required
+        public Array<String> difficulties = new Array<>();
+        public String stage;
+        public String noteStyle;
 
-        public float timeStamp;
-        public Float beatTime;
-        public float bpm;
-        public int timeSignatureNum;
-        public int timeSignatureDen;
-        public Array<Integer> beatTuplets;
+        // Optional
+        public Array<String> songVariations = new Array<>();
+        //public SongCharacterData characters;
+        public ObjectMap<String, Integer> ratings = new ObjectMap<String, Integer>() {{
+            put("normal", 0);
+        }};
+        public String album = null;
+        public String stickerPack = null;
+        public int previewStart = 0;
+        public int previewEnd = 15000;
 
+        public SongPlayData() {}
 
-        public SongTimeChange(Builder builder) {
-            this.timeStamp = builder.timeStamp;
-            this.bpm = builder.bpm;
-
-            this.timeSignatureNum = builder.timeSignatureNum;
-            this.timeSignatureDen = builder.timeSignatureDen;
-
-            this.beatTime = builder.beatTime;
-            this.beatTuplets = new Array<Integer>(builder.beatTuplets);
+        @Override
+        public String toString() {
+            return "SongPlayData{" +
+                "songVariations=" + songVariations +
+                ", difficulties=" + difficulties +
+                ", stage='" + stage + '\'' +
+                ", noteStyle='" + noteStyle + '\'' +
+                ", ratings=" + ratings +
+                ", album='" + album + '\'' +
+                ", stickerPack='" + stickerPack + '\'' +
+                ", previewStart=" + previewStart +
+                ", previewEnd=" + previewEnd +
+                '}';
         }
-
-        public static class Builder {
-            public float timeStamp;
-            public float bpm;
-            public Float beatTime = null;
-            public int timeSignatureNum = 4;
-            public int timeSignatureDen = 4;
-            public Array<Integer> beatTuplets = new Array<Integer>(DEFAULT_BEAT_TUPLETS);
-
-            public Builder(float timeStamp, float bpm) {
-                this.timeStamp = timeStamp;
-                this.bpm = bpm;
-            }
-
-            public SongTimeChange build() {
-                return new SongTimeChange(this);
-            }
-        }
-
-        public void toJson(Json json) {
-            json.writeObjectStart();
-            json.writeValue("t", timeStamp);
-            json.writeValue("bpm", bpm);
-            json.writeValue("n", timeSignatureNum);
-            json.writeValue("d", timeSignatureDen);
-            if (beatTime != null) json.writeValue("b", beatTime);
-            if (beatTuplets != null) json.writeValue("bt", beatTuplets);
-            json.writeObjectEnd();
-        }
-
-        public static SongTimeChange fromJson(JsonValue jsonData) {
-            float timeStamp = jsonData.getFloat("t", 0);
-            float bpm = jsonData.getFloat("bpm", 100);
-            int n = jsonData.getInt("n", 4);
-            int d = jsonData.getInt("d", 4);
-
-            Builder builder = new Builder(timeStamp, bpm);
-            builder.timeSignatureNum = n;
-            builder.timeSignatureDen = d;
-
-            if (jsonData.has("b")) builder.beatTime = jsonData.getFloat("b");
-
-            if (jsonData.has("bt")) {
-                JsonValue btValue = jsonData.get("bt");
-                if (btValue.isArray()) {
-                    Array<Integer> tuplets = new Array<>();
-                    for (JsonValue item : btValue) {
-                        tuplets.add(item.asInt());
-                    }
-                    builder.beatTuplets = tuplets;
-                }
-            }
-
-            return builder.build();
-        }
-    }
-}
-
-enum SongTimeFormat {
-    TICKS("ticks"),
-    FLOAT("float"),
-    MILLISECONDS("ms");
-
-    public final String id;
-
-    SongTimeFormat(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public static SongTimeFormat fromString(String id) {
-        for (SongTimeFormat format : values()) if (format.getId().equals(id)) return format;
-        return MILLISECONDS;
-    }
-
-    @Override
-    public String toString() {
-        return id;
     }
 }
 

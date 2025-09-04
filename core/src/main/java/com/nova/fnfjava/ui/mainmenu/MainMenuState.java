@@ -59,16 +59,16 @@ public class MainMenuState extends MusicBeatState {
         persistentDraw = true;
 
         bg = new Image(Assets.getTexture("assets/images/menuBG.png"));
-        bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
+        bg.scaleBy(0.2f);
         bg.setPosition((Gdx.graphics.getWidth() - bg.getWidth()) / 2, (Gdx.graphics.getHeight() - bg.getHeight()) / 2);
-        addWithScrollFactor(bg);
+        addWithScrollFactor(bg, 0, 0.17f);
 
         magenta = new Image(Assets.getTexture("assets/images/menuBGMagenta.png"));
         magenta.setSize(bg.getWidth(), bg.getHeight());
         magenta.setPosition(bg.getImageX(), bg.getImageY());
         magenta.setVisible(false);
 
-        if (Preferences.getFlashingLights()) addWithScrollFactor(magenta);
+        if (Preferences.getFlashingLights()) addWithScrollFactor(magenta, 0, 0.17f);
 
         addWithScrollFactor(camFollowActor);
 

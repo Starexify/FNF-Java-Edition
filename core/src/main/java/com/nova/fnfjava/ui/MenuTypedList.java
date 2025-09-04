@@ -136,7 +136,7 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
         if (menuItem.fireInstantly) menuItem.callback();
         else {
             busy = true;
-            //FunkinSound.playOnce(Paths.sound('confirmMenu'));
+            Main.sound.playOnce(Paths.sound("confirmMenu"));
             menuItem.callback();
         }
     }
