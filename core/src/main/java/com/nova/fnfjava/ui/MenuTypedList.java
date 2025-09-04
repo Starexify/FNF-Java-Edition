@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.PlayerSettings;
 import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.input.Controls;
@@ -97,7 +98,7 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
         };
 
         if (newIndex != selectedIndex) {
-            //FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
+            Main.sound.playOnce(Paths.sound("scrollMenu"), 0.4f);
             selectItem(newIndex);
         }
 

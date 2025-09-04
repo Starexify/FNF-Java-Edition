@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ScrollableStage;
-import com.nova.fnfjava.modding.bus.EventBus;
 import com.nova.fnfjava.modding.events.SongTimeEvent;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
@@ -40,7 +39,7 @@ public class MusicBeatState extends TransitionableScreenAdapter {
     @Override
     public void show() {
         stage = new ScrollableStage(main.viewport, main.spriteBatch);
-        ((ScrollableStage) stage).setParentState(this);
+        stage.setParentState(this);
         createWatermarkText();
 
         beatHitListener = new Listener<Integer>() {
@@ -135,6 +134,14 @@ public class MusicBeatState extends TransitionableScreenAdapter {
 
     public void add(Actor actor) {
         stage.addActor(actor);
+    }
+
+    public void addWithScrollFactor(Actor actor, float scrollFactorX, float scrollFactorY) {
+        stage.addActorWithScrollFactor(actor, scrollFactorX, scrollFactorY);
+    }
+
+    public void addWithScrollFactor(Actor actor) {
+        addWithScrollFactor(actor, 1.0f, 1.0f);
     }
 
     public void stepHit(Signal<Integer> integerSignal, Integer step) {

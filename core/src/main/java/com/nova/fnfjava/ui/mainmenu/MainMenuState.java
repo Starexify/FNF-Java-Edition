@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
@@ -25,6 +26,8 @@ public class MainMenuState extends MusicBeatState {
     public Image bg;
     public Image magenta;
 
+    private Actor camFollowActor;
+
     public boolean overrideMusic = false;
     public UIStateMachine uiStateMachine = new UIStateMachine();
 
@@ -35,6 +38,9 @@ public class MainMenuState extends MusicBeatState {
         this.overrideMusic = overrideMusic;
 
         uiStateMachine.transition(UIStateMachine.UIState.ENTERING);
+
+        camFollowActor = new Actor();
+        camFollowActor.setSize(1, 1);
     }
 
     public MainMenuState(Main main) {
@@ -55,17 +61,19 @@ public class MainMenuState extends MusicBeatState {
         bg = new Image(Assets.getTexture("assets/images/menuBG.png"));
         bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
         bg.setPosition((Gdx.graphics.getWidth() - bg.getWidth()) / 2, (Gdx.graphics.getHeight() - bg.getHeight()) / 2);
-        add(bg);
+        addWithScrollFactor(bg);
 
         magenta = new Image(Assets.getTexture("assets/images/menuBGMagenta.png"));
         magenta.setSize(bg.getWidth(), bg.getHeight());
         magenta.setPosition(bg.getImageX(), bg.getImageY());
         magenta.setVisible(false);
 
-        if (Preferences.getFlashingLights()) add(magenta);
+        if (Preferences.getFlashingLights()) addWithScrollFactor(magenta);
+
+        addWithScrollFactor(camFollowActor);
 
         menuItems = new MenuTypedList<>();
-        add(menuItems);
+        addWithScrollFactor(menuItems);
         menuItems.onChange.add(onMenuItemChange());
         menuItems.onAcceptPress.add(new Listener<AtlasMenuItem>() {
             @Override
@@ -101,11 +109,17 @@ public class MainMenuState extends MusicBeatState {
             //menuItem.scrollFactor.y = 0.4;
 
             if (index == 1) {
+                float itemCenterX = menuItem.getX();
+                float itemCenterY = menuItem.getY() + menuItem.getHeight() / 2;
+                camFollowActor.setPosition(itemCenterX, itemCenterY);
                 //camFollow.setPosition(menuItem.getGraphicMidpoint().x, menuItem.getGraphicMidpoint().y);
             }
         }
 
         menuItems.selectItem(rememberedSelectedIndex);
+
+        stage.follow(camFollowActor, 0.06f);
+        stage.snapToTarget();
 
         initLeftWatermarkText();
     }
@@ -124,15 +138,6 @@ public class MainMenuState extends MusicBeatState {
             .build());
     }
 
-    public Listener<AtlasMenuItem> onMenuItemChange() {
-        return new Listener<AtlasMenuItem>() {
-            @Override
-            public void receive(Signal<AtlasMenuItem> signal, AtlasMenuItem item) {
-                System.out.println("Selected: " + item.name);
-            }
-        };
-    }
-
     public void createMenuItem(String name, String atlas, Runnable callback, boolean fireInstantly) {
         if (menuItems == null) return;
 
@@ -149,11 +154,24 @@ public class MainMenuState extends MusicBeatState {
         this.createMenuItem(name, atlas, callback, false);
     }
 
+    public Listener<AtlasMenuItem> onMenuItemChange() {
+        return new Listener<AtlasMenuItem>() {
+            @Override
+            public void receive(Signal<AtlasMenuItem> signal, AtlasMenuItem item) {
+                float itemCenterX = item.getX();
+                float itemCenterY = item.getY() + item.getHeight() / 2;
+                camFollowActor.setPosition(itemCenterX, itemCenterY);
+            }
+        };
+    }
+
     public void startExitState(Screen nextScreen) {
         if (menuItems == null) return;
 
         uiStateMachine.transition(UIStateMachine.UIState.EXITING);
         rememberedSelectedIndex = menuItems.selectedIndex;
+
+        stage.stopFollowing(false);
 
         float fadeOutDuration = 0.4f;
 
@@ -167,7 +185,7 @@ public class MainMenuState extends MusicBeatState {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                System.out.println("Exiting MainMenuState...");
+                Gdx.app.debug("MainMenuState", "Exiting MainMenuState...");
                 main.switchState(nextScreen);
             }
         }, fadeOutDuration);
