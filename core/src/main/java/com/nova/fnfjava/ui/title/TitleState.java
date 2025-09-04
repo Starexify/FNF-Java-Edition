@@ -61,8 +61,9 @@ public class TitleState extends MusicBeatState {
         logoBl.animation.addByPrefix("bump", "logo bumpin", 24);
         logoBl.animation.play("bump");
 
-        gfDance = new AnimatedSprite((Gdx.graphics.getHeight() * 0.71F), Gdx.graphics.getHeight() * 0.01F);
+        gfDance = new AnimatedSprite(Gdx.graphics.getWidth() * 0.4F, Gdx.graphics.getHeight() * 0.07F);
         gfDance.atlas = new TextureAtlas("images/gfDanceTitle.atlas");
+        //gfDance.setFlxY(Gdx.graphics.getHeight() * 0.07F);
         gfDance.animation.addByIndices("danceLeft", "gfDance", new Array<>(new Integer[]{30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}), 24);
         gfDance.animation.addByIndices("danceRight", "gfDance", new Array<>(new Integer[]{15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}), 24);
 

@@ -1,7 +1,7 @@
 GF_assets.png
 size: 8192,8192
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 GF Cheer
   rotate: false

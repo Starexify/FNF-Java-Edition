@@ -27,7 +27,7 @@
       "animations": [
         {
           "name": "idle",
-          "prefix": "idle0",
+          "prefix": "idle",
           "frameRate": 24
         },
         {

@@ -225,7 +225,11 @@ public class AnimatedSprite extends Actor {
         if (frameWidth > 0 && frameHeight > 0) setSize(frameWidth, frameHeight);
     }
 
-    // Helper Methods
+    // Getter and Setters
+    public void setAntialiasing(boolean bool) {
+        if (bool)
+            for (Texture texture : atlas.getTextures()) texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    }
 
     public void setAtlas(String path) {
         atlas = Assets.getAtlas(path);

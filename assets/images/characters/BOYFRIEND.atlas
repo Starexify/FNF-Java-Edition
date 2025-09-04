@@ -1,7 +1,7 @@
 BOYFRIEND.png
 size: 8192,4096
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 BF Dead confirm
   rotate: false

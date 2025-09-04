@@ -50,9 +50,6 @@ public class Assets {
         return Gdx.files.internal(path).readString();
     }
 
-    public static boolean update() {
-        return Main.assetManager.update();
-    }
 
     /**
      * Creates or retrieves a flat colored rectangular texture, similar to FlxG.bitmap.create

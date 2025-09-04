@@ -125,7 +125,7 @@ public class Level implements IRegistryEntry<LevelData> {
             if (propIndex < props.size) existingProp = props.get(propIndex);
 
             if (existingProp != null) {
-                existingProp.propData = propData;
+                existingProp.setPropData(propData);
                 if (existingProp.propData == null) existingProp.setVisible(false);
                 else {
                     existingProp.setVisible(true);

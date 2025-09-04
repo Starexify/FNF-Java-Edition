@@ -29,7 +29,8 @@ public class LevelProp extends Bopper {
         this.shouldAlternate = null;
 
         boolean isAnimated = propData.animations.size > 0;
-        if (isAnimated) this.setAtlas(Paths.getAtlas(propData.assetPath));
+        if (isAnimated)
+            this.setAtlas(Paths.getAtlas(propData.assetPath));
         else {
             loadGraphic(Paths.image(propData.assetPath));
             this.active = false;
@@ -43,6 +44,7 @@ public class LevelProp extends Bopper {
         float scale = propData.scale * (propData.isPixel ? 6 : 1);
         this.setScale(scale, scale);
         //this.antialiasing = !propData.isPixel;
+        this.setAntialiasing(!propData.isPixel);
         this.getColor().a = propData.alpha;
         this.setX(propData.offsets.get(0));
         this.setFlxY(propData.offsets.get(1));

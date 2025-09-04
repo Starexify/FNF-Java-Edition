@@ -78,8 +78,8 @@ public class Main extends Game {
 
     @Override
     public void render() {
+        assetManager.update(16);
         super.render();
-
         ReloadAssetsDebugPlugin.update();
     }
 
