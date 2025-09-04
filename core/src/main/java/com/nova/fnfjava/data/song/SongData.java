@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.util.Constants;
 
 public class SongData {
-    public class SongMetadata {
+    public static class SongMetadata {
         // Required
         public String songName = "Unknown";
         public String artist = "Unknown";

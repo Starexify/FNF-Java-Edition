@@ -11,7 +11,6 @@ import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.story.level.LevelData;
 import com.nova.fnfjava.play.Song;
-import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.ImageUtil;
 
 public class Level implements IRegistryEntry<LevelData> {
@@ -77,7 +76,7 @@ public class Level implements IRegistryEntry<LevelData> {
         Song song = SongRegistry.instance.fetchEntry(songId);
         if (song == null) return "Unknown";
 
-        return song.songName;
+        return song.getSongName();
     }
 
     public boolean isUnlocked() {

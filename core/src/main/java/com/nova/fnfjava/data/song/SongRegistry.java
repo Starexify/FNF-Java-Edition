@@ -32,8 +32,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
     public void loadEntries() {
         clearEntries();
 
-        Array<String> rawPaths = DataAssets.listDataFilesInPath("songs", "-metadata.json");
-
+        Array<String> rawPaths = DataAssets.listDataFilesInPath("songs/", "-metadata.json");
         Array<String> entryIdList = new Array<>();
         for (String path : rawPaths) {
             String entryId = path.contains("/") ? path.split("/")[0] : path;
@@ -179,11 +178,6 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
             Gdx.app.error("SongRegistry", "Errors parsing song data for ID: " + id);
             for (String error : parseErrors) Gdx.app.error("SongRegistry", "  - " + error);
         }
-    }
-
-    @Override
-    public Song fetchEntry(String id, Object... params) {
-        return super.fetchEntry(id, params);
     }
 
     record SongEntryParams(String variation) {}

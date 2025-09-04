@@ -10,22 +10,24 @@ public class DataAssets {
     }
 
     public static Array<String> listDataFilesInPath(String path, String suffix) {
-        FileHandle dir = Gdx.files.internal(buildDataPath(path));
-
         Array<String> results = new Array<>();
+        listFilesRecursive(Gdx.files.internal(buildDataPath(path)), suffix, results, "");
+        return results;
+    }
 
-        for (FileHandle file : dir.list()) {
-            String fileName = file.name();
-
-            if (fileName.endsWith(suffix)) {
-                String pathNoSuffix = fileName.substring(0, fileName.length() - suffix.length());
-                if (!results.contains(pathNoSuffix, false)) {
-                    results.add(pathNoSuffix);
-                }
+    private static void listFilesRecursive(FileHandle dir, String suffix, Array<String> results, String relativePath) {
+        if (dir.isDirectory()) {
+            for (FileHandle file : dir.list()) {
+                String newRelativePath = relativePath.isEmpty() ? file.name() : relativePath + "/" + file.name();
+                listFilesRecursive(file, suffix, results, newRelativePath);
+            }
+        } else {
+            if (dir.name().endsWith(suffix)) {
+                // Remove suffix from the relative path
+                String pathNoSuffix = relativePath.substring(0, relativePath.length() - suffix.length());
+                if (!results.contains(pathNoSuffix, false)) results.add(pathNoSuffix);
             }
         }
-
-        return results;
     }
 
     public static Array<String> listDataFilesInPath(String path) {

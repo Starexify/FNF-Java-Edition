@@ -12,6 +12,7 @@ import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.math.FlxRandom;
+import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.title.TitleState;
