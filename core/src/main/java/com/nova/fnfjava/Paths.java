@@ -4,32 +4,32 @@ import com.nova.fnfjava.util.Constants;
 
 public class Paths {
     public static String getAtlas(String key) {
-        return "images/" + key + ".atlas";
+        return "assets/images/" + key + ".atlas";
     }
 
     public static String txt(String key) {
-        return "data/" + key + ".txt";
+        return "assets/data/" + key + ".txt";
     }
 
     public static String json(String key) {
-        return "data/" + key + ".json";
+        return "assets/data/" + key + ".json";
     }
 
     public static String sound(String key) {
-        return "sounds/" + key + "." + Constants.EXT_SOUND;
+        return "assets/sounds/" + key + "." + Constants.EXT_SOUND;
     }
 
     public static String sharedSound(String key) {
-        return "shared/sounds/" + key + "." + Constants.EXT_SOUND;
+        return "assets/shared/sounds/" + key + "." + Constants.EXT_SOUND;
     }
 
     public static String music(String key) {
-        return "music/" + key + "." + Constants.EXT_SOUND;
+        return "assets/music/" + key + "." + Constants.EXT_SOUND;
     }
 
     public static String inst(String song, String suffix, boolean withExtension) {
         String ext = withExtension ? "." + Constants.EXT_SOUND : "";
-        return "songs/" + song.toLowerCase() + "/Inst" + suffix + ext;
+        return "assets/songs/" + song.toLowerCase() + "/Inst" + suffix + ext;
     }
 
     public static String inst(String song, String suffix) {
@@ -37,11 +37,11 @@ public class Paths {
     }
 
     public static String image(String key) {
-        return "images/" + key + ".png";
+        return "assets/images/" + key + ".png";
     }
 
     public static String font(String key) {
-        return "fonts/" + key;
+        return "assets/fonts/" + key;
     }
 
     public enum PathsFunction {

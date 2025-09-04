@@ -52,12 +52,12 @@ public class MainMenuState extends MusicBeatState {
         persistentUpdate = true;
         persistentDraw = true;
 
-        bg = new Image(Assets.getTexture("images/menuBG.png"));
+        bg = new Image(Assets.getTexture("assets/images/menuBG.png"));
         bg.setSize(Gdx.graphics.getWidth() * 1.2f, bg.getHeight() * (Gdx.graphics.getWidth() * 1.2f / bg.getWidth()));
         bg.setPosition((Gdx.graphics.getWidth() - bg.getWidth()) / 2, (Gdx.graphics.getHeight() - bg.getHeight()) / 2);
         add(bg);
 
-        magenta = new Image(Assets.getTexture("images/menuBGMagenta.png"));
+        magenta = new Image(Assets.getTexture("assets/images/menuBGMagenta.png"));
         magenta.setSize(bg.getWidth(), bg.getHeight());
         magenta.setPosition(bg.getImageX(), bg.getImageY());
         magenta.setVisible(false);

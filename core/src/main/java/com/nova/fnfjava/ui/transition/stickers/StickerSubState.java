@@ -38,7 +38,7 @@ public class StickerSubState extends MusicBeatSubState {
 
         this.oldStickers = params.oldStickers();
 
-        var stickerSoundFiles = Assets.listFilesInDirectory("shared/sounds/stickersounds");
+        var stickerSoundFiles = Assets.listFilesInDirectory("assets/shared/sounds/stickersounds");
         for (String filePath : stickerSoundFiles) {
             if (filePath.contains("/stickersounds/")) {
                 String afterSticker = filePath.substring(filePath.indexOf("/stickersounds/") + "/stickersounds/".length());

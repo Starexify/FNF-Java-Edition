@@ -54,12 +54,12 @@ public class TitleState extends MusicBeatState {
         if (!initialized || Main.sound.music == null) playMenuMusic();
 
         logoBl = new AnimatedSprite(-150, 100);
-        logoBl.atlas = new TextureAtlas("images/logoBumpin.atlas");
+        logoBl.atlas = new TextureAtlas("assets/images/logoBumpin.atlas");
         logoBl.animation.addByPrefix("bump", "logo bumpin", 24);
         logoBl.animation.play("bump");
 
         gfDance = new AnimatedSprite(Gdx.graphics.getWidth() * 0.4F, Gdx.graphics.getHeight() * 0.07F);
-        gfDance.atlas = new TextureAtlas("images/gfDanceTitle.atlas");
+        gfDance.atlas = new TextureAtlas("assets/images/gfDanceTitle.atlas");
         //gfDance.setFlxY(Gdx.graphics.getHeight() * 0.07F);
         gfDance.animation.addByIndices("danceLeft", "gfDance", new Array<>(new Integer[]{30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}), 24);
         gfDance.animation.addByIndices("danceRight", "gfDance", new Array<>(new Integer[]{15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}), 24);
@@ -69,7 +69,7 @@ public class TitleState extends MusicBeatState {
         add(gfDance);
 
         titleText = new AnimatedSprite(50, main.viewport.getWorldHeight() * 0.2F);
-        titleText.atlas = new TextureAtlas("images/titleEnter.atlas");
+        titleText.atlas = new TextureAtlas("assets/images/titleEnter.atlas");
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
         titleText.animation.addByPrefix("press", "ENTER PRESSED", 24);
         titleText.animation.play("idle");
@@ -115,13 +115,12 @@ public class TitleState extends MusicBeatState {
     }
 
     public void playMenuMusic() {
-        boolean shouldFadeIn = (Main.sound.music == null);
         Main.sound.playMusic("freakyMenu", new FunkinSound.FunkinSoundPlayMusicParams.Builder()
             .overrideExisting(true)
             .restartTrack(false)
             .persist(true)
             .build());
-        if (shouldFadeIn) Main.sound.music.fadeIn(4000f);
+        Main.sound.music.fadeIn(4000f);
     }
 
     public Array<Array<String>> getIntroTextShit() {

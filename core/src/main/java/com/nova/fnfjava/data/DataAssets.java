@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class DataAssets {
     public static String buildDataPath(String path) {
-        return "data/" + path;
+        return "assets/data/" + path;
     }
 
     public static Array<String> listDataFilesInPath(String path, String suffix) {

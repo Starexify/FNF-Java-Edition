@@ -129,7 +129,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
     public JsonFile loadMusicDataFile(String id, String variation) {
         if (variation == null) variation = Constants.DEFAULT_VARIATION;
         String variationSuffix = variation.equals(Constants.DEFAULT_VARIATION) ? "" : "-" + variation;
-        String entryFilePath = "music/" + id + "/" + id + "-metadata" + variationSuffix + ".json";
+        String entryFilePath = "assets/music/" + id + "/" + id + "-metadata" + variationSuffix + ".json";
         try {
             FileHandle file = Gdx.files.internal(entryFilePath);
             if (!file.exists()) return null;

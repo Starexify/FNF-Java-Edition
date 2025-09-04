@@ -174,7 +174,7 @@ public class AtlasText extends TypedActorGroup<AtlasText.AtlasChar> {
 
         public AtlasFontData(AtlasFont name) {
             String fontName = name.toString().toLowerCase();
-            atlas = Assets.getAtlas("images/fonts/" + fontName + ".atlas");
+            atlas = Assets.getAtlas("assets/images/fonts/" + fontName + ".atlas");
             if (atlas == null) {
                 Gdx.app.log("AtlasFontData", "[WARN] Could not find font atlas for font \"" + name + "\".");
                 return;
