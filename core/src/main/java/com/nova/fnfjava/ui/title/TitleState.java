@@ -71,7 +71,7 @@ public class TitleState extends MusicBeatState {
 
         add(gfDance);
 
-        titleText = new AnimatedSprite(100, main.viewport.getWorldHeight() * 0.2F);
+        titleText = new AnimatedSprite(50, main.viewport.getWorldHeight() * 0.2F);
         titleText.atlas = new TextureAtlas("images/titleEnter.atlas");
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
         titleText.animation.addByPrefix("press", "ENTER PRESSED", 24);
@@ -110,7 +110,7 @@ public class TitleState extends MusicBeatState {
         add(ngSpr);
         ngSpr.setVisible(false);
 
-        ngSpr.updateHitboxFromCurrentFrame();
+        ngSpr.updateHitbox();
         ngSpr.screenCenter(Axes.X);
 
         if (initialized) skipIntro();
