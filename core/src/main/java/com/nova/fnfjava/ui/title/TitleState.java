@@ -17,9 +17,6 @@ import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.ImageUtil;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
-/**
- * Title screen of the application. Displayed after the application is created.
- */
 public class TitleState extends MusicBeatState {
     public static boolean initialized = false;
 

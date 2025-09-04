@@ -3,14 +3,14 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ScrollableStage;
+import com.nova.fnfjava.modding.bus.EventBus;
+import com.nova.fnfjava.modding.events.SongTimeEvent;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
 
@@ -45,14 +45,16 @@ public class MusicBeatState extends TransitionableScreenAdapter {
 
         beatHitListener = new Listener<Integer>() {
             @Override
-            public void receive(Signal<Integer> signal, Integer object) {
-                beatHit(signal, object);
+            public void receive(Signal<Integer> signal, Integer beat) {
+                beatHit(signal, beat);
+                SongTimeEvent.postBeatHit(beat);
             }
         };
         stepHitListener = new Listener<Integer>() {
             @Override
-            public void receive(Signal<Integer> signal, Integer object) {
-                stepHit(signal, object);
+            public void receive(Signal<Integer> signal, Integer step) {
+                stepHit(signal, step);
+                SongTimeEvent.postStepHit(step);
             }
         };
 

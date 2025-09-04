@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.animation.AnimationController;
 
+import java.util.Comparator;
+
 public class AnimationData {
     public String name;
     public String prefix;
@@ -55,7 +57,7 @@ public class AnimationData {
         } else {
             // Use all frames with the prefix
             Array<TextureAtlas.AtlasRegion> foundRegions = atlas.findRegions(prefix);
-            foundRegions.sort((a, b) -> a.name.compareTo(b.name));
+            foundRegions.sort(Comparator.comparingInt(a -> a.index));
 
             for (TextureAtlas.AtlasRegion region : foundRegions) {
                 TextureRegion frame = new TextureRegion(region);

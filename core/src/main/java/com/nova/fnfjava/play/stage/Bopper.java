@@ -4,8 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.modding.bus.EventBus;
+import com.nova.fnfjava.modding.events.SongTimeEvent;
+import com.nova.fnfjava.modding.events.handlers.IBPMSyncedClass;
+import com.nova.fnfjava.util.Constants;
 
-public class Bopper extends StageProp {
+public class Bopper extends StageProp implements IBPMSyncedClass {
     public float danceEvery = 0.0f;
     public Boolean shouldAlternate = null;
     public ObjectMap<String, Array<Float>> animationOffsets = new ObjectMap<>();
@@ -25,6 +29,8 @@ public class Bopper extends StageProp {
             //this.animation.onFrameChange.add(this.onAnimationFrame);
             //this.animation.onFinish.add(this.onAnimationFinished);
         }
+
+        EventBus.getInstance().register(SongTimeEvent.class, this);
     }
 
     public void resetPosition() {
@@ -36,11 +42,14 @@ public class Bopper extends StageProp {
         this.shouldAlternate = hasAnimation("danceLeft");
     }
 
-    public void onStepHit() {
-        //if (danceEvery > 0 && (step % (danceEvery * Constants.STEPS_PER_BEAT)) == 0) dance(shouldBop);
+    @Override
+    public void onStepHit(int step) {
+        if (danceEvery > 0 && (step % (danceEvery * Constants.STEPS_PER_BEAT)) == 0) dance(shouldBop);
     }
 
-    public void onBeatHit() {}
+    @Override
+    public void onBeatHit(int beat) {
+    }
 
     /**
      * Called every `danceEvery` beats of the song.
@@ -178,10 +187,16 @@ public class Bopper extends StageProp {
         return globalOffsets = value;
     }
 
-    public Array<Float> setAnimOffsets(Array<Float> value){
+    public Array<Float> setAnimOffsets(Array<Float> value) {
         if (animOffsets == null) animOffsets = new Array<>(new Float[]{0f, 0f});
         if ((animOffsets.get(0) == value.get(0)) && (animOffsets.get(1) == value.get(1))) return value;
 
         return animOffsets = value;
+    }
+
+    @Override
+    public boolean remove() {
+        EventBus.getInstance().unregister(SongTimeEvent.class, this);
+        return super.remove();
     }
 }

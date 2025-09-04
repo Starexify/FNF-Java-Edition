@@ -20,6 +20,7 @@ public class AnimatedSprite extends Actor {
     public int frameWidth = 0, frameHeight = 0;
 
     public TextureRegion frame;
+    public TextureAtlas.AtlasSprite sprite;
     public TextureAtlas atlas;
 
     public Vector2 offset = new Vector2();
@@ -144,7 +145,6 @@ public class AnimatedSprite extends Actor {
 
     public TextureAtlas createAtlasFromTexture(Texture texture, int frameWidth, int frameHeight) {
         TextureAtlas atlas = new TextureAtlas();
-
         int cols = texture.getWidth() / frameWidth;
         int rows = texture.getHeight() / frameHeight;
         int index = 0;
@@ -153,10 +153,9 @@ public class AnimatedSprite extends Actor {
             for (int col = 0; col < cols; col++) {
                 TextureAtlas.AtlasRegion region = new TextureAtlas.AtlasRegion(texture,
                     col * frameWidth, row * frameHeight, frameWidth, frameHeight);
-                region.index = index;
+                region.index = index++;
                 region.name = "frame";
                 atlas.getRegions().add(region);
-                index++;
             }
         }
 
