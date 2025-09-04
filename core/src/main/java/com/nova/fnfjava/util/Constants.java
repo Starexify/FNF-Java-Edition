@@ -30,4 +30,6 @@ public class Constants {
     public static final float TITLE_ATTRACT_DELAY = 37.5f;
 
     public static final String EXT_SOUND = "ogg";
+
+    public static final String EXT_VIDEO = "mp4";
 }

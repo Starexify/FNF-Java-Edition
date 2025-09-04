@@ -27,6 +27,10 @@ public class Paths {
         return "assets/music/" + key + "." + Constants.EXT_SOUND;
     }
 
+    public static String videos(String key) {
+        return "videos/" + key + "." + Constants.EXT_VIDEO;
+    }
+
     public static String inst(String song, String suffix, boolean withExtension) {
         String ext = withExtension ? "." + Constants.EXT_SOUND : "";
         return "assets/songs/" + song.toLowerCase() + "/Inst" + suffix + ext;

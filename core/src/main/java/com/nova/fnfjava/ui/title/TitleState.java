@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
@@ -14,16 +15,12 @@ import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.AtlasText;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;
-import com.nova.fnfjava.ui.story.StoryMenuState;
 import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.ImageUtil;
 import com.nova.fnfjava.util.camera.CameraFlash;
 
 public class TitleState extends MusicBeatState {
     public static boolean initialized = false;
-
-    public float attractCountdown = Constants.TITLE_ATTRACT_DELAY; // seconds
-    public boolean attractTriggered = false;
 
     public Image blackScreen;
 
@@ -126,10 +123,7 @@ public class TitleState extends MusicBeatState {
      */
     public void moveToAttract() {
         Main.sound.music.fadeOut(2.0f, 0);
-/*        FlxG.camera.fade(FlxColor.BLACK, 2.0, false, function() {
-        FlxG.switchState(() -> new AttractState());
-    });*/
-        main.switchState(new StoryMenuState(main));
+        stage.addAction(Actions.sequence(Actions.fadeOut(   2f), Actions.run(() -> main.switchState(new AttractState(main)))));
     }
 
     public void playMenuMusic() {
@@ -190,14 +184,6 @@ public class TitleState extends MusicBeatState {
         if (pressedEnter && !skippedIntro && initialized) skipIntro();
 
         super.render(delta);
-
-        if (skippedIntro && !attractTriggered) {
-            attractCountdown -= delta;
-            if (attractCountdown <= 0f) {
-                attractTriggered = true;
-                moveToAttract();
-            }
-        }
     }
 
     public void moveToMainMenu() {
@@ -241,8 +227,6 @@ public class TitleState extends MusicBeatState {
     @Override
     public void beatHit(Signal<Integer> integerSignal, Integer beat) {
         super.beatHit(integerSignal, beat);
-
-        Gdx.app.log("TITLE", "Beat hit: " + beat);
 
         if (!skippedIntro) {
             if (beat > lastBeat) {
@@ -319,5 +303,11 @@ public class TitleState extends MusicBeatState {
             if (credGroup != null) credGroup.remove();
             skippedIntro = true;
         }
+        attractTimer = Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                moveToAttract();
+            }
+        }, 2f); // Constants.TIMER
     }
 }
