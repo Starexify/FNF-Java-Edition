@@ -308,6 +308,6 @@ public class TitleState extends MusicBeatState {
             public void run() {
                 moveToAttract();
             }
-        }, 2f); // Constants.TIMER
+        }, Constants.TITLE_ATTRACT_DELAY);
     }
 }

@@ -120,6 +120,11 @@ public class ScrollableStage extends Stage {
 
                 actor.draw(getBatch(), 1.0f);
             } else {
+                // For regular actors, keep camera at original position (static)
+                camera.position.set(originalPosition);
+                camera.update();
+                getBatch().setProjectionMatrix(camera.combined);
+
                 actor.draw(getBatch(), 1.0f);
             }
         }

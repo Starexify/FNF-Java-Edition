@@ -31,5 +31,5 @@ public class Constants {
 
     public static final String EXT_SOUND = "ogg";
 
-    public static final String EXT_VIDEO = "mp4";
+    public static final String EXT_VIDEO = "webm"; // mp4 not fully supported by gdx-video so we use webm videos if exists
 }

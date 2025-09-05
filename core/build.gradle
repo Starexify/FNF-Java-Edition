@@ -12,6 +12,10 @@ dependencies {
   api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion"
   api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion:natives-desktop"
 
+  api "com.badlogicgames.gdx-video:gdx-video:$gdxVideoVersion"
+  api "com.badlogicgames.gdx-video:gdx-video-desktop:$gdxVideoVersion"
+  api "com.badlogicgames.gdx-video:gdx-video-lwjgl3:$gdxVideoVersion"
+
   api "com.github.JnCrMx:discord-game-sdk4j:v1.0.0"
 
   if (enableGraalNative == 'true') {

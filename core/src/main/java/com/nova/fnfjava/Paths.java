@@ -28,7 +28,7 @@ public class Paths {
     }
 
     public static String videos(String key) {
-        return "videos/" + key + "." + Constants.EXT_VIDEO;
+        return "assets/videos/" + key + "." + Constants.EXT_VIDEO;
     }
 
     public static String inst(String song, String suffix, boolean withExtension) {
