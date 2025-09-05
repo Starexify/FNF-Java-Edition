@@ -1,6 +1,7 @@
 package com.nova.fnfjava.util;
 
 import com.badlogic.gdx.utils.Array;
+import com.nova.fnfjava.data.song.SongData;
 
 public class Constants {
     public static final String TITLE = "Friday Night Funkin': Java Edition";
@@ -11,11 +12,29 @@ public class Constants {
 
     public static final Array<String> DEFAULT_DIFFICULTY_LIST = new Array<>(new String[]{"easy", "normal", "hard"});
 
+    public static final String DEFAULT_STAGE = "mainStage";
+
     public static final String DEFAULT_VARIATION = "default";
+
+    public static final Array<String> DEFAULT_VARIATION_LIST = new Array<>(new String[]{"default", "erect", "pico", "bf"});
 
     public static final String DEFAULT_STICKER_PACK = "default";
 
     public static final float DEFAULT_BPM = 100.0f;
+
+    public static final String DEFAULT_SONGNAME = "Unknown";
+
+    public static final String DEFAULT_ARTIST = "Unknown";
+
+    public static final String DEFAULT_CHARTER = "Unknown";
+
+    public static final String DEFAULT_NOTE_STYLE = "funkin";
+
+    public static final String DEFAULT_FREEPLAY_STYLE = "bf";
+
+    public static final SongData.SongTimeFormat DEFAULT_TIMEFORMAT = SongData.SongTimeFormat.MILLISECONDS;
+
+    public static final float DEFAULT_SCROLLSPEED = 1.0f;
 
     public static final int DEFAULT_TIME_SIGNATURE_NUM = 4;
 

@@ -1,8 +1,6 @@
 package com.nova.fnfjava.data.song;
 
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.util.Constants;
 
@@ -17,7 +15,7 @@ public class SongData {
         public String charter = null;
         public Integer divisions = 96;
         public Boolean looped = false;
-        //public SongOffsets offsets;
+        public SongOffsets offsets;
         public String generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
         public SongTimeFormat timeFormat = SongTimeFormat.MILLISECONDS;
         public Array<SongTimeChange> timeChanges = new Array<>(new SongTimeChange[]{new SongTimeChange(0, 100)});
@@ -47,6 +45,7 @@ public class SongData {
                 ", charter='" + charter + '\'' +
                 ", divisions=" + divisions +
                 ", looped=" + looped +
+                ", offsets=" + offsets +
                 ", generatedBy='" + generatedBy + '\'' +
                 ", timeFormat=" + timeFormat +
                 ", timeChanges=" + timeChanges +
@@ -113,6 +112,26 @@ public class SongData {
         }
     }
 
+    public static class SongOffsets {
+        public float instrumental = 0f;
+        public ObjectMap<String, Float> altInstrumentals = new ObjectMap<>();
+        public ObjectMap<String, Float> vocals = new ObjectMap<>();
+        public ObjectMap<String, ObjectMap<String, Float>> altVocals = new ObjectMap<>();
+
+        public SongOffsets() {}
+
+        public SongOffsets(float instrumental) {
+            this.instrumental = instrumental;
+        }
+
+        public SongOffsets(float instrumental, ObjectMap<String, Float> altInstrumentals, ObjectMap<String, Float> vocals, ObjectMap<String, ObjectMap<String, Float>> altVocals) {
+            this.instrumental = instrumental;
+            this.altInstrumentals = altInstrumentals != null ? altInstrumentals : new ObjectMap<>();
+            this.vocals = vocals != null ? vocals : new ObjectMap<>();
+            this.altVocals = altVocals != null ? altVocals : new ObjectMap<>();
+        }
+    }
+
     public static class SongMusicData {
         // Required fields
         public String songName = "Unknown";
@@ -162,7 +181,7 @@ public class SongData {
 
         // Optional
         public Array<String> songVariations = new Array<>();
-        //public SongCharacterData characters;
+        public SongCharacterData characters;
         public ObjectMap<String, Integer> ratings = new ObjectMap<String, Integer>() {{
             put("normal", 0);
         }};
@@ -185,6 +204,47 @@ public class SongData {
                 ", stickerPack='" + stickerPack + '\'' +
                 ", previewStart=" + previewStart +
                 ", previewEnd=" + previewEnd +
+                '}';
+        }
+    }
+
+    public static class SongCharacterData {
+        public String player = "";
+        public String girlfriend = "";
+        public String opponent = "";
+        public String instrumental = "";
+        public Array<String> altInstrumentals = new Array<>();
+        public Array<String> opponentVocals = null;
+        public Array<String> playerVocals = null;
+
+        public SongCharacterData() {
+
+        }
+
+        public SongCharacterData(String player, String girlfriend, String opponent, String instrumental, Array<String> altInstrumentals, Array<String> opponentVocals, Array<String> playerVocals) {
+            this.player = player;
+            this.girlfriend = girlfriend;
+            this.opponent = opponent;
+            this.instrumental = instrumental;
+
+            this.altInstrumentals = altInstrumentals;
+            this.opponentVocals = opponentVocals;
+            this.playerVocals = playerVocals;
+
+            if (opponentVocals == null) this.opponentVocals = new Array<>(new String[]{opponent});
+            if (playerVocals == null) this.playerVocals = new Array<>(new String[]{player});
+        }
+
+        @Override
+        public String toString() {
+            return "SongCharacterData{" +
+                "player='" + player + '\'' +
+                ", girlfriend='" + girlfriend + '\'' +
+                ", opponent='" + opponent + '\'' +
+                ", instrumental='" + instrumental + '\'' +
+                ", altInstrumentals=" + altInstrumentals +
+                ", opponentVocals=" + opponentVocals +
+                ", playerVocals=" + playerVocals +
                 '}';
         }
     }

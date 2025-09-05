@@ -9,9 +9,9 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
     public final String registryId;
     public final String dataFilePath;
     public final ObjectMap<String, T> entries;
-    private final EntryConstructor<T> constructor;
+    private final EntryConstructor<T, P> constructor;
 
-    public BaseRegistry(String registryId, String dataFilePath, EntryConstructor<T> constructor) {
+    public BaseRegistry(String registryId, String dataFilePath, EntryConstructor<T, P> constructor) {
         this.registryId = registryId;
         this.dataFilePath = dataFilePath;
         this.entries = new ObjectMap<>();
@@ -34,7 +34,8 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
             try {
                 J data = parseEntryData(entryId);
                 if (data != null) {
-                    T entry = createEntry(entryId, data);
+                    P defaultParams = getDefaultParams(entryId, data);
+                    T entry = createEntry(entryId, data, defaultParams);
                     entries.put(entryId, entry);
 
                     Gdx.app.log(registryId, "Loaded entry data: " + entryId);
@@ -55,8 +56,12 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         return new JsonFile(entryFilePath, rawJson);
     }
 
-    public T fetchEntry(String id, Object... params) {
+    public T fetchEntry(String id, P params) {
         return entries.get(id);
+    }
+
+    public T fetchEntry(String id) {
+        return fetchEntry(id, null);
     }
 
     public abstract J parseEntryData(String id);
@@ -67,7 +72,7 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         for (String error : errors) Gdx.app.error(registryId, error);
     }
 
-    public T createEntry(String id, J data, Object... params) {
+    public T createEntry(String id, J data, P params) {
         T entry = constructor.create(id, params);
         entry.loadData(data);
         return entry;
@@ -78,8 +83,10 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         entries.clear();
     }
 
+    public abstract P getDefaultParams(String id, J data);
+
     @FunctionalInterface
-    public interface EntryConstructor<T> {
-        T create(String id, Object... params);
+    public interface EntryConstructor<T, P> {
+        T create(String id, P params);
     }
 }

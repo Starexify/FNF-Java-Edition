@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.api.discord.DiscordClient;
+import com.nova.fnfjava.data.freeplay.player.PlayerRegistry;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
+import com.nova.fnfjava.input.CursorHandler;
 import com.nova.fnfjava.math.FlxRandom;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
@@ -42,36 +44,7 @@ public class Main extends Game {
     public void create() {
         try {
             instance = this;
-
             setupGame();
-
-            save = Save.getInstance();
-            Preferences.init();
-
-            Gdx.graphics.setVSync(Preferences.getVSyncMode());
-            Gdx.graphics.setForegroundFPS(Preferences.getFramerate());
-
-            spriteBatch = new SpriteBatch();
-            viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            DiscordClient.getInstance().init();
-
-            transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            SongRegistry.initialize();
-            SongRegistry.instance.loadEntries();
-
-            LevelRegistry.initialize();
-            LevelRegistry.instance.loadEntries();
-
-            StickerRegistry.initialize();
-            StickerRegistry.instance.loadEntries();
-
-            ReloadAssetsDebugPlugin.initialize();
-
-            PlayerSettings.init();
-
-            setScreen(new TitleState(this));
         } catch (Exception e) {
             Gdx.app.error("Main", "Error during initialization", e);
         }
@@ -81,8 +54,42 @@ public class Main extends Game {
     public static BitmapFont memoryCounter;
 
     public void setupGame() {
+        CursorHandler.initCursors();
+        //CursorHandler.hide();
+
         fpsCounter = new BitmapFont();
         memoryCounter = new BitmapFont();
+
+        save = Save.getInstance();
+
+        Preferences.init();
+        Gdx.graphics.setVSync(Preferences.getVSyncMode());
+        Gdx.graphics.setForegroundFPS(Preferences.getFramerate());
+
+        spriteBatch = new SpriteBatch();
+        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        DiscordClient.getInstance().init();
+
+        transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        SongRegistry.initialize();
+        SongRegistry.instance.loadEntries();
+
+        LevelRegistry.initialize();
+        LevelRegistry.instance.loadEntries();
+
+        PlayerRegistry.initialize();
+        PlayerRegistry.instance.loadEntries();
+
+        StickerRegistry.initialize();
+        StickerRegistry.instance.loadEntries();
+
+        ReloadAssetsDebugPlugin.initialize();
+
+        PlayerSettings.init();
+
+        setScreen(new TitleState(this));
     }
 
     public void switchState(Screen newScreen) {
@@ -92,6 +99,7 @@ public class Main extends Game {
     @Override
     public void render() {
         super.render();
+
         ReloadAssetsDebugPlugin.update();
 
         if (Preferences.getDebugDisplay()) {
@@ -130,6 +138,7 @@ public class Main extends Game {
         if (assetManager != null) assetManager.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
 
+        CursorHandler.dispose();
         Assets.dispose();
     }
 }

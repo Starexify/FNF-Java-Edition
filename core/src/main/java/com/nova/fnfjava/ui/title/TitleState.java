@@ -123,7 +123,7 @@ public class TitleState extends MusicBeatState {
      */
     public void moveToAttract() {
         Main.sound.music.fadeOut(2.0f, 0);
-        stage.addAction(Actions.sequence(Actions.fadeOut(   2f), Actions.run(() -> main.switchState(new AttractState(main)))));
+        stage.addAction(Actions.sequence(Actions.fadeIn(2f), Actions.run(() -> main.switchState(new AttractState(main)))));
     }
 
     public void playMenuMusic() {

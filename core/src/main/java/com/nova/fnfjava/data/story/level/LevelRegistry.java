@@ -59,5 +59,10 @@ public class LevelRegistry extends BaseRegistry<Level, LevelData, LevelRegistry.
         }
     }
 
+    @Override
+    public LevelEntryParams getDefaultParams(String id, LevelData data) {
+        return new LevelEntryParams();
+    }
+
     public record LevelEntryParams() {}
 }

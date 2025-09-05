@@ -56,5 +56,10 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
         }
     }
 
+    @Override
+    public StickerEntryParams getDefaultParams(String id, StickerData data) {
+        return new StickerEntryParams();
+    }
+
     public record StickerEntryParams() {}
 }

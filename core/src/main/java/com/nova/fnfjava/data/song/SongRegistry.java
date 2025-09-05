@@ -46,7 +46,8 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
 
         for (String entryId : unscriptedEntryIds) {
             try {
-                Song entry = createEntry(entryId, parseEntryData(entryId));
+                SongEntryParams defaultParams = getDefaultParams(entryId, parseEntryData(entryId));
+                Song entry = createEntry(entryId, parseEntryData(entryId), defaultParams);
                 if (entry != null) {
                     entries.put(entry.id, entry);
 
@@ -126,6 +127,11 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         return parseEntryMetadata(id);
     }
 
+    @Override
+    public SongEntryParams getDefaultParams(String id, SongData.SongMetadata data) {
+        return new SongEntryParams(Constants.DEFAULT_VARIATION);
+    }
+
     public SongData.SongMetadata parseEntryMetadata(String id, String variation) {
         parseErrors.clear();
 
@@ -169,10 +175,6 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         }
     }
 
-    public JsonFile loadEntryMetadataFile(String id) {
-        return loadEntryMetadataFile(id, Constants.DEFAULT_VARIATION);
-    }
-
     public void printErrors(String id) {
         if (parseErrors.size > 0) {
             Gdx.app.error("SongRegistry", "Errors parsing song data for ID: " + id);
@@ -180,5 +182,5 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         }
     }
 
-    record SongEntryParams(String variation) {}
+    public record SongEntryParams(String variation) {}
 }

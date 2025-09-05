@@ -8,15 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.audio.FunkinSound;
+import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.group.TypedActorGroup;
+import com.nova.fnfjava.play.PlayState;
+import com.nova.fnfjava.play.PlayStatePlaylist;
+import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
+import com.nova.fnfjava.ui.transition.LoadingState;
 import com.nova.fnfjava.ui.transition.stickers.StickerSubState;
 import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.MathUtil;
@@ -393,38 +399,33 @@ public class StoryMenuState extends MusicBeatState {
 
         for (LevelProp prop : levelProps.members) prop.playConfirm();
 
-        /*
         Paths.setCurrentLevel(currentLevel.id);
 
         PlayStatePlaylist.playlistSongIds = currentLevel.getSongs();
         PlayStatePlaylist.isStoryMode = true;
         PlayStatePlaylist.campaignScore = 0;
 
-        var targetSongId:String = PlayStatePlaylist.playlistSongIds.shift();
+        String targetSongId = PlayStatePlaylist.playlistSongIds.removeIndex(0);
 
-        var targetSong:Song = SongRegistry.instance.fetchEntry(targetSongId, {variation: Constants.DEFAULT_VARIATION});
+        Song targetSong = SongRegistry.instance.fetchEntry(targetSongId, new SongRegistry.SongEntryParams(Constants.DEFAULT_VARIATION));
 
         PlayStatePlaylist.campaignId = currentLevel.id;
         PlayStatePlaylist.campaignTitle = currentLevel.getTitle();
         PlayStatePlaylist.campaignDifficulty = currentDifficultyId;
 
-        Highscore.talliesLevel = new funkin.Highscore.Tallies();
+        Highscore.talliesLevel = new Highscore.Tallies();
 
-        new FlxTimer().start(1, function(tmr:FlxTimer) {
-            FlxTransitionableState.skipNextTransIn = false;
-            FlxTransitionableState.skipNextTransOut = false;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                //FlxTransitionableState.skipNextTransIn = false;
+                //FlxTransitionableState.skipNextTransOut = false;
 
-            var targetVariation:String = targetSong.getFirstValidVariation(PlayStatePlaylist.campaignDifficulty);
+                String targetVariation = targetSong.getFirstValidVariation(PlayStatePlaylist.campaignDifficulty);
 
-            FlxG.camera.fade(FlxColor.BLACK, 0.2, false, function() {
-                LoadingState.loadPlayState(
-                    {
-                        targetSong: targetSong,
-                    targetDifficulty: PlayStatePlaylist.campaignDifficulty,
-                    targetVariation: targetVariation
-          }, true);
-            });
-        });*/
+                LoadingState.loadPlayState(new PlayState.PlayStateParams(targetSong, PlayStatePlaylist.campaignDifficulty, targetVariation), true);
+            }
+        }, 1f);
     }
 
     public void updateBackground(String previousLevelId) {

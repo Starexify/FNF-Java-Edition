@@ -3,6 +3,13 @@ package com.nova.fnfjava;
 import com.nova.fnfjava.util.Constants;
 
 public class Paths {
+    public static String currentLevel = null;
+
+    public static void setCurrentLevel(String name) {
+        if (name == null) currentLevel = null;
+        else currentLevel = name.toLowerCase();
+    }
+
     public static String getAtlas(String key) {
         return "assets/images/" + key + ".atlas";
     }
