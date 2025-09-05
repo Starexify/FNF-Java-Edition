@@ -51,7 +51,7 @@ public class AttractState extends MusicBeatState {
         }
 
         String videoPath = getVideoPath();
-        Gdx.app.log("AttractState", "Playing native video " + videoPath);
+        Main.logger.setTag(this.getClass().getSimpleName()).info("Playing native video " + videoPath);
         try {
             playVideoNative(videoPath);
         } catch (FileNotFoundException e) {
@@ -79,9 +79,10 @@ public class AttractState extends MusicBeatState {
     }
 
     public VideoActor vid;
+
     public void playVideoNative(String filePath) throws FileNotFoundException {
         vid = new VideoActor(VideoPlayerCreator.createVideoPlayer());
-        if (vid != null) {
+        try {
             vid.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             vid.setPosition(0, 0);
             vid.toFront();
@@ -90,8 +91,8 @@ public class AttractState extends MusicBeatState {
 
             FileHandle videoFile = Gdx.files.internal(filePath);
             if (vid.getVideoPlayer().load(videoFile)) vid.getVideoPlayer().play();
-        } else {
-            Gdx.app.log("AttractState", "ALERT: Video is null! Could not play cutscene!");
+        } catch (Exception e) {
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Video is null! Could not play attract video!", e);
         }
     }
 

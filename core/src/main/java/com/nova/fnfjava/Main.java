@@ -13,7 +13,7 @@ import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.input.CursorHandler;
-import com.nova.fnfjava.math.FlxRandom;
+import com.nova.fnfjava.util.RandomUtil;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.title.TitleState;
@@ -27,26 +27,30 @@ import games.rednblack.miniaudio.MiniAudio;
 public class Main extends Game {
     public static Main instance;
 
+    public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
+
+    public static FunkinLogger logger;
+
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
     public TransitionManager transitionManager;
 
     public static FunkinSound sound = new FunkinSound(new MiniAudio());
     public static AssetManager assetManager = new AssetManager();
-    public static FlxRandom random = new FlxRandom();
+    public static RandomUtil random = new RandomUtil();
 
     public static Save save;
-
-    // Game constants
-    public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 
     @Override
     public void create() {
         try {
             instance = this;
+
+            logger = new FunkinLogger("Funkin", 3);
+
             setupGame();
         } catch (Exception e) {
-            Gdx.app.error("Main", "Error during initialization", e);
+            Main.logger.setTag("Main").warn("Error during initialization", e);
         }
     }
 
@@ -73,6 +77,7 @@ public class Main extends Game {
 
         transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        logger.info("Parsing game data...");
         SongRegistry.initialize();
         SongRegistry.instance.loadEntries();
 
@@ -138,7 +143,12 @@ public class Main extends Game {
         if (assetManager != null) assetManager.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
 
+        if (fpsCounter != null) fpsCounter.dispose();
+        if (memoryCounter != null) memoryCounter.dispose();
+
         CursorHandler.dispose();
         Assets.dispose();
+
+        if (logger != null) logger.shutdown();
     }
 }

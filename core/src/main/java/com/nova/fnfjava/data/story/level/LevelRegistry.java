@@ -1,8 +1,8 @@
 package com.nova.fnfjava.data.story.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.BaseRegistry;
 import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.story.Level;
@@ -52,9 +52,15 @@ public class LevelRegistry extends BaseRegistry<Level, LevelData, LevelRegistry.
         try {
             JsonFile entryFile = loadEntryFile(id);
             LevelData levelData = parser.fromJson(LevelData.class, entryFile.contents());
-            return levelData;
+
+            if (levelData != null) {
+                return levelData;
+            } else {
+                Main.logger.setTag(registryId).warn("Failed to parse JSON level data from file: " + entryFile.fileName());
+                return null;
+            }
         } catch (Exception e) {
-            Gdx.app.error("LevelRegistry", "Failed to parse level data for: " + id, e);
+            Main.logger.setTag(registryId).error("Failed to parse JSON data for level: " + id, e);
             return null;
         }
     }

@@ -1,10 +1,10 @@
 package com.nova.fnfjava.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.nova.fnfjava.AnimatedSprite;
 import com.nova.fnfjava.Assets;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.group.TypedActorGroup;
 
 import java.util.HashMap;
@@ -176,7 +176,7 @@ public class AtlasText extends TypedActorGroup<AtlasText.AtlasChar> {
             String fontName = name.toString().toLowerCase();
             atlas = Assets.getAtlas("assets/images/fonts/" + fontName + ".atlas");
             if (atlas == null) {
-                Gdx.app.log("AtlasFontData", "[WARN] Could not find font atlas for font \"" + name + "\".");
+                Main.logger.setTag(this.getClass().getSimpleName()).warn("Could not find font atlas for font \"" + name + "\".");
                 return;
             }
 

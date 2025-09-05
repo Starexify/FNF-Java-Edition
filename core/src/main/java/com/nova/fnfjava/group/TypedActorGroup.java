@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Axes;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ui.AtlasText;
 
 public class TypedActorGroup<T extends Actor> extends Group {
@@ -133,7 +134,7 @@ public class TypedActorGroup<T extends Actor> extends Group {
      */
     public T add(T actor) {
         if (actor == null) {
-            Gdx.app.error("TypedActorGroup", "Cannot add a `null` object to a TypedActorGroup.");
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Cannot add a `null` object to a TypedActorGroup.");
             return null;
         }
 
@@ -170,7 +171,7 @@ public class TypedActorGroup<T extends Actor> extends Group {
 
     public T replace(T oldActor, T newActor) {
         if (oldActor == null) {
-            Gdx.app.error("TypedActorGroup", "Cannot replace a `null` object.");
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Cannot replace a `null` object.");
             return null;
         }
 

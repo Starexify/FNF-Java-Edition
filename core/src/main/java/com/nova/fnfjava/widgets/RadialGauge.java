@@ -74,8 +74,7 @@ public class RadialGauge extends Widget {
     }
 
     private void drawCircle(float cx, float cy, float radius) {
-        if (shape == RadialGaugeShape.CIRCLE) shapeRenderer.circle(cx, cy, radius);
-        else Gdx.app.log("RadialGauge", "SQUARE shape not implemented");
+        shapeRenderer.circle(cx, cy, radius);
     }
 
     private void drawProgressSegment(float cx, float cy, float outerRadius, float innerRadius, float start, float sweep) {

@@ -1,12 +1,10 @@
 package com.nova.fnfjava.animation;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.animation.AnimationData;
 
 public class AnimationController {
@@ -129,7 +127,7 @@ public class AnimationController {
 
     public void play(String name, boolean force) {
         if (!animations.containsKey(name)) {
-            Gdx.app.log("AnimationController", "No animation called: " + name);
+            Main.logger.setTag("AnimationController/" + sprite).warn("Actor has no animation called: " + name);
             return;
         }
 

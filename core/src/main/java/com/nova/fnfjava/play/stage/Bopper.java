@@ -1,9 +1,9 @@
 package com.nova.fnfjava.play.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.modding.bus.EventBus;
 import com.nova.fnfjava.modding.events.SongTimeEvent;
 import com.nova.fnfjava.modding.events.handlers.IBPMSyncedClass;
@@ -89,19 +89,19 @@ public class Bopper extends StageProp implements IBPMSyncedClass {
 
         if (name.lastIndexOf('-') != -1) {
             var correctName = name.substring(0, name.lastIndexOf('-'));
-            Gdx.app.log("Bopper", "Bopper tried to play animation \"" + name + "\" that does not exist, stripping suffixes (" + correctName + ")...");
+            Main.logger.setTag(this.getClass().getSimpleName()).warn("Bopper tried to play animation \"" + name + "\" that does not exist, stripping suffixes (" + correctName + ")...");
             return correctAnimationName(correctName);
         } else {
             if (fallback != null) {
-                if (fallback == name) {
-                    Gdx.app.error("Bopper", "Bopper tried to play animation \"" + name + "\" that does not exist! This is bad!");
+                if (fallback.equals(name)) {
+                    Main.logger.setTag(this.getClass().getSimpleName()).warn("Bopper tried to play animation \"" + name + "\" that does not exist! This is bad!");
                     return null;
                 } else {
-                    Gdx.app.log("Bopper", "Bopper tried to play animation \"" + name + "\" that does not exist, fallback to idle...");
+                    Main.logger.setTag(this.getClass().getSimpleName()).warn("Bopper tried to play animation \"" + name + "\" that does not exist, fallback to idle...");
                     return correctAnimationName("idle");
                 }
             } else {
-                Gdx.app.error("Bopper", "Bopper tried to play animation \"" + name + "\" that does not exist! This is bad!");
+                Main.logger.setTag(this.getClass().getSimpleName()).warn("Bopper tried to play animation \"" + name + "\" that does not exist! This is bad!");
                 return null;
             }
         }

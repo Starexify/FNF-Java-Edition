@@ -1,8 +1,8 @@
 package com.nova.fnfjava.play;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongRegistry;
@@ -32,7 +32,7 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         }};
 
         if (_metadata.size == 0) {
-            Gdx.app.log("Song", "[WARN] Could not find song data for songId: " + id);
+            Main.logger.setTag(this.getClass().getSimpleName()).warn("Could not find song data for songId: " + id);
             return;
         }
 
@@ -46,7 +46,7 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             if (metadata == null || metadata.playData == null) continue;
 
             if (metadata.playData.difficulties.size == 0) {
-                Gdx.app.log("Song","Warning: Song " + id + " (variation " + metadata.variation + ") has no difficulties listed in metadata!");
+                Main.logger.setTag(this.getClass().getSimpleName()).warn("Song " + id + " (variation " + metadata.variation + ") has no difficulties listed in metadata!");
                 continue;
             }
 
@@ -84,8 +84,8 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         if (variations == null) variations = new Array<>(new String[]{variation});
 
         for (String currentVariation : variations) {
-            Gdx.app.log("Song", currentVariation);
-            Gdx.app.log("Song", difficulties.toString());
+            Main.logger.setTag(this.getClass().getSimpleName()).debug(currentVariation);
+            Main.logger.setTag(this.getClass().getSimpleName()).debug(difficulties.toString());
             if (difficulties.get(currentVariation) != null && difficulties.get(currentVariation).containsKey(diffId))
                 return difficulties.get(currentVariation).get(diffId);
         }

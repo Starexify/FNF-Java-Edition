@@ -1,8 +1,8 @@
 package com.nova.fnfjava.audio;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.Conductor;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongRegistry;
@@ -39,9 +39,8 @@ public class FunkinSound {
             if (songMusicData != null) {
                 Conductor.getInstance().mapTimeChanges(songMusicData.timeChanges);
                 if (songMusicData.looped != null && !params.hasExplicitLoop) params.loop = songMusicData.looped;
-            } else {
-                Gdx.app.log("FunkinSound", "Warning: Tried and failed to find music metadata for " + key);
-            }
+            } else
+                Main.logger.setTag("FunkinSound").warn("Tried and failed to find music metadata for " + key);
         }
 
         Paths.PathsFunction pathsFunction = params.pathsFunction != null ? params.pathsFunction : Paths.PathsFunction.MUSIC;
@@ -60,7 +59,7 @@ public class FunkinSound {
                 return false;
             }
         } catch (Exception e) {
-            Gdx.app.error("FunkinSound", "Failed to load music: " + pathToUse + " - " + e.getMessage());
+            Main.logger.setTag("FunkinSound").error("Failed to load music: " + pathToUse, e);
             return false;
         }
     }

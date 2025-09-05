@@ -7,7 +7,7 @@ import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.util.MathUtil;
 
 public class LevelTitle extends TypedActorGroup<AnimatedSprite> {
-    static final int LOCK_PAD = 4;
+    public static final int LOCK_PAD = 4;
 
     public final Level level;
     public float targetY;

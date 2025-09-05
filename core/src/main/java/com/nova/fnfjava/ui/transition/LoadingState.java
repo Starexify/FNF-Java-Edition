@@ -29,8 +29,6 @@ public class LoadingState extends MusicBeatState {
     }
 
     public static void loadPlayState(PlayState.PlayStateParams params, boolean shouldStopMusic, boolean asSubState) {
-        Gdx.app.log("LoadingState", params.toString());
-
         String targetDifficulty = (params.targetDifficulty() != null) ? params.targetDifficulty() : Constants.DEFAULT_DIFFICULTY;
         String targetVariation = (params.targetVariation() != null) ? params.targetVariation() : Constants.DEFAULT_VARIATION;
 

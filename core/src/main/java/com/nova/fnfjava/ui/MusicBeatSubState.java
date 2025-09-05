@@ -43,9 +43,7 @@ public class MusicBeatSubState extends MusicBeatState {
     public void render(float delta) {
         if (bgVisible && bgColor.a > 0) ScreenUtils.clear(bgColor);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
-            main.switchState(new MainMenuState(main));
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) main.switchState(new MainMenuState(main));
 
         tryUpdate(delta);
 

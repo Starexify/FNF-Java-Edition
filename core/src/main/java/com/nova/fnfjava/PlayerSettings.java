@@ -1,6 +1,5 @@
 package com.nova.fnfjava;
 
-import com.badlogic.gdx.Gdx;
 import com.nova.fnfjava.input.Controls;
 import com.nova.fnfjava.input.KeyboardScheme;
 
@@ -23,7 +22,7 @@ public class PlayerSettings {
     }
 
     public PlayerSettings(int id){
-        Gdx.app.log("PlayerSettings", "loading player settings for id: " + id);
+        Main.logger.setTag(this.getClass().getSimpleName()).info("loading player settings for id: " + id);
 
         this.id = id;
         this.controls = new Controls("player" + id, KeyboardScheme.NONE);

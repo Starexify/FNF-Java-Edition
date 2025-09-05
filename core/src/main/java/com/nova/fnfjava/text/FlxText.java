@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 
 public class FlxText extends Label implements Disposable {
@@ -107,7 +108,7 @@ public class FlxText extends Label implements Disposable {
             this.setStyle(new Label.LabelStyle(currentFont, color));
 
         } catch (Exception e) {
-            System.err.println("Error loading font: " + font);
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Error loading font: " + font, e);
             this.setStyle(new Label.LabelStyle(new BitmapFont(), color));
         }
     }

@@ -26,7 +26,7 @@ public class MainMenuState extends MusicBeatState {
     public Image bg;
     public Image magenta;
 
-    private Actor camFollowActor;
+    public Actor camFollowActor;
 
     public boolean overrideMusic = false;
     public UIStateMachine uiStateMachine = new UIStateMachine();
@@ -185,7 +185,7 @@ public class MainMenuState extends MusicBeatState {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                Gdx.app.debug("MainMenuState", "Exiting MainMenuState...");
+                Main.logger.setTag("MainMenu").debug("MainMenuState", "Exiting MainMenuState...");
                 main.switchState(nextScreen);
             }
         }, fadeOutDuration);

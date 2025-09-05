@@ -122,7 +122,7 @@ public class Conductor {
         }
 
         if (currentTimeChange == null && bpmOverride == null && Main.sound.isMusicPlaying()) {
-            Gdx.app.log("Conductor", "WARNING: Conductor is broken, timeChanges is empty.");
+            Main.logger.setTag(this.getClass().getSimpleName()).warn("Conductor is broken, timeChanges is empty.");
         } else if (currentTimeChange != null && this.songPosition > 0.0f) {
             float songPositionMs = this.songPosition * 1000f;
             this.currentStepTime = roundDecimal((currentTimeChange.beatTime * Constants.STEPS_PER_BEAT) +
@@ -185,7 +185,7 @@ public class Conductor {
             timeChanges.add(songTimeChange);
         }
 
-        if (timeChanges.size > 0) Gdx.app.log("Conductor", "Done mapping time changes: " + timeChanges);
+        if (timeChanges.size > 0) Main.logger.setTag(this.getClass().getSimpleName()).info("Done mapping time changes: " + timeChanges);
 
         this.update(this.songPosition, false);
     }

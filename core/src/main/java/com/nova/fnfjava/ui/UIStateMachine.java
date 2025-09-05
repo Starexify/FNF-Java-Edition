@@ -1,9 +1,9 @@
 package com.nova.fnfjava.ui;
 
 import com.badlogic.ashley.signals.Signal;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Main;
 
 /**
  * Note: Not to be confust with FlxState or FlxSubState!
@@ -55,19 +55,19 @@ public class UIStateMachine {
     public boolean transition(UIState newState) {
         // Allow same-state transitions (idempotent)
         if (currentState == newState) {
-            Gdx.app.log("UIStateMachine", "State transition: " + currentState + " -> " + newState + " (no change)");
+            Main.logger.setTag(this.getClass().getSimpleName()).debug("State transition: " + currentState + " -> " + newState + " (no change)");
             return true;
         }
 
         if (!canTransition(currentState, newState)) {
-            Gdx.app.log("UIStateMachine", "Invalid state transition: " + currentState + " -> " + newState);
+            Main.logger.setTag(this.getClass().getSimpleName()).debug("Invalid state transition: " + currentState + " -> " + newState);
             return false;
         }
 
         previousState = currentState;
         currentState = newState;
 
-        Gdx.app.log("UIStateMachine", "State transition: " + previousState + " -> " + currentState);
+        Main.logger.setTag(this.getClass().getSimpleName()).debug("State transition: " + previousState + " -> " + currentState);
 
         // Notify listeners using Signal
         onStateChanged.dispatch(new UIStateTransition(previousState, currentState));

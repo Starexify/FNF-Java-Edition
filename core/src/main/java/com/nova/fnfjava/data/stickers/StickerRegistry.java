@@ -1,7 +1,7 @@
 package com.nova.fnfjava.data.stickers;
 
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.BaseRegistry;
 import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.transition.stickers.StickerPack;
@@ -11,7 +11,6 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
     public static StickerRegistry instance;
 
     public final Json parser = new Json();
-    public final Array<String> parseErrors = new Array<>();
 
     public StickerRegistry() {
         super("STICKER", "stickerpacks", StickerPack::new);
@@ -35,23 +34,18 @@ public class StickerRegistry extends BaseRegistry<StickerPack, StickerData, Stic
 
     @Override
     public StickerData parseEntryData(String id) {
-        parseErrors.clear();
-
         try {
-            JsonFile fileResult = loadEntryFile(id);
-            StickerData stickerData = parser.fromJson(StickerData.class, fileResult.contents());
+            JsonFile entryFile = loadEntryFile(id);
+            StickerData stickerData = parser.fromJson(StickerData.class, entryFile.contents());
 
             if (stickerData != null) {
                 return stickerData;
             } else {
-                parseErrors.add("Failed to parse JSON data");
-                printErrors(parseErrors, id);
+                Main.logger.setTag(registryId).warn("Failed to parse JSON sticker data from file: " + entryFile.fileName());
                 return null;
             }
-
         } catch (Exception e) {
-            parseErrors.add("Exception during parsing: " + e.getMessage());
-            printErrors(parseErrors, id);
+            Main.logger.setTag(registryId).error("Failed to parse JSON data for sticker: " + id, e);
             return null;
         }
     }

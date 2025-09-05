@@ -1,6 +1,6 @@
 package com.nova.fnfjava.ui.story;
 
-import com.badlogic.gdx.Gdx;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.story.level.LevelData;
 import com.nova.fnfjava.play.stage.Bopper;
@@ -37,7 +37,7 @@ public class LevelProp extends Bopper {
         }
 
         if (this.atlas == null || this.atlas.getRegions().size == 0) {
-            Gdx.app.error("LevelProp", "ERROR: Could not build texture for level prop (" + propData.assetPath +").");
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Could not build texture for level prop (" + propData.assetPath +").");
             return;
         }
 

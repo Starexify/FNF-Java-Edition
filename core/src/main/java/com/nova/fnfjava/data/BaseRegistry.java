@@ -3,6 +3,7 @@ package com.nova.fnfjava.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 
 public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
@@ -17,7 +18,7 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         this.entries = new ObjectMap<>();
         this.constructor = constructor;
 
-        Gdx.app.log(getClass().getSimpleName(), "Initialized " + registryId + " registry");
+        Main.logger.setTag("Registry").info("Initialized " + registryId + " registry");
     }
 
     // Pre-loads all registry entries from JSON into memory for fast access
@@ -28,7 +29,7 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         Array<String> unscriptedEntryIds = new Array<>();
         for (String entryId : entryIdList) if (!entries.containsKey(entryId)) unscriptedEntryIds.add(entryId);
 
-        Gdx.app.log(registryId, "Parsing " + unscriptedEntryIds.size + " unscripted entries...");
+        Main.logger.setTag(registryId).info("Parsing " + unscriptedEntryIds.size + " unscripted entries...");
 
         for (String entryId : unscriptedEntryIds) {
             try {
@@ -38,10 +39,10 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
                     T entry = createEntry(entryId, data, defaultParams);
                     entries.put(entryId, entry);
 
-                    Gdx.app.log(registryId, "Loaded entry data: " + entryId);
+                    Main.logger.setTag(registryId).info("Loaded entry data: " + entryId);
                 }
             } catch (Exception e) {
-                Gdx.app.error(registryId, "Failed to load entry data: " + entryId, e);
+                Main.logger.setTag(registryId).error("Failed to load entry data: " + entryId, e);
             }
         }
     }
@@ -65,12 +66,6 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
     }
 
     public abstract J parseEntryData(String id);
-
-    public void printErrors(Array<String> errors, String id) {
-        Gdx.app.error(registryId, "Failed to parse data for " + id);
-
-        for (String error : errors) Gdx.app.error(registryId, error);
-    }
 
     public T createEntry(String id, J data, P params) {
         T entry = constructor.create(id, params);

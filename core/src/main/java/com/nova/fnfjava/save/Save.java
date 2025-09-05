@@ -3,6 +3,7 @@ package com.nova.fnfjava.save;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
+import com.nova.fnfjava.Main;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class Save {
     }
 
     public static Save load() {
-        Gdx.app.log("SAVE", "Loading save...");
+        Main.logger.setTag("SAVE").info("Loading save...");
         Save loadedSave = new Save();
         if (instance == null) instance = loadedSave;
         return loadedSave;
@@ -62,9 +63,9 @@ public class Save {
     public void flush() {
         try (Output output = new Output(new FileOutputStream(getSaveFilePath()))) {
             kryo.writeObject(output, this);
-            Gdx.app.log("SAVE", "Save flushed successfully");
+            Main.logger.setTag("SAVE").info("Save flushed successfully");
         } catch (Exception e) {
-            Gdx.app.error("SAVE", "Failed to flush save: " + e.getMessage());
+            Main.logger.setTag("SAVE").error("Failed to flush save", e);
         }
     }
 

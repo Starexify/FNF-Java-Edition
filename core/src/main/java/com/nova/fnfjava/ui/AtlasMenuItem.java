@@ -1,7 +1,6 @@
 package com.nova.fnfjava.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.nova.fnfjava.Axes;
 
 public class AtlasMenuItem extends MenuTypedList.MenuListItem {
     public TextureAtlas frames;

@@ -10,6 +10,5 @@ public class PlayState extends MusicBeatSubState {
         super(main);
     }
 
-
     public record PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation) {}
 }

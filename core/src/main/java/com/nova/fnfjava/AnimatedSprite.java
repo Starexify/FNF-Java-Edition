@@ -51,14 +51,14 @@ public class AnimatedSprite extends Actor {
             frameWidth = animated ? texture.getHeight() : texture.getWidth();
             frameWidth = Math.min(frameWidth, texture.getWidth());
         } else if (frameWidth > texture.getWidth()) {
-            Gdx.app.error("AnimatedSprite", "Warning: frameWidth " + frameWidth + " is larger than texture width " + texture.getWidth());
+            Main.logger.setTag(this.getClass().getSimpleName()).warn("frameWidth " + frameWidth + " is larger than texture width " + texture.getWidth());
         }
 
         if (frameHeight == 0) {
             frameHeight = animated ? frameWidth : texture.getHeight();
             frameHeight = Math.min(frameHeight, texture.getHeight());
         } else if (frameHeight > texture.getHeight()) {
-            Gdx.app.error("AnimatedSprite", "Warning: frameHeight " + frameHeight + " is larger than texture height " + texture.getHeight());
+            Main.logger.setTag(this.getClass().getSimpleName()).warn("frameHeight " + frameHeight + " is larger than texture height " + texture.getHeight());
         }
 
         this.frameWidth = frameWidth;

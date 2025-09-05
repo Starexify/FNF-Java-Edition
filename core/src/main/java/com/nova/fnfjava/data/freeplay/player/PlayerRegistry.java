@@ -1,9 +1,9 @@
 package com.nova.fnfjava.data.freeplay.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.BaseRegistry;
 import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.freeplay.charselect.PlayableCharacter;
@@ -46,9 +46,14 @@ public class PlayerRegistry extends BaseRegistry<PlayableCharacter, PlayerData, 
         try {
             JsonFile entryFile = loadEntryFile(id);
             PlayerData playerData = parser.fromJson(PlayerData.class, entryFile.contents());
-            return playerData;
+            if (playerData != null) {
+                return playerData;
+            } else {
+                Main.logger.setTag(registryId).warn("Failed to parse JSON player data from file: " + entryFile.fileName());
+                return null;
+            }
         } catch (Exception e) {
-            Gdx.app.error("PlayerRegistry", "Failed to parse player data for: " + id, e);
+            Main.logger.setTag(registryId).error("Failed to parse JSON data for player: " + id, e);
             return null;
         }
     }

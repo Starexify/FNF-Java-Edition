@@ -1,8 +1,9 @@
 package com.nova.fnfjava.api.discord;
 
-import com.badlogic.gdx.Gdx;
+import com.nova.fnfjava.Main;
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.LogLevel;
 import de.jcm.discordgamesdk.activity.Activity;
 
 import java.time.Instant;
@@ -26,7 +27,7 @@ public class DiscordClient {
     public static void init() {
         if (initialized) return;
 
-        Gdx.app.log("DISCORD", "Initializing connection...");
+        Main.logger.setTag("DISCORD").info("Initializing connection...");
 
         try (CreateParams params = new CreateParams()) {
             params.setClientID(CLIENT_ID);
@@ -34,24 +35,25 @@ public class DiscordClient {
             try {
                 core = new Core(params);
                 initialized = true;
+                core.setLogHook(LogLevel.WARN, Core.DEFAULT_LOG_HOOK);
 
                 createCallbackDaemon();
 
                 setPresence(new DiscordPresenceParams(null, "Just Started Playing"));
             } catch (Exception e) {
-                Gdx.app.error("DISCORD", "" + e);
+                Main.logger.setTag("DISCORD").warn("Failed to initialize connection with Discord", e);
                 initialized = false;
             }
         }
     }
 
     public static void shutdown() {
-        Gdx.app.log("DISCORD", "Shutting down...");
+        Main.logger.setTag("DISCORD").info("Shutting down...");
         try {
             if (callbackExecutor != null) callbackExecutor.shutdown();
             if (core != null) core.close();
         } catch (Exception e) {
-            Gdx.app.error("DISCORD", "Error during shutdown: " + e.getMessage());
+            Main.logger.setTag("DISCORD").error("Error during shutdown: ", e);
         }
         initialized = false;
     }
@@ -62,7 +64,7 @@ public class DiscordClient {
         try (Activity activity = buildActivity(params)) {
             core.activityManager().updateActivity(activity);
         } catch (Exception e) {
-            Gdx.app.error("DISCORD", "Failed to update presence: " + e.getMessage());
+            Main.logger.setTag("DISCORD").error("Failed to update presence: ", e);
         }
     }
 
@@ -91,7 +93,7 @@ public class DiscordClient {
                 try {
                     core.runCallbacks();
                 } catch (Exception e) {
-                    Gdx.app.error("DISCORD", "Callback error: " + e.getMessage());
+                    Main.logger.setTag("DISCORD").error("Callback error: ", e);
                 }
             }
         }, 0, 2, TimeUnit.SECONDS);
