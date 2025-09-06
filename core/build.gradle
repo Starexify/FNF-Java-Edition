@@ -1,10 +1,6 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
-repositories {
-  maven { url 'https://repo.spongepowered.org/maven' }
-}
-
 dependencies {
   api "com.badlogicgames.ashley:ashley:$ashleyVersion"
   api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
@@ -21,6 +17,12 @@ dependencies {
   api "com.badlogicgames.gdx-video:gdx-video-lwjgl3:$gdxVideoVersion"
 
   api "com.github.JnCrMx:discord-game-sdk4j:v1.0.0"
+
+  // For Mixin
+  implementation "org.spongepowered:mixin:0.8.5"
+  annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+  implementation "com.google.guava:guava:32.1.2-jre"
+  implementation "org.ow2.asm:asm-tree:9.5"
 
   if (enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"

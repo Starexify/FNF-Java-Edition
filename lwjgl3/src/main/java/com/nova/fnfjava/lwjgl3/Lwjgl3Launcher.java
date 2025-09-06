@@ -4,20 +4,37 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.TestClass;
 import com.nova.fnfjava.util.Constants;
+import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.MixinEnvironment;
+import org.spongepowered.asm.mixin.Mixins;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
 
     public static void main(String[] args) {
+        System.setProperty("mixin.debug", "true");
+        System.setProperty("mixin.debug.verbose", "true");
+        System.setProperty("mixin.debug.export", "true");
+        System.setProperty("mixin.env.disableRefMap", "true");
+
+        MixinBootstrap.init();
+        MixinEnvironment.init(MixinEnvironment.Phase.DEFAULT);
+
+        Mixins.addConfiguration("mixin.fnfjava.json");
+
+        System.out.println("=== Testing Mixin ===");
+        TestClass.method();
+        System.out.println("=== End Test ===");
+
         if (StartupHelper.startNewJvmIfRequired()) return;
         createApplication();
     }
 
     private static Lwjgl3Application createApplication() {
         Main main = new Main();
-        Lwjgl3Application app = new Lwjgl3Application(main, getDefaultConfiguration());
-        return app;
+        return new Lwjgl3Application(main, getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

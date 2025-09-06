@@ -29,7 +29,7 @@ public class Main extends Game {
 
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 
-    public static FunkinLogger logger;
+    public static FunkinLogger logger = new FunkinLogger("Funkin", 3);
 
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
@@ -45,8 +45,6 @@ public class Main extends Game {
     public void create() {
         try {
             instance = this;
-
-            logger = new FunkinLogger("Funkin", 3);
 
             setupGame();
         } catch (Exception e) {
