@@ -26,14 +26,19 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         this.id = id;
 
         difficulties = new ObjectMap<>();
+        _metadata = new ObjectMap<>();
+    }
 
-        _metadata = getData() == null ? new ObjectMap<>() : new ObjectMap<>() {{
-            put(Constants.DEFAULT_VARIATION, getData());
-        }};
+    @Override
+    public void loadData(SongData.SongMetadata data) {
+        if (data == null) throw new IllegalArgumentException("SongMetadata cannot be null");
+        this.metadata = data;
 
-        if (_metadata.size == 0) {
+        _metadata.clear();
+        if (data != null) {
+            _metadata.put(Constants.DEFAULT_VARIATION, data);
+        } else {
             Main.logger.setTag(this.getClass().getSimpleName()).warn("Could not find song data for songId: " + id);
-            return;
         }
 
         populateDifficulties();
@@ -173,12 +178,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
     @Override
     public SongData.SongMetadata getData() {
         return metadata;
-    }
-
-    @Override
-    public void loadData(SongData.SongMetadata data) {
-        if (data == null) throw new IllegalArgumentException("SongMetadata cannot be null");
-        this.metadata = data;
     }
 
     // Getters

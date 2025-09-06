@@ -78,16 +78,9 @@ public class Main extends Game {
         transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         logger.info("Parsing game data...");
-        SongRegistry.initialize();
         SongRegistry.instance.loadEntries();
-
-        LevelRegistry.initialize();
         LevelRegistry.instance.loadEntries();
-
-        PlayerRegistry.initialize();
         PlayerRegistry.instance.loadEntries();
-
-        StickerRegistry.initialize();
         StickerRegistry.instance.loadEntries();
 
         ReloadAssetsDebugPlugin.initialize();

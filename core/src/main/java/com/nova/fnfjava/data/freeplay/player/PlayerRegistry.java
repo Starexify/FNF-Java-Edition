@@ -1,31 +1,17 @@
 package com.nova.fnfjava.data.freeplay.player;
 
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.BaseRegistry;
-import com.nova.fnfjava.data.JsonFile;
 import com.nova.fnfjava.ui.freeplay.charselect.PlayableCharacter;
 
 public class PlayerRegistry extends BaseRegistry<PlayableCharacter, PlayerData, PlayerRegistry.PlayerEntryParams> {
-    public static PlayerRegistry instance;
+    public static final PlayerRegistry instance = new PlayerRegistry();
 
-    public final Json parser = new Json();
     public ObjectMap<String, String> ownedCharacterIds = new ObjectMap<>();
 
     public PlayerRegistry() {
         super("PLAYER", "players", PlayableCharacter::new);
-
-        setupParser();
-    }
-
-    public static void initialize() {
-        if (instance == null) instance = new PlayerRegistry();
-    }
-
-    public void setupParser() {
-        parser.setIgnoreUnknownFields(true);
     }
 
     @Override
@@ -43,19 +29,7 @@ public class PlayerRegistry extends BaseRegistry<PlayableCharacter, PlayerData, 
 
     @Override
     public PlayerData parseEntryData(String id) {
-        try {
-            JsonFile entryFile = loadEntryFile(id);
-            PlayerData playerData = parser.fromJson(PlayerData.class, entryFile.contents());
-            if (playerData != null) {
-                return playerData;
-            } else {
-                Main.logger.setTag(registryId).warn("Failed to parse JSON player data from file: " + entryFile.fileName());
-                return null;
-            }
-        } catch (Exception e) {
-            Main.logger.setTag(registryId).error("Failed to parse JSON data for player: " + id, e);
-            return null;
-        }
+        return parseJsonData(id, PlayerData.class);
     }
 
     public boolean isCharacterOwned(String characterId) {

@@ -2,6 +2,7 @@ package com.nova.fnfjava.data;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
@@ -10,7 +11,9 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
     public final String registryId;
     public final String dataFilePath;
     public final ObjectMap<String, T> entries;
-    private final EntryConstructor<T, P> constructor;
+    public final EntryConstructor<T, P> constructor;
+
+    public final Json parser = new Json();
 
     public BaseRegistry(String registryId, String dataFilePath, EntryConstructor<T, P> constructor) {
         this.registryId = registryId;
@@ -18,7 +21,13 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         this.entries = new ObjectMap<>();
         this.constructor = constructor;
 
+        setupParser();
+
         Main.logger.setTag("Registry").info("Initialized " + registryId + " registry");
+    }
+
+    public void setupParser() {
+        parser.setIgnoreUnknownFields(true);
     }
 
     // Pre-loads all registry entries from JSON into memory for fast access
@@ -65,8 +74,6 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         return fetchEntry(id, null);
     }
 
-    public abstract J parseEntryData(String id);
-
     public T createEntry(String id, J data, P params) {
         T entry = constructor.create(id, params);
         entry.loadData(data);
@@ -78,6 +85,25 @@ public abstract class BaseRegistry<T extends IRegistryEntry<J>, J, P> {
         entries.clear();
     }
 
+    // Generic JSON parsing method
+    public J parseJsonData(String id, Class<J> dataClass) {
+        try {
+            JsonFile entryFile = loadEntryFile(id);
+            J data = parser.fromJson(dataClass, entryFile.contents());
+
+            if (data != null) {
+                return data;
+            } else {
+                Main.logger.setTag(registryId).warn("Failed to parse JSON " + registryId.toLowerCase() + " data from file: " + entryFile.fileName());
+                return null;
+            }
+        } catch (Exception e) {
+            Main.logger.setTag(registryId).error("Failed to parse JSON + " + registryId.toLowerCase() + " + data for: " + id, e);
+            return null;
+        }
+    }
+
+    public abstract J parseEntryData(String id);
     public abstract P getDefaultParams(String id, J data);
 
     @FunctionalInterface

@@ -16,7 +16,7 @@ public class AtlasMenuItem extends MenuTypedList.MenuListItem {
             ownsAtlas = true;
         }
 
-        animation.addByPrefix("idle", name + " idle", 24);
+        animation.addByPrefix("idle", name + " idle", 24); // TODO: For some reason it doesn't find the idle animation in changeAnim but somehow works?
         animation.addByPrefix("selected", name + " selected", 24);
     }
 

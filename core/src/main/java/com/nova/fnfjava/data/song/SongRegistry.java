@@ -14,25 +14,17 @@ import com.nova.fnfjava.play.Song;
 import com.nova.fnfjava.util.Constants;
 
 public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, SongRegistry.SongEntryParams> {
-    public static SongRegistry instance;
+    public static final SongRegistry instance = new SongRegistry();
 
     public static String DEFAULT_GENERATEDBY = Constants.TITLE + "-" + Constants.VERSION;
 
-    public final Json parser;
-
     public SongRegistry() {
         super("SONG", "songs", Song::new);
-        parser = new Json();
-
-        setupParser();
     }
 
-    public static void initialize() {
-        if (instance == null) instance = new SongRegistry();
-    }
-
+    @Override
     public void setupParser() {
-        parser.setIgnoreUnknownFields(true);
+        super.setupParser();
 
         parser.setSerializer(SongData.SongTimeFormat.class, new Json.Serializer<SongData.SongTimeFormat>() {
             @Override
