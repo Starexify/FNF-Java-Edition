@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.animation.AnimationController;
 
 import java.util.Comparator;
@@ -38,7 +39,7 @@ public class AnimationData {
 
     public void createAnimation(TextureAtlas atlas) {
         if (atlas == null) {
-            System.err.println("Cannot create animation '" + name + "': no atlas provided");
+            Main.logger.setTag("AnimationData").warn("Cannot create animation '" + name + "': no atlas provided");
             return;
         }
 
@@ -49,9 +50,15 @@ public class AnimationData {
             for (int index : frameIndices) {
                 TextureAtlas.AtlasRegion region = atlas.findRegion(prefix, index);
                 if (region != null) {
-                    TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
-                    if (flipX || flipY) frame.flip(flipX, flipY);
-                    frames.add(frame);
+                    if (region.rotate) {
+                        // Create a properly rotated TextureRegion
+                        TextureRegion rotatedFrame = new TextureRegion(region.getTexture(), region.getRegionX(), region.getRegionY(), region.getRegionHeight(), region.getRegionWidth());
+                        frames.add(rotatedFrame);
+                    } else {
+                        TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
+                        if (flipX || flipY) frame.flip(flipX, flipY);
+                        frames.add(frame);
+                    }
                 }
             }
         } else {
@@ -60,9 +67,14 @@ public class AnimationData {
             foundRegions.sort(Comparator.comparingInt(a -> a.index));
 
             for (TextureAtlas.AtlasRegion region : foundRegions) {
-                TextureRegion frame = new TextureRegion(region);
-                if (flipX || flipY) frame.flip(flipX, flipY);
-                frames.add(frame);
+                if (region.rotate) {
+                    TextureRegion rotatedFrame = new TextureRegion(region.getTexture(), region.getRegionX(), region.getRegionY(), region.getRegionHeight(), region.getRegionWidth());
+                    frames.add(rotatedFrame);
+                } else {
+                    TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
+                    if (flipX || flipY) frame.flip(flipX, flipY);
+                    frames.add(frame);
+                }
             }
         }
 
@@ -73,7 +85,7 @@ public class AnimationData {
                 looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL
             );
         } else {
-            System.err.println("No frames found for animation: " + name + " with prefix: " + prefix);
+            Main.logger.setTag("AnimationData").warn("No frames found for animation: " + name + " with prefix: " + prefix + " in atlas: " + atlas);
         }
     }
 

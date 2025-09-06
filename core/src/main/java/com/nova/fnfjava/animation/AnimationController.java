@@ -136,6 +136,8 @@ public class AnimationController {
             curAnim = newAnim;
             currentAnimName = name;
             curAnim.play(force, 0);
+
+            sprite.dirty = true;
         }
     }
 

@@ -8,276 +8,276 @@ confirm
   xy: 1158, 366
   size: 395, 367
   orig: 396, 368
-  offset: 1, 0
+  offset: -1, 0
   index: 1
 confirm
   rotate: false
   xy: 1158, 366
   size: 395, 367
   orig: 396, 368
-  offset: 1, 0
+  offset: -1, 0
   index: 2
 confirm
   rotate: false
   xy: 766, 366
   size: 376, 365
   orig: 396, 368
-  offset: 0, 3
+  offset: 0, -3
   index: 3
 confirm
   rotate: false
   xy: 766, 366
   size: 376, 365
   orig: 396, 368
-  offset: 0, 3
+  offset: 0, -3
   index: 4
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 5
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 6
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 7
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 8
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 9
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 10
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 11
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 12
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 13
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 14
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 15
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 16
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 17
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 18
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 19
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 20
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 21
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 22
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 23
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 24
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 25
 confirm
   rotate: false
   xy: 1569, 366
   size: 384, 367
   orig: 396, 368
-  offset: 0, 1
+  offset: 0, -1
   index: 26
 idle
-  rotate: false
+  rotate: true
   xy: 8, 8
   size: 355, 335
   orig: 349, 366
-  offset: 14, 10
+  offset: -14, -10
   index: 1
 idle
-  rotate: false
+  rotate: true
   xy: 8, 8
   size: 355, 335
   orig: 349, 366
-  offset: 14, 10
+  offset: -14, -10
   index: 2
 idle
-  rotate: false
+  rotate: true
   xy: 379, 8
   size: 361, 341
   orig: 349, 366
-  offset: 8, 5
+  offset: -8, -5
   index: 3
 idle
-  rotate: false
+  rotate: true
   xy: 379, 8
   size: 361, 341
   orig: 349, 366
-  offset: 8, 5
+  offset: -8, -5
   index: 4
 idle
-  rotate: false
+  rotate: true
   xy: 389, 366
   size: 361, 345
   orig: 349, 366
-  offset: 1, 5
+  offset: -1, -5
   index: 5
 idle
-  rotate: false
+  rotate: true
   xy: 756, 8
   size: 361, 342
   orig: 349, 366
-  offset: 1, 5
+  offset: -1, -5
   index: 6
 idle
-  rotate: false
+  rotate: true
   xy: 8, 365
   size: 365, 343
   orig: 349, 366
-  offset: 0, 1
+  offset: 0, -1
   index: 7
 idle
-  rotate: false
+  rotate: true
   xy: 1133, 8
   size: 365, 342
   orig: 349, 366
-  offset: 0, 1
+  offset: 0, -1
   index: 8
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366
   offset: 0, 0
   index: 9
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366
   offset: 0, 0
   index: 10
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366
   offset: 0, 0
   index: 11
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366
   offset: 0, 0
   index: 12
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366
   offset: 0, 0
   index: 13
 idle
-  rotate: false
+  rotate: true
   xy: 1514, 8
   size: 366, 342
   orig: 349, 366

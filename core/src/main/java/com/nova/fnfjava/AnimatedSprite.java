@@ -106,15 +106,30 @@ public class AnimatedSprite extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         TextureRegion currentFrame = getCurrentDisplayFrame();
-        if (currentFrame != null) {
-            batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
+        if (currentFrame == null) return;
 
-            float drawX = getX() - offset.x;
-            float drawY = getY() - offset.y;
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
 
-            batch.draw(currentFrame, drawX, drawY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-            batch.setColor(1, 1, 1, 1);
+        float drawX = getX() - offset.x;
+        float drawY = getY() - offset.y;
+        float rotationToApply = getRotation();
+
+        if (currentFrame instanceof TextureAtlas.AtlasRegion) {
+            TextureAtlas.AtlasRegion atlasFrame = (TextureAtlas.AtlasRegion) currentFrame;
+            drawX += atlasFrame.offsetX;
+            drawY += atlasFrame.offsetY;
+
+            // Check if this atlas region was rotated
+            if (atlasFrame.rotate) {
+                rotationToApply += 90f;
+                Main.logger.info("Applying rotation: " + rotationToApply + " to frame: " + atlasFrame.name);
+                Main.logger.info("Frame dimensions: " + currentFrame.getRegionWidth() + "x" + currentFrame.getRegionHeight());
+            }
         }
+
+        batch.draw(currentFrame, drawX, drawY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), rotationToApply);
+
+        batch.setColor(1, 1, 1, 1);
     }
 
     @Override
@@ -194,6 +209,11 @@ public class AnimatedSprite extends Actor {
             // Center origin on the frame
             setOrigin(currentFrameWidth * 0.5f, currentFrameHeight * 0.5f);
         }
+    }
+
+    public void calcFrame(boolean force) {
+        if (!dirty && !force) return;
+
     }
 
     public void centerOrigin() {

@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "com.nova.fnfjava.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TestClassMixin"
+  ],
+  "minVersion": "0.8",
+  "verbose": true
+}
