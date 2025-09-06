@@ -110,6 +110,18 @@ public class SongData {
             this.beatTime = beatTime;
             this.beatTuplets = (beatTuplets != null) ? new Array<>(beatTuplets) : new Array<>(DEFAULT_BEAT_TUPLETS);
         }
+
+        @Override
+        public String toString() {
+            return "SongTimeChange{" +
+                "timeStamp=" + timeStamp +
+                ", bpm=" + bpm +
+                ", beatTime=" + beatTime +
+                ", timeSignatureNum=" + timeSignatureNum +
+                ", timeSignatureDen=" + timeSignatureDen +
+                ", beatTuplets=" + beatTuplets +
+                '}';
+        }
     }
 
     public static class SongOffsets {

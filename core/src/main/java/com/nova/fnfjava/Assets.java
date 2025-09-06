@@ -30,14 +30,6 @@ public class Assets {
         return Main.assetManager.get(path, TextureAtlas.class);
     }
 
-    public static void loadAtlas(String path) {
-        Main.assetManager.load(path, TextureAtlas.class);
-    }
-
-    public static void loadTexture(String path) {
-        Main.assetManager.load(path, Texture.class);
-    }
-
     public static boolean exists(String path) {
         return Gdx.files.internal(path).exists();
     }
@@ -49,7 +41,6 @@ public class Assets {
     public static String getText(String path) {
         return Gdx.files.internal(path).readString();
     }
-
 
     /**
      * Creates or retrieves a flat colored rectangular texture, similar to FlxG.bitmap.create
