@@ -36,7 +36,7 @@ dependencies {
   implementation project(':core')
 
   // For Mixin
-  implementation "org.spongepowered:mixin:0.8.5"
+  //implementation "org.spongepowered:mixin:0.8.5"
 /*  implementation "com.google.guava:guava:32.1.2-jre"
   implementation "org.ow2.asm:asm-tree:9.5"*/
 
