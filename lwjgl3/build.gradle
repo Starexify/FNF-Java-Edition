@@ -14,6 +14,7 @@ plugins {
 }
 apply plugin: 'io.github.fourlastor.construo'
 
+
 import io.github.fourlastor.construo.Target
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
@@ -23,7 +24,7 @@ eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 21
 java.targetCompatibility = 21
 if (JavaVersion.current().isJava9Compatible()) {
-  compileJava.options.release.set(21)
+        compileJava.options.release.set(21)
 }
 
 dependencies {
@@ -33,50 +34,39 @@ dependencies {
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   implementation project(':core')
 
-  implementation 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
-  annotationProcessor 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
-
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion"
       implementation "io.github.berstanio:gdx-svmhelper-extension-freetype:$graalHelperVersion"
     }
 }
 
-compileJava {
-  options.compilerArgs += [
-    '-Amixin.disableRefMap=true',
-    '-Amixin.obf.disableConstraints=true',
-    '-Amixin.env.disableRefMap=true'
-  ]
-}
-
 def os = System.properties['os.name'].toLowerCase()
 
 run {
   workingDir = rootProject.file('assets').path
-  // You can uncomment the next line if your IDE claims a build failure even when the app closed properly.
+// You can uncomment the next line if your IDE claims a build failure even when the app closed properly.
   //setIgnoreExitValue(true)
 
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
 }
 
 jar {
-  // sets the name of the .jar file this produces to the name of the game or app, with the version after.
+// sets the name of the .jar file this produces to the name of the game or app, with the version after.
   archiveFileName.set("${appName}-${projectVersion}.jar")
-  // the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
+// the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   dependsOn configurations.runtimeClasspath
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-  // these "exclude" lines remove some unnecessary duplicate files in the output JAR.
+// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
   exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
   dependencies {
     exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
   }
-  // setting the manifest makes the JAR runnable.
+// setting the manifest makes the JAR runnable.
   manifest {
     attributes 'Main-Class': project.mainClassName
   }
-  // this last step may help on some OSes that need extra instruction to make runnable JARs.
+// this last step may help on some OSes that need extra instruction to make runnable JARs.
   doLast {
     file(archiveFile).setExecutable(true, false)
   }
