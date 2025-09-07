@@ -7,6 +7,7 @@ import com.nova.fnfjava.modding.events.handlers.IEventHandler;
 
 public class EventBus {
     public static EventBus instance;
+
     public final ObjectMap<Class<? extends Event>, Array<Object>> listeners = new ObjectMap<>();
 
     public static EventBus getInstance() {

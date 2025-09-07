@@ -13,6 +13,8 @@ import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.input.CursorHandler;
+import com.nova.fnfjava.modding.FunkyLoadingScreen;
+import com.nova.fnfjava.modding.loader.FunkyModLoader;
 import com.nova.fnfjava.util.RandomUtil;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
@@ -27,9 +29,11 @@ import games.rednblack.miniaudio.MiniAudio;
 public class Main extends Game {
     public static Main instance;
 
+    public FunkyModLoader modLoader;
+
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 
-    public static FunkinLogger logger = new FunkinLogger("Funkin", 3);
+    public static FunkinLogger logger;
 
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
@@ -45,7 +49,7 @@ public class Main extends Game {
     public void create() {
         try {
             instance = this;
-
+            logger = new FunkinLogger("Funkin", 3);
             setupGame();
         } catch (Exception e) {
             Main.logger.setTag("Main").warn("Error during initialization", e);
@@ -73,6 +77,8 @@ public class Main extends Game {
 
         DiscordClient.getInstance().init();
 
+        startModLoading();
+
         transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         logger.info("Parsing game data...");
@@ -82,21 +88,34 @@ public class Main extends Game {
         StickerRegistry.instance.loadEntries();
 
         ReloadAssetsDebugPlugin.initialize();
-
         PlayerSettings.init();
+    }
 
-        setScreen(new TitleState(this));
+    public void startModLoading() {
+        modLoader = new FunkyModLoader();
+
+        // Instead of loading immediately, show loading screen
+        Screen titleScreen = new TitleState(this); // Your target screen
+        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
+    }
+
+    public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {
+        transitionManager.setScreen(newScreen, skipOutTransition, skipInTransition);
     }
 
     public void switchState(Screen newScreen) {
-        transitionManager.setScreen(newScreen);
+        switchState(newScreen, true, true);
     }
 
     @Override
     public void render() {
         super.render();
 
+        if (modLoader != null) modLoader.updateMods();
+
         ReloadAssetsDebugPlugin.update();
+
+        if (modLoader != null) modLoader.renderMods();
 
         if (Preferences.getDebugDisplay()) {
             spriteBatch.begin();
@@ -116,6 +135,8 @@ public class Main extends Game {
         super.pause();
 
         sound.pause();
+
+        if (modLoader != null) modLoader.pauseMods();
     }
 
     @Override
@@ -123,11 +144,15 @@ public class Main extends Game {
         super.resume();
 
         sound.resume();
+
+        if (modLoader != null) modLoader.resumeMods();
     }
 
     @Override
     public void dispose() {
+        if (modLoader != null) modLoader.dispose();
         super.dispose();
+
         if (DiscordClient.instance != null) DiscordClient.shutdown();
         if (sound != null) sound.dispose();
         if (spriteBatch != null) spriteBatch.dispose();

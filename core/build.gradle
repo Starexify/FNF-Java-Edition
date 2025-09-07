@@ -9,6 +9,7 @@ dependencies {
   api "com.esotericsoftware:kryo:$kryoVersion"
   api "com.kotcrab.vis:vis-ui:$visUiVersion"
   api "space.earlygrey:simple-graphs:$simpleGraphsVersion"
+
   api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion"
   api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion:natives-desktop"
 

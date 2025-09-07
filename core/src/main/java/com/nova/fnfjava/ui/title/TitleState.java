@@ -191,7 +191,7 @@ public class TitleState extends MusicBeatState {
             attractTimer.cancel();
             attractTimer = null;
         }
-        main.switchState(new MainMenuState(main));
+        main.switchState(new MainMenuState(main), true, false);
     }
 
     public void createCoolText(Array<String> textArray) {

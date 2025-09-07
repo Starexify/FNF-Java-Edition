@@ -41,7 +41,7 @@ public class DiscordClient {
 
                 setPresence(new DiscordPresenceParams(null, "Just Started Playing"));
             } catch (Exception e) {
-                Main.logger.setTag("DISCORD").warn("Failed to initialize connection with Discord", e);
+                //Main.logger.setTag("DISCORD").warn("Failed to initialize connection with Discord", e);
                 initialized = false;
             }
         }

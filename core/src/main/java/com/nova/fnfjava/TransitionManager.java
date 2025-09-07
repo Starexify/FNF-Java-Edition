@@ -15,8 +15,8 @@ import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
 
 public class TransitionManager {
-    private final Game game;
-    private final int screenWidth, screenHeight;
+    public final Game game;
+    public final int screenWidth, screenHeight;
 
     public TransitionManager(Game game, int screenWidth, int screenHeight) {
         this.game = game;
@@ -24,24 +24,31 @@ public class TransitionManager {
         this.screenHeight = screenHeight;
     }
 
-    public void setScreen(final Screen screen) {
+    public void setScreen(final Screen screen, boolean skipOutTransition, boolean skipInTransition) {
         Screen current = game.getScreen();
 
         if (current == null) {
-            // First screen: just show with transition in
+            // First screen: just show with transition in (unless skipped)
             game.setScreen(screen);
-            startTransition(screen, true, null);
+            if (!skipInTransition) {
+                startTransition(screen, true, null);
+            }
             return;
         }
 
-        // Transition out current, then in new one
-        startTransition(current, false, () -> {
+        if (skipOutTransition) {
             game.setScreen(screen);
-            startTransition(screen, true, null);
-        });
+            if (!skipInTransition) startTransition(screen, true, null);
+        } else {
+            // Transition out current, then in new one
+            startTransition(current, false, () -> {
+                game.setScreen(screen);
+                if (!skipInTransition) startTransition(screen, true, null);
+            });
+        }
     }
 
-    private void startTransition(Screen screen, boolean in, Runnable onComplete) {
+    public void startTransition(Screen screen, boolean in, Runnable onComplete) {
         if (!(screen instanceof TransitionableScreenAdapter)) {
             if (onComplete != null) onComplete.run();
             return;
@@ -62,14 +69,14 @@ public class TransitionManager {
         overlay.addAction(action);
     }
 
-    private Actor createOverlay(Color color, Stage stage) {
+    public Actor createOverlay(Color color, Stage stage) {
         Actor overlay = createWipeOverlay(color);
         stage.addActor(overlay);
         overlay.toFront();
         return overlay;
     }
 
-    private Action createTransitionAction(TransitionableScreenAdapter.TransitionConfig config, Actor overlay, boolean in, Runnable onComplete) {
+    public Action createTransitionAction(TransitionableScreenAdapter.TransitionConfig config, Actor overlay, boolean in, Runnable onComplete) {
         SequenceAction sequence = new SequenceAction();
 
         switch (config.type) {
@@ -95,7 +102,7 @@ public class TransitionManager {
         return sequence;
     }
 
-    private Image createWipeOverlay(Color color) {
+    public Image createWipeOverlay(Color color) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fill();

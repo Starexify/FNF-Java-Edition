@@ -13,13 +13,13 @@ public class ReloadAssetsDebugPlugin {
     }
 
     public static void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
-            reload();
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) reload();
     }
 
     public static void reload() {
         Main.logger.setTag("ReloadAssetsDebugPlugin").info("Reloading registries...");
+
+        Main.instance.modLoader.forceReloadAllMods();
 
         // Reload registries
         SongRegistry.instance.loadEntries();

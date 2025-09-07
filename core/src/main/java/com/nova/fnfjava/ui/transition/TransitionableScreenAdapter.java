@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 
 public class TransitionableScreenAdapter extends ScreenAdapter {
-    protected TransitionConfig defaultTransitionInConfig = new TransitionConfig();
-    protected TransitionConfig defaultTransitionOutConfig = new TransitionConfig();
+    public TransitionConfig defaultTransitionInConfig = new TransitionConfig();
+    public TransitionConfig defaultTransitionOutConfig = new TransitionConfig();
 
     public TransitionConfig getTransitionInConfig() {
         return defaultTransitionInConfig;
@@ -18,7 +18,7 @@ public class TransitionableScreenAdapter extends ScreenAdapter {
 
     public void transitionIn() {}
 
-    public void transitionOut() { }
+    public void transitionOut() {}
 
     public void setDefaultTransitions(TransitionConfig inConfig, TransitionConfig outConfig) {
         this.defaultTransitionInConfig = inConfig;

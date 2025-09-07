@@ -1,0 +1,6 @@
+{
+  "modId": "examplemod",
+  "title": "Example Mod",
+  "version": "1.0.0",
+  "mainClass": "Test"
+}
