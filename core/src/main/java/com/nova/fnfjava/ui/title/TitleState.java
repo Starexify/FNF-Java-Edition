@@ -55,7 +55,7 @@ public class TitleState extends MusicBeatState {
     }
 
     public void startIntro() {
-        //if (!initialized || Main.sound.music == null) playMenuMusic();
+        if (!initialized || Main.sound.music == null) playMenuMusic();
 
         logoBl = new AnimatedSprite(-150, 100);
         logoBl.atlas = new TextureAtlas("assets/images/logoBumpin.atlas");

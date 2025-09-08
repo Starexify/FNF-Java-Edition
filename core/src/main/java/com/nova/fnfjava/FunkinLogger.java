@@ -278,19 +278,9 @@ public class FunkinLogger extends Logger {
 
     public void shutdown() {
         try {
-            System.out.println("Logger shutting down...");
-
-            // Save current session as timestamped file
             saveTimestampedSnapshot();
-
-            // Archive current debug file
             archiveDebugFiles();
-
-            // Clean up old files
             cleanupOldFiles();
-
-            System.out.println("Logger shutdown complete.");
-
         } catch (Exception e) {
             System.err.println("Error during logger shutdown: " + e.getMessage());
         }
@@ -310,10 +300,7 @@ public class FunkinLogger extends Logger {
                     FileHandle compressedFile = Gdx.files.local(timestampedFile.path() + ".gz");
                     compressFile(timestampedFile, compressedFile);
                     timestampedFile.delete();
-                    System.out.println("Saved and compressed session as: " + compressedFile.name());
-                } else {
-                    System.out.println("Saved session as: " + timestampedFile.name());
-                }
+                } else System.out.println("Saved session as: " + timestampedFile.name());
             }
         } catch (Exception e) {
             System.err.println("Failed to save timestamped snapshot: " + e.getMessage());
@@ -367,14 +354,6 @@ public class FunkinLogger extends Logger {
             String content = source.readString();
             byte[] compressed = compressString(content);
             target.writeBytes(compressed, false);
-
-            long originalSize = source.length();
-            long compressedSize = target.length();
-            double ratio = (1.0 - (double) compressedSize / originalSize) * 100;
-
-            System.out.println("Compressed " + source.name() + " -> " + target.name() +
-                " (saved " + String.format("%.1f", ratio) + "%)");
-
         } catch (Exception e) {
             System.err.println("Failed to compress " + source.name() + ": " + e.getMessage());
             // Fallback: copy uncompressed
