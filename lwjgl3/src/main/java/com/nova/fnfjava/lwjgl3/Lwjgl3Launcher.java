@@ -8,7 +8,6 @@ import com.nova.fnfjava.util.Constants;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
-
     public static void main(String[] args) {
         if (StartupHelper.startNewJvmIfRequired()) return;
         createApplication();

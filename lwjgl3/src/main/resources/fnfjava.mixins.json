@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nova.fnfjava.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "GameMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "verbose": true
+}

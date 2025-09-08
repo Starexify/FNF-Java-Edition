@@ -117,7 +117,7 @@ public class Main extends Game {
 
         if (modLoader != null) modLoader.renderMods();
 
-        if (Preferences.getDebugDisplay()) {
+        /*if (Preferences.getDebugDisplay()) {
             spriteBatch.begin();
             fpsCounter.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 3);
 
@@ -127,7 +127,7 @@ public class Main extends Game {
             memoryCounter.draw(spriteBatch, "Memory: " + usedMemory + "MB / " + totalMemory + "MB (max: " + maxMemory + "MB)", 10, Gdx.graphics.getHeight() - fpsCounter.getCapHeight() - 6);
 
             spriteBatch.end();
-        }
+        }*/
     }
 
     @Override
