@@ -1,4 +1,4 @@
-package com.nova.fnfjava.play;
+package com.nova.fnfjava.play.song;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -230,6 +230,31 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             this.song = song;
             this.difficulty = diffId;
             this.variation = variation;
+        }
+
+        @Override
+        public String toString() {
+            return "SongDifficulty{" +
+                "song=" + song +
+                ", difficulty='" + difficulty + '\'' +
+                ", variation='" + variation + '\'' +
+                ", songName='" + songName + '\'' +
+                ", songArtist='" + songArtist + '\'' +
+                ", charter='" + charter + '\'' +
+                ", timeFormat=" + timeFormat +
+                ", divisions=" + divisions +
+                ", looped=" + looped +
+                ", offsets=" + offsets +
+                ", generatedBy='" + generatedBy + '\'' +
+                ", timeChanges=" + timeChanges +
+                ", stage='" + stage + '\'' +
+                ", noteStyle='" + noteStyle + '\'' +
+                ", characters=" + characters +
+                ", scrollSpeed=" + scrollSpeed +
+                ", difficultyRating=" + difficultyRating +
+                ", album='" + album + '\'' +
+                ", stickerPack='" + stickerPack + '\'' +
+                '}';
         }
     }
 }

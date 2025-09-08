@@ -24,15 +24,13 @@ public class TransitionManager {
         this.screenHeight = screenHeight;
     }
 
-    public void setScreen(final Screen screen, boolean skipOutTransition, boolean skipInTransition) {
+    public void setScreen(Screen screen, boolean skipOutTransition, boolean skipInTransition) {
         Screen current = game.getScreen();
 
         if (current == null) {
             // First screen: just show with transition in (unless skipped)
             game.setScreen(screen);
-            if (!skipInTransition) {
-                startTransition(screen, true, null);
-            }
+            if (!skipInTransition) startTransition(screen, true, null);
             return;
         }
 

@@ -10,7 +10,7 @@ import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.story.level.LevelData;
-import com.nova.fnfjava.play.Song;
+import com.nova.fnfjava.play.song.Song;
 import com.nova.fnfjava.util.ImageUtil;
 
 public class Level implements IRegistryEntry<LevelData> {

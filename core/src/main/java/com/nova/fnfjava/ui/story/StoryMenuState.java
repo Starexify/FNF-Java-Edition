@@ -17,7 +17,7 @@ import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.play.PlayState;
 import com.nova.fnfjava.play.PlayStatePlaylist;
-import com.nova.fnfjava.play.Song;
+import com.nova.fnfjava.play.song.Song;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.MusicBeatState;

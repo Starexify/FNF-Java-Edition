@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.data.freeplay.player.PlayerRegistry;
 import com.nova.fnfjava.data.song.SongRegistry;
+import com.nova.fnfjava.data.stage.StageRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.input.CursorHandler;
@@ -85,6 +86,7 @@ public class Main extends Game {
         SongRegistry.instance.loadEntries();
         LevelRegistry.instance.loadEntries();
         PlayerRegistry.instance.loadEntries();
+        StageRegistry.instance.loadEntries();
         StickerRegistry.instance.loadEntries();
 
         ReloadAssetsDebugPlugin.initialize();
@@ -117,7 +119,7 @@ public class Main extends Game {
 
         if (modLoader != null) modLoader.renderMods();
 
-        /*if (Preferences.getDebugDisplay()) {
+        if (Preferences.getDebugDisplay()) {
             spriteBatch.begin();
             fpsCounter.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 3);
 
@@ -127,7 +129,7 @@ public class Main extends Game {
             memoryCounter.draw(spriteBatch, "Memory: " + usedMemory + "MB / " + totalMemory + "MB (max: " + maxMemory + "MB)", 10, Gdx.graphics.getHeight() - fpsCounter.getCapHeight() - 6);
 
             spriteBatch.end();
-        }*/
+        }
     }
 
     @Override

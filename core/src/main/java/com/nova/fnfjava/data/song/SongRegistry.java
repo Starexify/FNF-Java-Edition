@@ -10,7 +10,7 @@ import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.BaseRegistry;
 import com.nova.fnfjava.data.DataAssets;
 import com.nova.fnfjava.data.JsonFile;
-import com.nova.fnfjava.play.Song;
+import com.nova.fnfjava.play.song.Song;
 import com.nova.fnfjava.util.Constants;
 
 public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, SongRegistry.SongEntryParams> {
@@ -26,7 +26,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
     public void setupParser() {
         super.setupParser();
 
-        parser.setSerializer(SongData.SongTimeFormat.class, new Json.Serializer<SongData.SongTimeFormat>() {
+        parser.setSerializer(SongData.SongTimeFormat.class, new Json.Serializer<>() {
             @Override
             public void write(Json json, SongData.SongTimeFormat object, Class knownType) {
                 json.writeValue(object.getId());
