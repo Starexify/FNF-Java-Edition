@@ -83,6 +83,18 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         }
     }
 
+    public void cacheCharts(boolean force) {
+        if (force) clearCharts();
+
+        Main.logger.setTag("Song").info("Caching " + getVariations().size + " chart files for song " + id);
+        for (String variation : getVariations()) {
+            SongChartData chart = SongRegistry.instance.parseEntryChartDataWithMigration(id, variation);
+            if (chart == null) continue;
+            applyChartData(chart, variation);
+        }
+        Main.logger.setTag("Song").info("Done caching charts.");
+    }
+
     public SongDifficulty getDifficulty(String diffId, String variation, Array<String> variations) {
         if (diffId == null) diffId = listDifficulties(variation, variations).get(0);
         if (variation == null) variation = Constants.DEFAULT_VARIATION;

@@ -260,5 +260,18 @@ public class SongData {
                 '}';
         }
     }
+
+    public static class SongChartData {
+        public ObjectMap<String, Float> scrollSpeed;
+        public Array<SongEventData> events;
+        public ObjectMap<String, Array<SongNoteData>> notes;
+
+        public String generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
+
+        public transient String variation;
+
+        public SongChartData() {
+        }
+    }
 }
 

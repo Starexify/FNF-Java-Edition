@@ -16,7 +16,7 @@ import com.nova.fnfjava.ui.transition.TransitionableScreenAdapter;
 import java.util.Comparator;
 
 public class MusicBeatState extends TransitionableScreenAdapter {
-    public final Main main;
+    public static Main main;
     public ScrollableStage stage;
 
     public Listener<Integer> beatHitListener;

@@ -115,6 +115,10 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         return parseEntryMetadata(id);
     }
 
+    public SongChartData parseEntryChartDataWithMigration(String id, String variation) {
+
+    }
+
     @Override
     public SongEntryParams getDefaultParams(String id, SongData.SongMetadata data) {
         return new SongEntryParams(Constants.DEFAULT_VARIATION);
