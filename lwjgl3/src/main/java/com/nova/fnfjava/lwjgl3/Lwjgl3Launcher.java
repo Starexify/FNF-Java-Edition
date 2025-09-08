@@ -5,10 +5,13 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.util.Constants;
+import org.spongepowered.asm.launch.MixinBootstrap;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
+        FunkyMixinBootstrap.init();
+
         if (StartupHelper.startNewJvmIfRequired()) return;
         createApplication();
     }

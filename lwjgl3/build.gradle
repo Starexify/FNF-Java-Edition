@@ -18,7 +18,7 @@ apply plugin: 'io.github.fourlastor.construo'
 import io.github.fourlastor.construo.Target
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
-mainClassName = 'com.nova.fnfjava.lwjgl3.FunkyLoader'
+mainClassName = 'com.nova.fnfjava.lwjgl3.Lwjgl3Launcher'
 application.setMainClass(mainClassName)
 eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 21
@@ -37,6 +37,7 @@ dependencies {
 /*  implementation "org.spongepowered:mixin:0.8.7"
   implementation "com.google.guava:guava:33.4.8-jre"
   implementation "org.ow2.asm:asm-tree:9.8"*/
+
   implementation "net.fabricmc:sponge-mixin:0.16.3+mixin.0.8.7"
 
   if(enableGraalNative == 'true') {

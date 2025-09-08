@@ -1,31 +1,17 @@
 package com.nova.fnfjava.lwjgl3.mixin;
 
-import com.nova.fnfjava.lwjgl3.FunkyLoader;
-import com.nova.fnfjava.lwjgl3.util.UrlUtil;
-import org.spongepowered.asm.launch.platform.container.ContainerHandleURI;
+import com.nova.fnfjava.lwjgl3.FunkyClassLoader;
+import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
 import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 import org.spongepowered.asm.service.*;
 
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
 public class FunkyMixinService extends MixinServiceAbstract {
-    private final IClassProvider classProvider;
-    private final IClassBytecodeProvider bytecodeProvider;
-    private final ITransformerProvider transformerProvider;
-    private final IClassTracker classTracker;
-
-    public FunkyMixinService() {
-        System.out.println("=== FunkyMixinService CONSTRUCTOR called ===");
-
-        this.classProvider = new FunkyClassProvider();
-        this.bytecodeProvider = new FunkyBytecodeProvider();
-        this.transformerProvider = new FunkyTransformerProvider();
-        this.classTracker = new FunkyClassTracker();
-    }
+    public static final FunkyClassLoader classLoader = FunkyClassLoader.getInstance();
 
     @Override
     public String getName() {
@@ -37,24 +23,59 @@ public class FunkyMixinService extends MixinServiceAbstract {
         return true;
     }
 
+    public final IClassProvider classProvider = new IClassProvider() {
+        @Override
+        public URL[] getClassPath() {
+            return classLoader.getURLs();
+        }
+
+        @Override
+        public Class<?> findClass(String name) throws ClassNotFoundException {
+            try {
+                return FunkyMixinService.classLoader.findClass(name);
+            } catch (ClassNotFoundException e) {
+                System.out.println("[FunkyMixinService] Unable to find class" + e.getMessage());
+                throw e;
+            }
+        }
+
+        @Override
+        public Class<?> findClass(String name, boolean initialize) throws ClassNotFoundException {
+            try {
+                return Class.forName(name, initialize, Thread.currentThread().getContextClassLoader());
+            } catch (ClassNotFoundException e) {
+                try {
+                    return Class.forName(name, initialize, FunkyMixinService.class.getClassLoader());
+                } catch (ClassNotFoundException exception) {
+                    throw e;
+                }
+            }
+        }
+
+        @Override
+        public Class<?> findAgentClass(String name, boolean initialize) {
+            return this.findAgentClass(name, initialize);
+        }
+    };
+
     @Override
     public IClassProvider getClassProvider() {
-        return classProvider;
+        return this.classProvider;
     }
 
     @Override
     public IClassBytecodeProvider getBytecodeProvider() {
-        return bytecodeProvider;
+        return null;
     }
 
     @Override
     public ITransformerProvider getTransformerProvider() {
-        return transformerProvider;
+        return null;
     }
 
     @Override
     public IClassTracker getClassTracker() {
-        return classTracker;
+        return null;
     }
 
     @Override
@@ -69,11 +90,11 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
     @Override
     public IContainerHandle getPrimaryContainer() {
-        return new ContainerHandleURI(UrlUtil.LOADER_CODE_SOURCE.toUri());
+        return new ContainerHandleVirtual(this.getName());
     }
 
     @Override
     public InputStream getResourceAsStream(String name) {
-        return FunkyLoader.getClassLoader().getResourceAsStream(name);
+        return FunkyClassLoader.getInstance().getResourceAsStream(name);
     }
 }

@@ -3,68 +3,57 @@ package com.nova.fnfjava.lwjgl3.mixin;
 import org.spongepowered.asm.service.IGlobalPropertyService;
 import org.spongepowered.asm.service.IPropertyKey;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class FunkyGlobalPropertyService implements IGlobalPropertyService {
-    private static final Map<String, Object> properties = new ConcurrentHashMap<>();
-
-    static {
-        properties.put("mixin.env", "client");
-        properties.put("mixin.hotSwap", false);
-        properties.put("mixin.debug", false);
-        properties.put("mixin.checks", true);
-        properties.put("mixin.dumpsOnFailure", false);
-    }
+    private final Map<String, IPropertyKey> keys = new HashMap<>();
+    private final Map<IPropertyKey, Object> values = new HashMap<>();
 
     @Override
     public IPropertyKey resolveKey(String name) {
-        return new MixinPropertyKey(name);
-    }
+        IPropertyKey key = this.keys.get(name);
 
-    private String keyString(IPropertyKey key) {
-        return ((MixinPropertyKey) key).key();
+        if (key == null) {
+            key = new MixinPropertyKey(name);
+            this.keys.put(name, key);
+        }
+
+        return key;
     }
 
     @Override
     public <T> T getProperty(IPropertyKey key) {
-        return (T) properties.get(keyString(key));
+        return (T) this.values.get(key);
     }
 
     @Override
     public void setProperty(IPropertyKey key, Object value) {
-        properties.put(keyString(key), value);
+        this.values.put(key, value);
     }
 
     @Override
     public <T> T getProperty(IPropertyKey key, T defaultValue) {
-        return (T) properties.getOrDefault(keyString(key), defaultValue);
+        return (T) this.values.getOrDefault(key, defaultValue);
     }
 
     @Override
     public String getPropertyString(IPropertyKey key, String defaultValue) {
-        Object o = properties.get(keyString(key));
-        return o != null ? o.toString() : defaultValue;
+        return (String) this.values.getOrDefault(key, defaultValue);
     }
 
-    public static void setProperty(String key, Object value) {
-        properties.put(key, value);
-    }
-
-    public record MixinPropertyKey(String key) implements IPropertyKey {
+    public record MixinPropertyKey(String name) implements IPropertyKey {
         @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof MixinPropertyKey)) {
-                return false;
-            } else {
-                return Objects.equals(this.key, ((MixinPropertyKey) obj).key);
-            }
+        public boolean equals(Object o) {
+            if (!(o instanceof MixinPropertyKey)) return false;
+
+            return Objects.equals(this.name, ((MixinPropertyKey) o).name);
         }
 
         @Override
         public String toString() {
-            return this.key;
+            return "MixinPropertyKey{key='" + name + '\'' + '}';
         }
     }
 }

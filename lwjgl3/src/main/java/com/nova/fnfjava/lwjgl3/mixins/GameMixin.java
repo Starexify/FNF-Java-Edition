@@ -1,4 +1,4 @@
-package com.nova.fnfjava.mixins;
+package com.nova.fnfjava.lwjgl3.mixins;
 
 import com.badlogic.gdx.Game;
 import org.spongepowered.asm.mixin.Mixin;
