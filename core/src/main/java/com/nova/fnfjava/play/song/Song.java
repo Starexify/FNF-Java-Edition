@@ -88,11 +88,44 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
 
         Main.logger.setTag("Song").info("Caching " + getVariations().size + " chart files for song " + id);
         for (String variation : getVariations()) {
-            SongChartData chart = SongRegistry.instance.parseEntryChartDataWithMigration(id, variation);
+            SongData.SongChartData chart = SongRegistry.instance.parseEntryChartDataWithMigration(id, variation);
             if (chart == null) continue;
             applyChartData(chart, variation);
         }
         Main.logger.setTag("Song").info("Done caching charts.");
+    }
+
+    public void applyChartData(SongData.SongChartData chartData, String variation) {
+        ObjectMap<String, Array<SongData.SongNoteData>> chartNotes = chartData.notes;
+        for (String diffId : chartNotes.keys()) {
+            SongDifficulty nullDiff = getDifficulty(diffId, variation);
+            SongDifficulty difficulty = nullDiff != null ? nullDiff : new SongDifficulty(this, diffId, variation);
+            if (nullDiff == null) {
+                Main.logger.setTag("Song").info("Fabricated new difficulty for " + diffId + ".");
+                SongData.SongMetadata metadata = _metadata.get(variation);
+                difficulties.get(variation).put(diffId, difficulty);
+                if (metadata != null) {
+                    difficulty.songName = metadata.songName;
+                    difficulty.songArtist = metadata.artist;
+                    difficulty.charter = metadata.charter != null ? metadata.charter : Constants.DEFAULT_CHARTER;
+                    difficulty.timeFormat = metadata.timeFormat;
+                    difficulty.divisions = metadata.divisions;
+                    difficulty.timeChanges = metadata.timeChanges;
+                    difficulty.looped = metadata.looped;
+                    difficulty.generatedBy = metadata.generatedBy;
+                    difficulty.offsets = metadata.offsets != null ?  metadata.offsets : new SongData.SongOffsets();
+
+                    difficulty.stage = metadata.playData.stage;
+                    difficulty.noteStyle = metadata.playData.noteStyle;
+
+                    difficulty.characters = metadata.playData.characters;
+                }
+            }
+            difficulty.notes = chartNotes.get(diffId) != null ? chartNotes.get(diffId) : new Array<>();
+            difficulty.scrollSpeed = chartData.getScrollSpeed(diffId) != null ? chartData.getScrollSpeed(diffId) : 1.0f;
+
+            difficulty.events = chartData.events;
+        }
     }
 
     public SongDifficulty getDifficulty(String diffId, String variation, Array<String> variations) {
@@ -182,6 +215,12 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         return listDifficulties(variationId, variationIds, false, false);
     }
 
+    public void clearCharts() {
+        for (ObjectMap<String, SongDifficulty> variationMap : difficulties.values())
+            for (SongDifficulty diff : variationMap.values())
+                diff.clearChart();
+    }
+
     @Override
     public String getId() {
         return id;
@@ -203,7 +242,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         return DEFAULT_SONGNAME;
     }
 
-
     @Override
     public void destroy() {}
 
@@ -219,8 +257,9 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         public final Song song;
         public final String difficulty;
         public final String variation;
-        //public Array<SongNoteData> notes;
-        //public Array<SongEventData> events;
+        public Array<SongData.SongNoteData> notes;
+        public Array<SongData.SongEventData> events;
+
         public String songName = Constants.DEFAULT_SONGNAME;
         public String songArtist = Constants.DEFAULT_ARTIST;
         public String charter = Constants.DEFAULT_CHARTER;
@@ -229,11 +268,15 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         public boolean looped = false;
         public SongData.SongOffsets offsets = new SongData.SongOffsets();
         public String generatedBy = SongRegistry.DEFAULT_GENERATEDBY;
+
         public Array<SongData.SongTimeChange> timeChanges = new Array<>();
+
         public String stage = Constants.DEFAULT_STAGE;
         public String noteStyle = Constants.DEFAULT_NOTE_STYLE;
         public SongData.SongCharacterData characters = null;
+
         public float scrollSpeed = Constants.DEFAULT_SCROLLSPEED;
+
         public int difficultyRating = 0;
         public String album = null;
         public String stickerPack = null;
@@ -244,29 +287,8 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             this.variation = variation;
         }
 
-        @Override
-        public String toString() {
-            return "SongDifficulty{" +
-                "song=" + song +
-                ", difficulty='" + difficulty + '\'' +
-                ", variation='" + variation + '\'' +
-                ", songName='" + songName + '\'' +
-                ", songArtist='" + songArtist + '\'' +
-                ", charter='" + charter + '\'' +
-                ", timeFormat=" + timeFormat +
-                ", divisions=" + divisions +
-                ", looped=" + looped +
-                ", offsets=" + offsets +
-                ", generatedBy='" + generatedBy + '\'' +
-                ", timeChanges=" + timeChanges +
-                ", stage='" + stage + '\'' +
-                ", noteStyle='" + noteStyle + '\'' +
-                ", characters=" + characters +
-                ", scrollSpeed=" + scrollSpeed +
-                ", difficultyRating=" + difficultyRating +
-                ", album='" + album + '\'' +
-                ", stickerPack='" + stickerPack + '\'' +
-                '}';
+        public void clearChart() {
+            notes = null;
         }
     }
 }

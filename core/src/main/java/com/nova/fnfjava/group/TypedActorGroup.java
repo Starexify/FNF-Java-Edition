@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
-import com.nova.fnfjava.Axes;
+import com.nova.fnfjava.util.Axes;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.ui.AtlasText;
 

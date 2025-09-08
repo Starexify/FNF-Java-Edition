@@ -1,6 +1,6 @@
 package com.nova.fnfjava.play.stage;
 
-import com.nova.fnfjava.FunkinSprite;
+import com.nova.fnfjava.graphics.FunkinSprite;
 
 public class StageProp extends FunkinSprite {
     public String name = "";

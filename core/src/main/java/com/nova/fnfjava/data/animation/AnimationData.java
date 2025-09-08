@@ -13,13 +13,13 @@ import java.util.Comparator;
 public class AnimationData {
     public String name;
     public String prefix;
-    public String assetPath;
+    public String assetPath = null;
     public float[] offsets = {0f, 0f};
     public Boolean looped = false;
     public Boolean flipX = false;
     public Boolean flipY = false;
     public Integer frameRate = 24;
-    public Integer[] frameIndices;
+    public Integer[] frameIndices = null;
 
     public transient Animation<TextureRegion> gdxAnimation;
     public transient Array<TextureRegion> frames;

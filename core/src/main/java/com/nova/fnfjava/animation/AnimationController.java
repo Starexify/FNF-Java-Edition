@@ -3,7 +3,7 @@ package com.nova.fnfjava.animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.animation.AnimationData;
 

@@ -14,6 +14,7 @@ import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.play.PlayState;
 import com.nova.fnfjava.play.PlayStatePlaylist;
@@ -24,6 +25,7 @@ import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.transition.LoadingState;
 import com.nova.fnfjava.ui.transition.stickers.StickerSubState;
+import com.nova.fnfjava.util.Axes;
 import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.MathUtil;
 

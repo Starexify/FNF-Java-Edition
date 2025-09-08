@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.data.freeplay.player.PlayerRegistry;
+import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.data.stage.StageRegistry;
 import com.nova.fnfjava.data.stickers.StickerRegistry;
@@ -83,11 +84,19 @@ public class Main extends Game {
         transitionManager = new TransitionManager(this, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         logger.info("Parsing game data...");
+        //SongEventRegistry.loadEventCache();
         SongRegistry.instance.loadEntries();
         LevelRegistry.instance.loadEntries();
+        NoteStyleRegistry.instance.loadEntries();
         PlayerRegistry.instance.loadEntries();
+/*        ConversationRegistry.instance.loadEntries();
+        DialogueBoxRegistry.instance.loadEntries();
+        SpeakerRegistry.instance.loadEntries();
+        FreeplayStyleRegistry.instance.loadEntries();
+        AlbumRegistry.instance.loadEntries();*/
         StageRegistry.instance.loadEntries();
         StickerRegistry.instance.loadEntries();
+
 
         ReloadAssetsDebugPlugin.initialize();
         PlayerSettings.init();

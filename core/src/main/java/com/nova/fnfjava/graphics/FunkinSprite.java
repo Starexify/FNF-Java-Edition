@@ -1,4 +1,7 @@
-package com.nova.fnfjava;
+package com.nova.fnfjava.graphics;
+
+import com.nova.fnfjava.Assets;
+import com.nova.fnfjava.Paths;
 
 public class FunkinSprite extends AnimatedSprite {
     public FunkinSprite(float x, float y) {

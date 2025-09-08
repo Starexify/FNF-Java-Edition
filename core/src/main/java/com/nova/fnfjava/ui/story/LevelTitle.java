@@ -1,7 +1,7 @@
 package com.nova.fnfjava.ui.story;
 
 import com.badlogic.gdx.graphics.Color;
-import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.util.MathUtil;

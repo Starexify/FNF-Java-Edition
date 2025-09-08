@@ -3,7 +3,7 @@ package com.nova.fnfjava.ui;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.PlayerSettings;

@@ -26,17 +26,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
     public void setupParser() {
         super.setupParser();
 
-        parser.setSerializer(SongData.SongTimeFormat.class, new Json.Serializer<>() {
-            @Override
-            public void write(Json json, SongData.SongTimeFormat object, Class knownType) {
-                json.writeValue(object.getId());
-            }
-
-            @Override
-            public SongData.SongTimeFormat read(Json json, JsonValue jsonData, Class type) {
-                return SongData.SongTimeFormat.fromString(jsonData.asString());
-            }
-        });
+        SongData.SongTimeFormat.register(parser);
     }
 
     @Override
@@ -115,8 +105,29 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         return parseEntryMetadata(id);
     }
 
-    public SongChartData parseEntryChartDataWithMigration(String id, String variation) {
+    public SongData.SongChartData parseEntryChartData(String id, String variation) {
+        variation = variation == null ? Constants.DEFAULT_VARIATION : variation;
 
+        try {
+            JsonFile entryFile = loadEntryChartFile(id, variation);
+            SongData.SongChartData chartData =  parser.fromJson(SongData.SongChartData.class, entryFile.contents());
+
+            if (chartData != null) {
+                chartData.variation = variation;
+                return chartData;
+            } else {
+                Main.logger.setTag(registryId).warn("Failed to parse JSON chart data from file: " + entryFile.fileName());
+                return null;
+            }
+        } catch (Exception e) {
+            Main.logger.setTag(registryId).error("Failed to parse JSON data for chart: " + id, e);
+            return null;
+        }
+    }
+
+    public SongData.SongChartData parseEntryChartDataWithMigration(String id, String variation) {
+        variation = variation == null ? Constants.DEFAULT_VARIATION : variation;
+        return parseEntryChartData(id, variation);
     }
 
     @Override
@@ -146,6 +157,23 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
         return parseEntryMetadata(id, Constants.DEFAULT_VARIATION);
     }
 
+    public JsonFile loadEntryChartFile(String id, String variation) {
+        variation = variation == null ? Constants.DEFAULT_VARIATION : variation;
+        String entryFilePath = Paths.json(dataFilePath + "/" + id + "/" + id + "-chart" + (variation.equals(Constants.DEFAULT_VARIATION) ? "" : "-" + variation + "}"));
+        try {
+            FileHandle file = Gdx.files.internal(entryFilePath);
+            if (!file.exists()) return null;
+            String rawJson = file.readString("UTF-8");
+            if (rawJson == null) return null;
+            rawJson = rawJson.trim();
+
+            return new JsonFile(entryFilePath, rawJson);
+        } catch (Exception e) {
+            Main.logger.setTag(registryId).error("Error reading file " + entryFilePath, e);
+            return null;
+        }
+    }
+
     public JsonFile loadEntryMetadataFile(String id, String variation) {
         variation = variation == null ? Constants.DEFAULT_VARIATION : variation;
         String variationSuffix = variation.equals(Constants.DEFAULT_VARIATION) ? "" : "-" + variation;
@@ -155,7 +183,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
             if (!file.exists()) return null;
             String rawJson = file.readString("UTF-8");
             if (rawJson == null) return null;
-            rawJson = rawJson.trim();
+
             return new JsonFile(entryFilePath, rawJson);
         } catch (Exception e) {
             Main.logger.setTag(registryId).error("Error reading file " + entryFilePath, e);

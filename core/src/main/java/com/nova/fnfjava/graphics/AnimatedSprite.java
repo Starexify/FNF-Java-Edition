@@ -1,4 +1,4 @@
-package com.nova.fnfjava;
+package com.nova.fnfjava.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
+import com.nova.fnfjava.Assets;
+import com.nova.fnfjava.util.Axes;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.animation.AnimationController;
 
 public class AnimatedSprite extends Actor {

@@ -1,8 +1,13 @@
 package com.nova.fnfjava.data.song;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.util.Constants;
+
+import java.util.Objects;
 
 public class SongData {
     public static class SongMetadata {
@@ -77,6 +82,20 @@ public class SongData {
         @Override
         public String toString() {
             return id;
+        }
+
+        public static void register(Json json) {
+            json.setSerializer(SongTimeFormat.class, new Json.Serializer<SongTimeFormat>() {
+                @Override
+                public void write(Json json, SongTimeFormat object, Class knownType) {
+                    json.writeValue(object.getId());
+                }
+
+                @Override
+                public SongTimeFormat read(Json json, JsonValue jsonData, Class type) {
+                    return SongTimeFormat.fromString(jsonData.asString());
+                }
+            });
         }
     }
 
@@ -272,6 +291,326 @@ public class SongData {
 
         public SongChartData() {
         }
+
+        public Float getScrollSpeed(String diff) {
+            Float result = this.scrollSpeed.get(diff);
+
+            if (result == 0.0f && !Objects.equals(diff, "default")) return getScrollSpeed("default");
+
+            return (result == 0.0f) ? 1.0f : result;
+        }
+    }
+
+    public static class SongEventData implements Json.Serializable {
+        private float time;
+        public String eventKind;
+        public Object value = null;
+        public transient boolean activated = false;
+        private transient Float stepTime = null;
+
+        public SongEventData() {
+            this(0f, "", null);
+        }
+
+        public SongEventData(float time, String eventKind) {
+            this(time, eventKind, null);
+        }
+
+        public SongEventData(float time, String eventKind, Object value) {
+            this.time = time;
+            this.eventKind = eventKind;
+            this.value = value;
+        }
+
+        public void setTime(float time) {
+            this.stepTime = null;
+            this.time = time;
+        }
+
+        public float getStepTime(boolean force) {
+            if (stepTime != null && !force) return stepTime;
+
+            stepTime = Conductor.getInstance().getTimeInSteps(this.time);
+            return stepTime;
+        }
+
+        public boolean equals(SongEventData other) {
+            if (other == null) return false;
+            return Float.compare(this.time, other.time) == 0 && this.eventKind.equals(other.eventKind) && Objects.equals(this.value, other.value);
+        }
+
+        public boolean greaterThan(SongEventData other) {
+            return this.time > other.time;
+        }
+
+        public boolean lessThan(SongEventData other) {
+            return this.time < other.time;
+        }
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("t", time);
+            json.writeValue("e", eventKind);
+            if (value != null) json.writeValue("v", value);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            // Try alias first, then full name as fallback
+            time = jsonData.getFloat("t", jsonData.getFloat("time", 0f));
+            eventKind = jsonData.getString("e", jsonData.getString("eventKind", ""));
+
+            JsonValue valueData = jsonData.get("v");
+            if (valueData == null) valueData = jsonData.get("value");
+            if (valueData != null) {
+                if (valueData.isString()) value = valueData.asString();
+                else if (valueData.isNumber()) value = valueData.asFloat();
+                else if (valueData.isBoolean()) value = valueData.asBoolean();
+                else if (valueData.isArray()) value = json.readValue(Object.class, valueData);
+                else if (valueData.isObject()) value = json.readValue(Object.class, valueData);
+                else value = json.readValue(Object.class, valueData);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "SongEventData{time=" + time + ", eventKind='" + eventKind + '\'' + ", value=" + value + ", activated=" + activated + ", stepTime=" + stepTime + '}';
+        }
+    }
+
+    public static class SongNoteData implements Json.Serializable {
+        private float time;
+        public int data;
+        private float length = 0f;
+        public String kind = null;
+        public Array<NoteParamData> params = new Array<>();
+        private transient Float stepTime = null;
+        private transient Float stepLength = null;
+
+        public SongNoteData() {
+            this(0f, 0, 0f, null, null);
+        }
+
+        public SongNoteData(float time, int data) {
+            this(time, data, 0f, null, null);
+        }
+
+        public SongNoteData(float time, int data, float length) {
+            this(time, data, length, null, null);
+        }
+
+        public SongNoteData(float time, int data, float length, String kind) {
+            this(time, data, length, kind, null);
+        }
+
+        public SongNoteData(float time, int data, float length, String kind, Array<NoteParamData> params) {
+            this.time = time;
+            this.data = data;
+            this.length = length;
+            setKind(kind);
+            this.params = params != null ? params : new Array<>();
+        }
+
+        // Getters/setters with cache invalidation
+        public void setTime(float time) {
+            this.stepTime = null;
+            this.time = time;
+        }
+
+        public void setLength(float length) {
+            this.stepLength = null;
+            this.length = length;
+        }
+
+        public String getKind() {
+            if (kind == null || kind.isEmpty()) return null;
+            return kind;
+        }
+
+        public void setKind(String kind) {
+            if (kind != null && kind.isEmpty()) kind = null;
+            this.kind = kind;
+        }
+
+        // Utility methods
+        public boolean isHoldNote() {
+            return length > 0;
+        }
+
+        public int getDirection() {
+            return getDirection(4);
+        }
+
+        public int getDirection(int strumlineSize) {
+            return data % strumlineSize;
+        }
+
+        public String getDirectionName() {
+            return getDirectionName(4);
+        }
+
+        public String getDirectionName(int strumlineSize) {
+            return buildDirectionName(data, strumlineSize);
+        }
+
+        public static String buildDirectionName(int data, int strumlineSize) {
+            return switch (data % strumlineSize) {
+                case 0 -> "Left";
+                case 1 -> "Down";
+                case 2 -> "Up";
+                case 3 -> "Right";
+                default -> "Unknown";
+            };
+        }
+
+        public int getStrumlineIndex() {
+            return getStrumlineIndex(4);
+        }
+
+        public int getStrumlineIndex(int strumlineSize) {
+            return (int) Math.floor((float) data / strumlineSize);
+        }
+
+        public boolean getMustHitNote() {
+            return getMustHitNote(4);
+        }
+
+        public boolean getMustHitNote(int strumlineSize) {
+            return getStrumlineIndex(strumlineSize) == 0;
+        }
+
+        public float getStepTime() {
+            return getStepTime(false);
+        }
+
+        public float getStepTime(boolean force) {
+            if (stepTime != null && !force) return stepTime;
+
+            stepTime = Conductor.getInstance().getTimeInSteps(this.time);
+            return stepTime;
+        }
+
+        public float getStepLength() {
+            return getStepLength(false);
+        }
+
+        public float getStepLength(boolean force) {
+            if (length <= 0) return 0f;
+
+            if (stepLength != null && !force) return stepLength;
+
+            stepLength = Conductor.getInstance().getTimeInSteps(this.time + this.length) - getStepTime();
+            return stepLength;
+        }
+
+        // Comparison methods
+        public boolean equals(SongNoteData other) {
+            if (other == null) return false;
+
+            // Handle kind comparison (null/empty are equivalent)
+            String thisKind = getKind();
+            String otherKind = other.getKind();
+
+            if (thisKind == null && otherKind != null) return false;
+            if (thisKind != null && otherKind == null) return false;
+            if (thisKind != null && !thisKind.equals(otherKind)) return false;
+
+            return Float.compare(this.time, other.time) == 0 &&
+                this.data == other.data &&
+                Float.compare(this.length, other.length) == 0 &&
+                this.params.equals(other.params);
+        }
+
+        public boolean greaterThan(SongNoteData other) {
+            return other != null && this.time > other.time;
+        }
+
+        public boolean lessThan(SongNoteData other) {
+            return other != null && this.time < other.time;
+        }
+
+        public boolean greaterThanOrEquals(SongNoteData other) {
+            return other != null && this.time >= other.time;
+        }
+
+        public boolean lessThanOrEquals(SongNoteData other) {
+            return other != null && this.time <= other.time;
+        }
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("t", time);
+            json.writeValue("d", data);
+            if (length > 0) json.writeValue("l", length);
+            if (kind != null && !kind.isEmpty()) json.writeValue("k", kind);
+            if (params.size > 0) json.writeValue("p", params);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            time = jsonData.getFloat("t", jsonData.getFloat("time", 0f));
+            data = jsonData.getInt("d", jsonData.getInt("data", 0));
+            setLength(jsonData.getFloat("l", jsonData.getFloat("length", 0f)));
+            setKind(jsonData.getString("k", jsonData.getString("kind", null)));
+
+            // Try alias first, then full name as fallback
+            JsonValue paramsData = jsonData.get("p");
+            if (paramsData == null) paramsData = jsonData.get("params");
+            if (paramsData != null && paramsData.isArray()) params = json.readValue(Array.class, NoteParamData.class, paramsData);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("SongNoteData(").append(time).append("ms, ");
+            if (length > 0) sb.append("[").append(length).append("ms hold] ");
+            sb.append(data);
+            if (kind != null && !kind.isEmpty()) sb.append(" [kind: ").append(kind).append("]");
+            sb.append(")");
+            return sb.toString();
+        }
+    }
+
+    public static class NoteParamData implements Json.Serializable {
+        public String name;
+        public Object value;
+
+        public NoteParamData() {
+            this("", null);
+        }
+
+        public NoteParamData(String name, Object value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("n", name);
+            if (value != null) json.writeValue("v", value);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            // Try alias first, then full name as fallback
+            name = jsonData.getString("n", jsonData.getString("name", ""));
+
+            JsonValue valueData = jsonData.get("v");
+            if (valueData == null) valueData = jsonData.get("value");
+            if (valueData != null) {
+                // Handle different value types like in SongEventData
+                if (valueData.isString()) value = valueData.asString();
+                else if (valueData.isNumber()) value = valueData.asFloat();
+                else if (valueData.isBoolean()) value = valueData.asBoolean();
+                else value = json.readValue(Object.class, valueData);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "NoteParamData{name='" + name + '\'' + ", value=" + value + '}';
+        }
+
     }
 }
 

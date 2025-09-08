@@ -11,11 +11,11 @@ public class PlayState extends MusicBeatSubState {
         super(main);
     }
 
-    public record PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation, boolean overrideMusic) {
+    public record PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation, boolean overrideMusic, boolean minimalMode) {
         public PlayStateParams {}
 
         public PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation) {
-            this(targetSong, targetDifficulty, targetVariation, false);
+            this(targetSong, targetDifficulty, targetVariation, false, false);
         }
     }
 }

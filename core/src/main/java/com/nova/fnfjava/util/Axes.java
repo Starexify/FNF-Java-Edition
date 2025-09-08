@@ -1,4 +1,4 @@
-package com.nova.fnfjava;
+package com.nova.fnfjava.util;
 
 public enum Axes {
     X, Y, XY, NONE;

@@ -190,6 +190,32 @@ public class Conductor {
         this.update(this.songPosition, false);
     }
 
+    public float getTimeInSteps(float ms) {
+        if (timeChanges.size == 0) {
+            // Assume a constant BPM equal to the forced value.
+            return (float) Math.floor(ms / getStepLengthMs());
+        } else {
+            float resultStep = 0f;
+
+            SongData.SongTimeChange lastTimeChange = timeChanges.get(0);
+            for (SongData.SongTimeChange timeChange : timeChanges) {
+                if (ms >= timeChange.timeStamp) {
+                    lastTimeChange = timeChange;
+                    resultStep = lastTimeChange.beatTime * Constants.STEPS_PER_BEAT;
+                } else {
+                    // This time change is after the requested time.
+                    break;
+                }
+            }
+
+            float lastStepLengthMs = ((Constants.SECS_PER_MIN / lastTimeChange.bpm) * Constants.MS_PER_SEC) / getTimeSignatureNumerator();
+            float resultFractionalStep = (ms - lastTimeChange.timeStamp) / lastStepLengthMs;
+            resultStep += resultFractionalStep;
+
+            return resultStep;
+        }
+    }
+
     public float getBPM() {
         if (bpmOverride != null) return bpmOverride;
         if (currentTimeChange == null) return Constants.DEFAULT_BPM;

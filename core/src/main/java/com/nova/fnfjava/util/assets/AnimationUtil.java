@@ -1,7 +1,7 @@
 package com.nova.fnfjava.util.assets;
 
 import com.badlogic.gdx.utils.Array;
-import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.data.animation.AnimationData;
 
 public class AnimationUtil {

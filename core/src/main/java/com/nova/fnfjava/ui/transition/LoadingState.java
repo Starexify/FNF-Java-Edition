@@ -2,8 +2,10 @@ package com.nova.fnfjava.ui.transition;
 
 import com.badlogic.gdx.Screen;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.stage.StageRegistry;
 import com.nova.fnfjava.play.PlayState;
+import com.nova.fnfjava.play.notes.notestyle.NoteStyle;
 import com.nova.fnfjava.play.song.Song;
 import com.nova.fnfjava.play.stage.Stage;
 import com.nova.fnfjava.ui.MusicBeatState;
@@ -55,11 +57,26 @@ public class LoadingState extends MusicBeatState {
             Main.sound.music = null;
         }
 
-        if (!params.overrideMusic()) {
-            params.targetSong().cacheCharts(true);
-        }
+        if (!params.overrideMusic()) params.targetSong().cacheCharts(true);
 
+        boolean shouldPreloadLevelAssets = !params.minimalMode();
+        if (shouldPreloadLevelAssets) {
+            preloadLevelAssets();
+
+            // Cache the note style.
+            var songDifficulty = params.targetSong().getDifficulty(params.targetDifficulty(), params.targetVariation());
+            if (songDifficulty != null) {
+                NoteStyle noteStyle = NoteStyleRegistry.instance.fetchEntry(songDifficulty.noteStyle != null ? songDifficulty.noteStyle : "");
+                if (noteStyle == null) noteStyle = NoteStyleRegistry.instance.fetchDefault();
+                FunkinMemory.cacheNoteStyle(noteStyle);
+                Main.logger.setTag("LoadingState").info(noteStyle.toString());
+            }
+        }
         Main.logger.setTag("LoadingState").info(daChart + "\n" + daStage);
+    }
+
+    public static void preloadLevelAssets() {
+
     }
 
     public static void loadPlayState(PlayState.PlayStateParams params, boolean shouldStopMusic) {

@@ -2,7 +2,7 @@ package com.nova.fnfjava.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.nova.fnfjava.AnimatedSprite;
+import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.Assets;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.group.TypedActorGroup;
