@@ -1,0 +1,33 @@
+notes.png
+size: 311,311
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+noteDown
+  rotate: false
+  xy: 0, 0
+  size: 157, 154
+  orig: 157, 154
+  offset: 0, 0
+  index: 1
+noteLeft
+  rotate: false
+  xy: 157, 0
+  size: 154, 157
+  orig: 154, 157
+  offset: 0, 0
+  index: 1
+noteRight
+  rotate: false
+  xy: 0, 154
+  size: 154, 157
+  orig: 154, 157
+  offset: 0, 0
+  index: 1
+noteUp
+  rotate: false
+  xy: 154, 157
+  size: 157, 154
+  orig: 157, 154
+  offset: 0, 0
+  index: 1

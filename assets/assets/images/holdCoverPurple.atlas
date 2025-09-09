@@ -1,0 +1,96 @@
+holdCoverPurple.png
+size: 599,591
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+holdCoverStartPurple
+  rotate: false
+  xy: 413, 96
+  size: 93, 93
+  orig: 300, 400
+  offset: -111, -107
+  index: 1
+holdCoverPurple
+  rotate: true
+  xy: 407, 243
+  size: 108, 139
+  orig: 300, 400
+  offset: -93, -94
+  index: 1
+holdCoverPurple
+  rotate: false
+  xy: 413, 0
+  size: 120, 96
+  orig: 300, 400
+  offset: -100, -104
+  index: 2
+holdCoverPurple
+  rotate: false
+  xy: 506, 96
+  size: 93, 80
+  orig: 300, 400
+  offset: -115, -107
+  index: 3
+holdCoverPurple
+  rotate: true
+  xy: 146, 423
+  size: 36, 78
+  orig: 300, 400
+  offset: -122, -133
+  index: 4
+holdCoverEndPurple
+  rotate: true
+  xy: 146, 423
+  size: 36, 78
+  orig: 300, 400
+  offset: -122, -133
+  index: 1
+holdCoverEndPurple
+  rotate: true
+  xy: 0, 423
+  size: 146, 168
+  orig: 300, 400
+  offset: -72, -59
+  index: 2
+holdCoverEndPurple
+  rotate: false
+  xy: 192, 243
+  size: 215, 185
+  orig: 300, 400
+  offset: -47, -55
+  index: 3
+holdCoverEndPurple
+  rotate: false
+  xy: 192, 243
+  size: 215, 185
+  orig: 300, 400
+  offset: -47, -55
+  index: 4
+holdCoverEndPurple
+  rotate: true
+  xy: 0, 193
+  size: 192, 230
+  orig: 300, 400
+  offset: -44, -62
+  index: 5
+holdCoverEndPurple
+  rotate: false
+  xy: 0, 0
+  size: 246, 193
+  orig: 300, 400
+  offset: -43, -78
+  index: 6
+holdCoverEndPurple
+  rotate: true
+  xy: 246, 0
+  size: 167, 243
+  orig: 300, 400
+  offset: -52, -113
+  index: 7
+holdCoverEndPurple
+  rotate: true
+  xy: 246, 0
+  size: 167, 243
+  orig: 300, 400
+  offset: -52, -113
+  index: 8

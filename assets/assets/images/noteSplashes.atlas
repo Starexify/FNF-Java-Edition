@@ -1,0 +1,229 @@
+noteSplashes.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+note impact 1  blue
+  rotate: false
+  xy: 1850, 262
+  size: 189, 270
+  orig: 260, 298
+  offset: -32, -12
+  index: 0
+note impact 1  blue
+  rotate: false
+  xy: 1540, 556
+  size: 213, 265
+  orig: 260, 298
+  offset: -27, -22
+  index: 1
+note impact 1  blue
+  rotate: false
+  xy: 1056, 0
+  size: 252, 291
+  orig: 260, 298
+  offset: -4, -6
+  index: 2
+note impact 1  blue
+  rotate: false
+  xy: 0, 0
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: 3
+note impact 1 green
+  rotate: false
+  xy: 663, 806
+  size: 189, 270
+  orig: 260, 298
+  offset: -32, -12
+  index: 0
+note impact 1 green
+  rotate: false
+  xy: 1757, 556
+  size: 213, 265
+  orig: 260, 298
+  offset: -27, -22
+  index: 1
+note impact 1 green
+  rotate: false
+  xy: 1312, 0
+  size: 252, 291
+  orig: 260, 298
+  offset: -4, -6
+  index: 2
+note impact 1 green
+  rotate: false
+  xy: 264, 0
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: 3
+note impact 1 purple
+  rotate: false
+  xy: 1121, 818
+  size: 189, 270
+  orig: 260, 298
+  offset: -32, -12
+  index: 0
+note impact 1 purple
+  rotate: false
+  xy: 0, 563
+  size: 213, 265
+  orig: 260, 298
+  offset: -27, -22
+  index: 1
+note impact 1 purple
+  rotate: false
+  xy: 1568, 0
+  size: 252, 291
+  orig: 260, 298
+  offset: -4, -6
+  index: 2
+note impact 1 purple
+  rotate: false
+  xy: 528, 0
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: 3
+note impact 1 red
+  rotate: false
+  xy: 1314, 818
+  size: 189, 270
+  orig: 260, 298
+  offset: -32, -12
+  index: 0
+note impact 1 red
+  rotate: false
+  xy: 217, 563
+  size: 213, 265
+  orig: 260, 298
+  offset: -27, -22
+  index: 1
+note impact 1 red
+  rotate: false
+  xy: 1056, 295
+  size: 252, 291
+  orig: 260, 298
+  offset: -4, -6
+  index: 2
+note impact 1 red
+  rotate: false
+  xy: 792, 0
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: 3
+note impact 2 blue
+  rotate: false
+  xy: 1121, 590
+  size: 169, 201
+  orig: 274, 267
+  offset: -45, -41
+  index: 0
+note impact 2 blue
+  rotate: false
+  xy: 434, 564
+  size: 225, 238
+  orig: 274, 267
+  offset: -20, -19
+  index: 1
+note impact 2 blue
+  rotate: false
+  xy: 1312, 295
+  size: 265, 257
+  orig: 274, 267
+  offset: 0, -10
+  index: 2
+note impact 2 blue
+  rotate: false
+  xy: 1824, 0
+  size: 224, 258
+  orig: 274, 267
+  offset: -50, 0
+  index: 3
+note impact 2 green
+  rotate: false
+  xy: 1507, 825
+  size: 169, 201
+  orig: 274, 267
+  offset: -45, -41
+  index: 0
+note impact 2 green
+  rotate: false
+  xy: 663, 564
+  size: 225, 238
+  orig: 274, 267
+  offset: -20, -19
+  index: 1
+note impact 2 green
+  rotate: false
+  xy: 1581, 295
+  size: 265, 257
+  orig: 274, 267
+  offset: 0, -10
+  index: 2
+note impact 2 green
+  rotate: false
+  xy: 538, 302
+  size: 224, 258
+  orig: 274, 267
+  offset: -50, 0
+  index: 3
+note impact 2 purple
+  rotate: false
+  xy: 1680, 825
+  size: 169, 201
+  orig: 274, 267
+  offset: -45, -41
+  index: 0
+note impact 2 purple
+  rotate: false
+  xy: 892, 590
+  size: 225, 238
+  orig: 274, 267
+  offset: -20, -19
+  index: 1
+note impact 2 purple
+  rotate: false
+  xy: 0, 302
+  size: 265, 257
+  orig: 274, 267
+  offset: 0, -10
+  index: 2
+note impact 2 purple
+  rotate: false
+  xy: 766, 302
+  size: 224, 258
+  orig: 274, 267
+  offset: -50, 0
+  index: 3
+note impact 2 red
+  rotate: false
+  xy: 1853, 825
+  size: 169, 201
+  orig: 274, 267
+  offset: -45, -41
+  index: 0
+note impact 2 red
+  rotate: false
+  xy: 434, 806
+  size: 225, 238
+  orig: 274, 267
+  offset: -20, -19
+  index: 1
+note impact 2 red
+  rotate: false
+  xy: 269, 302
+  size: 265, 257
+  orig: 274, 267
+  offset: 0, -10
+  index: 2
+note impact 2 red
+  rotate: false
+  xy: 1312, 556
+  size: 224, 258
+  orig: 274, 267
+  offset: -50, 0
+  index: 3

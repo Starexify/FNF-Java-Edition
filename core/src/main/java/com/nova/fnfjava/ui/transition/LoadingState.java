@@ -1,6 +1,7 @@
 package com.nova.fnfjava.ui.transition;
 
 import com.badlogic.gdx.Screen;
+import com.nova.fnfjava.Assets;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.stage.StageRegistry;
@@ -12,7 +13,6 @@ import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.Constants;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class LoadingState extends MusicBeatState {
@@ -68,7 +68,7 @@ public class LoadingState extends MusicBeatState {
             if (songDifficulty != null) {
                 NoteStyle noteStyle = NoteStyleRegistry.instance.fetchEntry(songDifficulty.noteStyle != null ? songDifficulty.noteStyle : "");
                 if (noteStyle == null) noteStyle = NoteStyleRegistry.instance.fetchDefault();
-                FunkinMemory.cacheNoteStyle(noteStyle);
+                Assets.cacheNoteStyle(noteStyle);
                 Main.logger.setTag("LoadingState").info(noteStyle.toString());
             }
         }

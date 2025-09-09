@@ -89,32 +89,56 @@ public class NoteStyleData {
 
         @Override
         public void read(Json json, JsonValue jsonData) {
-            note = (NoteStyleAssetData<NoteStyleData_Note>) json.readValue(NoteStyleAssetData.class, jsonData.get("note"));
-            holdNote = (NoteStyleAssetData<NoteStyleData_HoldNote>) json.readValue(NoteStyleAssetData.class, jsonData.get("holdNote"));
-            noteStrumline = (NoteStyleAssetData<NoteStyleData_NoteStrumline>) json.readValue(NoteStyleAssetData.class, jsonData.get("noteStrumline"));
-            noteSplash = (NoteStyleAssetData<NoteStyleData_NoteSplash>) json.readValue(NoteStyleAssetData.class, jsonData.get("noteSplash"));
-            holdNoteCover = (NoteStyleAssetData<NoteStyleData_HoldNoteCover>) json.readValue(NoteStyleAssetData.class, jsonData.get("holdNoteCover"));
+            note = readAssetData(json, jsonData, "note", NoteStyleData_Note.class);
+            holdNote = readAssetData(json, jsonData, "holdNote", NoteStyleData_HoldNote.class);
+            noteStrumline = readAssetData(json, jsonData, "noteStrumline", NoteStyleData_NoteStrumline.class);
+            noteSplash = readAssetData(json, jsonData, "noteSplash", NoteStyleData_NoteSplash.class);
+            holdNoteCover = readAssetData(json, jsonData, "holdNoteCover", NoteStyleData_HoldNoteCover.class);
 
-            countdownThree = (NoteStyleAssetData<NoteStyleData_Countdown>) json.readValue(NoteStyleAssetData.class, jsonData.get("countdownThree"));
-            countdownTwo = (NoteStyleAssetData<NoteStyleData_Countdown>) json.readValue(NoteStyleAssetData.class, jsonData.get("countdownTwo"));
-            countdownOne = (NoteStyleAssetData<NoteStyleData_Countdown>) json.readValue(NoteStyleAssetData.class, jsonData.get("countdownOne"));
-            countdownGo = (NoteStyleAssetData<NoteStyleData_Countdown>) json.readValue(NoteStyleAssetData.class, jsonData.get("countdownGo"));
+            countdownThree = readAssetData(json, jsonData, "countdownThree", NoteStyleData_Countdown.class);
+            countdownTwo = readAssetData(json, jsonData, "countdownTwo", NoteStyleData_Countdown.class);
+            countdownOne = readAssetData(json, jsonData, "countdownOne", NoteStyleData_Countdown.class);
+            countdownGo = readAssetData(json, jsonData, "countdownGo", NoteStyleData_Countdown.class);
 
-            judgementSick = (NoteStyleAssetData<NoteStyleData_Judgement>) json.readValue(NoteStyleAssetData.class, jsonData.get("judgementSick"));
-            judgementGood = (NoteStyleAssetData<NoteStyleData_Judgement>) json.readValue(NoteStyleAssetData.class, jsonData.get("judgementGood"));
-            judgementBad = (NoteStyleAssetData<NoteStyleData_Judgement>) json.readValue(NoteStyleAssetData.class, jsonData.get("judgementBad"));
-            judgementShit = (NoteStyleAssetData<NoteStyleData_Judgement>) json.readValue(NoteStyleAssetData.class, jsonData.get("judgementShit"));
+            judgementSick = readAssetData(json, jsonData, "judgementSick", NoteStyleData_Judgement.class);
+            judgementGood = readAssetData(json, jsonData, "judgementGood", NoteStyleData_Judgement.class);
+            judgementBad = readAssetData(json, jsonData, "judgementBad", NoteStyleData_Judgement.class);
+            judgementShit = readAssetData(json, jsonData, "judgementShit", NoteStyleData_Judgement.class);
 
-            comboNumber0 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber0"));
-            comboNumber1 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber1"));
-            comboNumber2 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber2"));
-            comboNumber3 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber3"));
-            comboNumber4 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber4"));
-            comboNumber5 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber5"));
-            comboNumber6 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber6"));
-            comboNumber7 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber7"));
-            comboNumber8 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber8"));
-            comboNumber9 = (NoteStyleAssetData<NoteStyleData_ComboNum>) json.readValue(NoteStyleAssetData.class, jsonData.get("comboNumber9"));
+            comboNumber0 = readAssetData(json, jsonData, "comboNumber0", NoteStyleData_ComboNum.class);
+            comboNumber1 = readAssetData(json, jsonData, "comboNumber1", NoteStyleData_ComboNum.class);
+            comboNumber2 = readAssetData(json, jsonData, "comboNumber2", NoteStyleData_ComboNum.class);
+            comboNumber3 = readAssetData(json, jsonData, "comboNumber3", NoteStyleData_ComboNum.class);
+            comboNumber4 = readAssetData(json, jsonData, "comboNumber4", NoteStyleData_ComboNum.class);
+            comboNumber5 = readAssetData(json, jsonData, "comboNumber5", NoteStyleData_ComboNum.class);
+            comboNumber6 = readAssetData(json, jsonData, "comboNumber6", NoteStyleData_ComboNum.class);
+            comboNumber7 = readAssetData(json, jsonData, "comboNumber7", NoteStyleData_ComboNum.class);
+            comboNumber8 = readAssetData(json, jsonData, "comboNumber8", NoteStyleData_ComboNum.class);
+            comboNumber9 = readAssetData(json, jsonData, "comboNumber9", NoteStyleData_ComboNum.class);
+        }
+
+        public static <T> NoteStyleAssetData<T> readAssetData(Json json, JsonValue parentData, String fieldName, Class<T> dataClass) {
+            JsonValue fieldValue = parentData.get(fieldName);
+            if (fieldValue == null) return null;
+
+            NoteStyleAssetData<T> asset = new NoteStyleAssetData<>();
+            asset.assetPath = fieldValue.getString("assetPath", "");
+            asset.scale = fieldValue.getFloat("scale", 1.0f);
+
+            JsonValue offsetsData = fieldValue.get("offsets");
+            if (offsetsData != null && offsetsData.isArray()) asset.offsets = json.readValue(Array.class, Float.class, offsetsData);
+            else asset.offsets = new Array<>(new Float[]{0f, 0f});
+
+            asset.isPixel = fieldValue.getBoolean("isPixel", false);
+            asset.alpha = fieldValue.getFloat("alpha", 1.0f);
+            asset.animated = fieldValue.getBoolean("animated", false);
+
+            JsonValue dataValue = fieldValue.get("data");
+            if (dataValue != null) {
+                asset.data = json.readValue(dataClass, dataValue);
+            }
+
+            return asset;
         }
     }
 
@@ -132,7 +156,6 @@ public class NoteStyleData {
         public NoteStyleAssetData(String assetPath) {
             this.assetPath = assetPath;
         }
-
 
         @Override
         public void write(Json json) {
