@@ -436,9 +436,9 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             });
 
             result.playerVoicesOffset = offsets.getVocalOffset(characters.player, instId);
-            result.opponentVoicesOffset = offsets.getVocalOffset(characters.opponent, instId);
+            result.opponentVoicesOffset = offsets.getVocalOffset(characters.opponent, instId);*/
 
-            return result;*/
+            return result;
         }
 
         public String removeLastSegment(String input) {

@@ -3,10 +3,16 @@ package com.nova.fnfjava.play.character;
 import com.nova.fnfjava.play.stage.Bopper;
 
 public class BaseCharacter extends Bopper {
-    public final CharacterData _data;
+    public String characterId;
 
-    public BaseCharacter(float x, float y, float danceEvery) {
-        super(x, y, danceEvery);
+    public final CharacterData charData;
+
+    public BaseCharacter(String id, float x, float y, float danceEvery) {
+        super(0,0, CharacterData.CharacterDataParser.DEFAULT_DANCEEVERY);
+
+        this.characterId = id;
+
+        charData = CharacterData.CharacterDataParser.fetchCharacterData(this.characterId);
     }
 
     public void resetCharacter(boolean resetCamera) {
@@ -23,7 +29,7 @@ public class BaseCharacter extends Bopper {
     }
 
     public float getBaseScale() {
-        return getData().scale;
+        return charData.scale;
     }
 
     public void resetCharacter() {
