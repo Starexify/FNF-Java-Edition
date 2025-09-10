@@ -1,8 +1,12 @@
 package com.nova.fnfjava.ui.transition;
 
+import com.badlogic.ashley.signals.Listener;
+import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Assets;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.stage.StageRegistry;
 import com.nova.fnfjava.play.PlayState;
@@ -12,6 +16,9 @@ import com.nova.fnfjava.play.stage.Stage;
 import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.Constants;
 
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -31,7 +38,7 @@ public class LoadingState extends MusicBeatState {
     }
 
     public static String stageDirectory = "shared";
-    public static void loadPlayState(PlayState.PlayStateParams params, boolean shouldStopMusic, boolean asSubState, Consumer<PlayState> onConstruct) {
+    public static void loadPlayState(MusicBeatState parentState, PlayState.PlayStateParams params, boolean shouldStopMusic, boolean asSubState, Consumer<PlayState> onConstruct) {
         String targetDifficulty = params.targetDifficulty() != null ? params.targetDifficulty() : Constants.DEFAULT_DIFFICULTY;
         String targetVariation = params.targetVariation() != null ? params.targetVariation() : Constants.DEFAULT_VARIATION;
         Song.SongDifficulty daChart = params.targetSong().getDifficulty(targetDifficulty, targetVariation);
@@ -69,17 +76,81 @@ public class LoadingState extends MusicBeatState {
                 NoteStyle noteStyle = NoteStyleRegistry.instance.fetchEntry(songDifficulty.noteStyle != null ? songDifficulty.noteStyle : "");
                 if (noteStyle == null) noteStyle = NoteStyleRegistry.instance.fetchDefault();
                 Assets.cacheNoteStyle(noteStyle);
-                Main.logger.setTag("LoadingState").info(noteStyle.toString());
+            }
+
+            if (Objects.equals(params.targetSong().songName, "2hot")) {
+                Array<String> spritesToCache = new Array<>(new String[]{
+                    "wked1_cutscene_1_can",
+                    "spraypaintExplosionEZ",
+                    "SpraypaintExplosion",
+                    "CanImpactParticle",
+                    "spraycanAtlas/spritemap1"
+                });
+
+                Array<String> soundsToCache = new Array<>(new String[]{
+                    "Darnell_Lighter",
+                    "fuse_burning",
+                    "Gun_Prep",
+                    "Kick_Can_FORWARD",
+                    "Kick_Can_UP",
+                    "Lightning1",
+                    "Lightning2",
+                    "Lightning3",
+                    "Pico_Bonk",
+                    "Shoot_1",
+                    "shot1",
+                    "shot2",
+                    "shot3",
+                    "shot4"
+                });
+
+                for (String sprite : spritesToCache) {
+                    Main.logger.setTag("LoadingState").info("Queueing " + sprite + " to preload.");
+                    var path = Paths.image(sprite, "weekend1");
+                    Assets.cacheTexture(path);
+
+                    if (path.endsWith("spritemap1.png")) {
+                        Main.logger.setTag("LoadingState").info("Preloading FlxAnimate asset: " + path);
+                        //Assets.getBitmapData(path, true);
+                    }
+                }
+
+                for (String sound : soundsToCache) {
+                    Main.logger.setTag("LoadingState").info("Queueing " + sound + " to preload.");
+                    CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+                        var path = Paths.sound(sound, "weekend1");
+                        Assets.cacheSound(path);
+                        return path + " successfully loaded.";
+                    });
+                    future.thenAccept(result -> {
+                        Main.logger.setTag("LoadingState").info(result);
+                        // Handle the result
+                    });
+                }
+            }
+
+            if (asSubState && parentState != null) parentState.openSubState(playStateCtor.get());
+            else {
+                Listener<Void> preStateListener = new Listener<Void>() {
+                    @Override
+                    public void receive(Signal<Void> signal, Void object) {
+                        Assets.clearFreeplay();
+                        Assets.purgeCache(true);
+                        // Remove itself after running
+                        signal.remove(this);
+                    }
+                };
+                Main.signals.preStateSwitch.add(preStateListener);
+                main.switchState(playStateCtor.get());
             }
         }
-        Main.logger.setTag("LoadingState").info(daChart + "\n" + daStage);
     }
 
     public static void preloadLevelAssets() {
 
     }
 
-    public static void loadPlayState(PlayState.PlayStateParams params, boolean shouldStopMusic) {
-        loadPlayState(params, shouldStopMusic, false, null);
+    public static void loadPlayState(MusicBeatState parentState, PlayState.PlayStateParams params, boolean shouldStopMusic) {
+        loadPlayState(parentState, params, shouldStopMusic, false, null);
     }
 }

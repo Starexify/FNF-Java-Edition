@@ -20,6 +20,12 @@ public class Constants {
 
     public static final String DEFAULT_STICKER_PACK = "default";
 
+    public static final float DEFAULT_BOP_INTENSITY = 1.015f;
+
+    public static final int DEFAULT_ZOOM_RATE = 4;
+
+    public static final int DEFAULT_ZOOM_OFFSET = 0;
+
     public static final float DEFAULT_BPM = 100.0f;
 
     public static final String DEFAULT_SONGNAME = "Unknown";
@@ -47,6 +53,10 @@ public class Constants {
     public static final int STEPS_PER_BEAT = 4;
 
     public static final float TITLE_ATTRACT_DELAY = 37.5f;
+
+    public static final float HEALTH_MAX = 2.0f;
+
+    public static final float HEALTH_STARTING = HEALTH_MAX / 2.0f;
 
     public static final String EXT_SOUND = "ogg";
 

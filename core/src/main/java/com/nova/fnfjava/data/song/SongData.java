@@ -161,6 +161,12 @@ public class SongData {
             this.vocals = vocals != null ? vocals : new ObjectMap<>();
             this.altVocals = altVocals != null ? altVocals : new ObjectMap<>();
         }
+
+        public float getInstrumentalOffset(String instrumental) {
+            if (instrumental == null || instrumental.equals("")) return this.instrumental;
+            if (!this.altInstrumentals.containsKey(instrumental)) return this.instrumental;
+            return this.altInstrumentals.get(instrumental);
+        }
     }
 
     public static class SongMusicData {
@@ -379,7 +385,7 @@ public class SongData {
     }
 
     public static class SongNoteData implements Json.Serializable {
-        private float time;
+        public float time;
         public int data;
         private float length = 0f;
         public String kind = null;

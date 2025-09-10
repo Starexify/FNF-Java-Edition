@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.play.Countdown;
 import com.nova.fnfjava.play.notes.NoteDirection;
 import com.nova.fnfjava.play.notes.notestyle.NoteStyle;
@@ -17,12 +18,30 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Assets {
     public static final ConcurrentHashMap<String, Texture> generatedTextures = new ConcurrentHashMap<>();
 
-    public static MASound getSound(String path) {
-        if (!isPathLoaded(path)) {
-            Main.assetManager.load(path, MASound.class);
-            Main.assetManager.finishLoading(); // Only if you need synchronous loading
+    public static ObjectMap<String, Boolean> permanentCachedTextures = new ObjectMap<>();
+
+    public static ObjectMap<String, MASound> permanentCachedSounds = new ObjectMap<>();
+
+
+    public static MASound getSound(String path, boolean useCache) {
+        try {
+            // If not using cache or not loaded, load it
+            if (!useCache || !Main.assetManager.isLoaded(path, MASound.class)) {
+                if (!Main.assetManager.isLoaded(path)) {
+                    Main.assetManager.load(path, MASound.class);
+                    Main.assetManager.finishLoading(); // Synchronous loading
+                }
+            }
+
+            return Main.assetManager.get(path, MASound.class);
+        } catch (Exception e) {
+            Main.logger.setTag("Assets").warn("Failed to load sound: " + path, e);
+            return null;
         }
-        return Main.assetManager.get(path, MASound.class);
+    }
+
+    public static MASound getSound(String path) {
+        return getSound(path, true);
     }
 
     public static Texture getTexture(String path) {
@@ -132,6 +151,69 @@ public class Assets {
 
     public static String getText(String path) {
         return Gdx.files.internal(path).readString();
+    }
+
+    public static void purgeCache(boolean callGarbageCollector) {
+        purgeTextureCache();
+        purgeSoundCache();
+        if (callGarbageCollector) System.gc();
+    }
+
+    public static void purgeCache() {
+        purgeCache(false);
+    }
+
+    public static void clearFreeplay() {
+        Array<String> keysToRemove = new Array<>();
+
+        Array<String> loadedAssets = Main.assetManager.getAssetNames();
+
+        for (String key : loadedAssets) {
+            if (!key.contains("freeplay")) continue;
+            if (permanentCachedTextures.containsKey(key) || key.contains("fonts")) continue;
+
+            keysToRemove.add(key);
+        }
+
+        for (String key : keysToRemove) {
+            Main.logger.setTag("Assets").info("Cleaning up " + key);
+            if (Main.assetManager.isLoaded(key)) Main.assetManager.unload(key);
+        }
+
+        //preparePurgeSoundCache();
+        purgeSoundCache();
+    }
+
+    public static void purgeTextureCache() {
+        Array<String> loadedAssets = Main.assetManager.getAssetNames();
+        Array<String> keysToRemove = new Array<>();
+
+        for (String key : loadedAssets) {
+            if (permanentCachedTextures.containsKey(key) || key.contains("fonts")) continue;
+            if (Main.assetManager.isLoaded(key, Texture.class)) keysToRemove.add(key);
+        }
+        for (String key : keysToRemove) Main.assetManager.unload(key);
+    }
+
+    public static void purgeSoundCache() {
+        clearAssetsByType("songs");
+        clearAssetsByType("music");
+
+        // Felt lazy.
+        String key = Paths.music("freakyMenu/freakyMenu");
+        MASound sound = getSound(key);
+        if (sound != null) permanentCachedSounds.put(key, sound);
+    }
+
+    public static void clearAssetsByType(String type) {
+        Array<String> keysToRemove = new Array<>();
+        Array<String> loadedAssets = Main.assetManager.getAssetNames();
+
+        for (String key : loadedAssets)
+            if (key.contains(type)) keysToRemove.add(key);
+
+        for (String key : keysToRemove)
+            if (Main.assetManager.isLoaded(key)) Main.assetManager.unload(key);
     }
 
     /**

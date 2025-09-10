@@ -92,7 +92,7 @@ public class StickerSubState extends MusicBeatSubState {
                 public void run() {
                     sticker.setVisible(false);
                     String daSound = sounds.random();
-                    Main.sound.playOnce(Paths.sharedSound(daSound));
+                    Main.sound.playOnce(Paths.sound(daSound));
 
                     if (grpStickers == null || finalInd == grpStickers.getChildren().size - 1) {
                         switchingState = false;
@@ -154,7 +154,7 @@ public class StickerSubState extends MusicBeatSubState {
 
                     sticker.setVisible(true);
                     String daSound = sounds.random();
-                    Main.sound.playOnce(Paths.sharedSound(daSound));
+                    Main.sound.playOnce(Paths.sound(daSound));
 
                     int frameTimer = MathUtils.random(0, 2);
 

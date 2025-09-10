@@ -58,23 +58,23 @@ public class StageData {
     }
 
     public static class StageDataProp {
-        String name;
-        String assetPath;
-        Array<Float> position;
-        int zIndex = 0;
-        boolean isPixel = false;
-        boolean flipX = false;
-        boolean flipY = false;
-        Either<Float, Array<Float>> scale = Either.left(1.0f);
-        float alpha = 1.0f;
-        float danceEvery = 0.0f;
-        Array<Float> scroll = new Array<>(new Float[]{1f, 1f});
-        Array<AnimationData> animations = new Array<>();
-        String startingAnimation;
-        String animType = "atlas";
-        float angle = 0.0f;
-        String blend = "";
-        String color = "#FFFFFF";
+        public String name;
+        public String assetPath;
+        public Array<Float> position;
+        public int zIndex = 0;
+        public boolean isPixel = false;
+        public boolean flipX = false;
+        public boolean flipY = false;
+        public Either<Float, Array<Float>> scale = Either.left(1.0f);
+        public float alpha = 1.0f;
+        public float danceEvery = 0.0f;
+        public Array<Float> scroll = new Array<>(new Float[]{1f, 1f});
+        public Array<AnimationData> animations = new Array<>();
+        public String startingAnimation;
+        public String animType = "atlas";
+        public float angle = 0.0f;
+        public String blend = "";
+        public String color = "#FFFFFF";
 
         public StageDataProp() {}
 
@@ -105,7 +105,7 @@ public class StageData {
     public static class StageDataCharacter {
         int zIndex = 0;
         Array<Float> position = new Array<>(new Float[]{0f, 0f});
-        float scale = 1;
+        public float scale = 1;
         Array<Float> cameraOffsets;
         Array<Float> scroll = new Array<>(new Float[]{1f, 1f});
         float alpha = 1.0f;

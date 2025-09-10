@@ -1,6 +1,5 @@
 package com.nova.fnfjava.play.notes.notestyle;
 
-import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.notestyle.NoteStyleData;
@@ -45,7 +44,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
         String[] parts = getHoldNoteAssetPath(true).split(Constants.LIBRARY_SEPARATOR);
         if (parts.length == 0) return null;
         if (parts.length == 1) return Paths.image(parts[0]);
-        return Paths.image(parts[1]);
+        return Paths.image(parts[1], parts[0]);
     }
 
     public String getHoldNoteAssetPath() {
@@ -155,7 +154,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
         String[] parts = getCountdownSoundPath(step, true).split(Constants.LIBRARY_SEPARATOR);
         if (parts.length == 0) return null;
         if (parts.length == 1) return Paths.image(parts[0]);
-        return Paths.sound(parts[1]);
+        return Paths.sound(parts[1], parts[0]);
     }
 
     public String getCountdownSoundPath(Countdown.CountdownStep step) {
@@ -178,7 +177,6 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
         if (parts.length == 1) return parts[0];
         return parts[1];
     }
-
 
     public String buildComboNumSpritePath(int digit) {
         String basePath = switch (digit) {

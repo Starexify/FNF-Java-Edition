@@ -2,13 +2,20 @@ package com.nova.fnfjava.play.song;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.nova.fnfjava.Assets;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.Paths;
+import com.nova.fnfjava.audio.FunkinSound;
+import com.nova.fnfjava.audio.VoicesGroup;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongRegistry;
 import com.nova.fnfjava.ui.freeplay.charselect.PlayableCharacter;
 import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.SortUtil;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Song implements IRegistryEntry<SongData.SongMetadata> {
     public static final String DEFAULT_SONGNAME = "Unknown";
@@ -289,6 +296,157 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
 
         public void clearChart() {
             notes = null;
+        }
+
+        public String getInstPath(String instrumental) {
+            if (characters != null) {
+                if (!Objects.equals(instrumental, "") && characters.altInstrumentals.contains(instrumental, false)) {
+                    var instId = "-" + instrumental;
+                    return Paths.inst(this.song.id, instId);
+                } else {
+                    // Fallback to default instrumental.
+                    var instId = !(characters.instrumental != null ? characters.instrumental : "").equals("") ? "-" + characters.instrumental : "";
+                    return Paths.inst(this.song.id, instId);
+                }
+            } else return Paths.inst(this.song.id);
+        }
+
+        public void cacheInst(String instrumental) {
+            Assets.cacheSound(getInstPath(instrumental));
+        }
+
+        public void cacheVocals() {
+            for (String voice : buildVoiceList()) {
+                Main.logger.setTag("SongDifficulty").info("Caching vocal track: $voice");
+                Assets.cacheSound(voice);
+            }
+        }
+
+        public Array<String> buildVoiceList() {
+            Array<String> result = new Array<>();
+            result.addAll(buildPlayerVoiceList());
+            result.addAll(buildOpponentVoiceList());
+            if (result.size == 0) {
+                String suffix = (variation != null && !variation.equals("") && !variation.equals("default")) ? "-" + variation : "";
+                // Try to use `Voices.ogg` if no other voices are found.
+                if (Assets.exists(Paths.voices(this.song.id, ""))) result.add(Paths.voices(this.song.id, suffix));
+            }
+            return result;
+        }
+
+        public Array<String> buildPlayerVoiceList() {
+            String suffix = (variation != null && !variation.equals("") && !variation.equals("default")) ? "-" + variation : "";
+
+            // Automatically resolve voices by removing suffixes.
+            // For example, if `Voices-bf-car-erect.ogg` does not exist, check for `Voices-bf-erect.ogg`.
+            // Then, check for  `Voices-bf-car.ogg`, then `Voices-bf.ogg`.
+
+            if (characters.playerVocals == null) {
+                String playerId = characters.player;
+                String playerVoice = Paths.voices(this.song.id, "-" + playerId + suffix);
+
+                while (playerVoice != null && !Assets.exists(playerVoice)) {
+                    // Remove the last suffix.
+                    // For example, bf-car becomes bf.
+                    playerId = removeLastSegment(playerId);
+                    // Try again.
+                    playerVoice = playerId.isEmpty() ? null : Paths.voices(this.song.id, "-" + playerId + suffix);
+                }
+                if (playerVoice == null) {
+                    // Try again without $suffix.
+                    playerId = characters.player;
+                    playerVoice = Paths.voices(this.song.id, "-" + playerId);
+                    while (playerVoice != null && !Assets.exists(playerVoice)) {
+                        // Remove the last suffix.
+                        playerId = removeLastSegment(playerId);
+                        // Try again.
+                        playerVoice = playerId == "" ? null : Paths.voices(this.song.id, "-" + playerId + suffix);
+                    }
+                }
+
+                return playerVoice != null ? new Array<>(new String[]{playerVoice}) : new Array<>();
+            } else {
+                // The metadata explicitly defines the list of voices.
+                Array<String> playerIds = characters.playerVocals != null ? characters.playerVocals : new Array<>(new String[]{characters.player});
+                Array<String> playerVoices = new Array<>();
+                for (String id : playerIds) playerVoices.add(Paths.voices(this.song.id, "-" + id + suffix));
+
+                return playerVoices;
+            }
+        }
+
+        public Array<String> buildOpponentVoiceList() {
+            String suffix = (variation != null && !variation.equals("") && !variation.equals("default")) ? "-" + variation : "";
+
+            // Automatically resolve voices by removing suffixes.
+            // For example, if `Voices-bf-car-erect.ogg` does not exist, check for `Voices-bf-erect.ogg`.
+            // Then, check for  `Voices-bf-car.ogg`, then `Voices-bf.ogg`.
+
+            if (characters.opponentVocals == null) {
+                String opponentId = characters.opponent;
+                String opponentVoice = Paths.voices(this.song.id, "-" + opponentId + suffix);
+                while (opponentVoice != null && !Assets.exists(opponentVoice)) {
+                    // Remove the last suffix.
+                    opponentId = removeLastSegment(opponentId);
+                    // Try again.
+                    opponentVoice = opponentId == "" ? null : Paths.voices(this.song.id, "-${opponentId}$suffix");
+                }
+                if (opponentVoice == null) {
+                    // Try again without $suffix.
+                    opponentId = characters.opponent;
+                    opponentVoice = Paths.voices(this.song.id, "-${opponentId}");
+                    while (opponentVoice != null && !Assets.exists(opponentVoice)) {
+                        // Remove the last suffix.
+                        opponentId = removeLastSegment(opponentId);
+                        // Try again.
+                        opponentVoice = opponentId == "" ? null : Paths.voices(this.song.id, "-" + opponentId + suffix);
+                    }
+                }
+
+                return opponentVoice != null ? new Array<>(new String[]{opponentVoice}) : new Array<>();
+            } else {
+                // The metadata explicitly defines the list of voices.
+                Array<String> opponentIds = characters.opponentVocals != null ? characters.opponentVocals : new Array<>(new String[]{characters.opponent});
+
+                Array<String> opponentVoices = new Array<>();
+                for (String id : opponentIds) opponentVoices.add(Paths.voices(this.song.id, "-" + id + suffix));
+
+                return opponentVoices;
+            }
+        }
+
+        public VoicesGroup buildVocals(String instId) {
+            VoicesGroup result = new VoicesGroup();
+
+            Array<String> playerVoiceList = this.buildPlayerVoiceList();
+            Array<String> opponentVoiceList = this.buildOpponentVoiceList();
+
+            /*for (String playerVoice : playerVoiceList) {
+                if (!Assets.exists(playerVoice)) continue;
+                result.addPlayerVoice(FunkinSound.load(playerVoice, 1.0, false, false, false, false, null, null, true));
+            }
+
+            for (String opponentVoice : opponentVoiceList) {
+                if (!Assets.exists(opponentVoice)) continue;
+                result.addOpponentVoice(FunkinSound.load(opponentVoice, 1.0, false, false, false, false, null, null, true));
+            }
+
+            result.forEach(function(snd:FunkinSound) {
+                snd.important = true;
+            });
+
+            result.playerVoicesOffset = offsets.getVocalOffset(characters.player, instId);
+            result.opponentVoicesOffset = offsets.getVocalOffset(characters.opponent, instId);
+
+            return result;*/
+        }
+
+        public String removeLastSegment(String input) {
+            String[] parts = input.split("-");
+            if (parts.length > 1) {
+                return String.join("-", Arrays.copyOfRange(parts, 0, parts.length - 1));
+            }
+            return "";
         }
     }
 }

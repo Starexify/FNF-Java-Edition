@@ -1,5 +1,6 @@
 package com.nova.fnfjava;
 
+import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -31,6 +32,11 @@ import games.rednblack.miniaudio.MiniAudio;
 public class Main extends Game {
     public static Main instance;
 
+    public static class Signals {
+        public Signal<Void> preStateSwitch = new Signal<>();
+    }
+    public static Signals signals;
+
     public FunkyModLoader modLoader;
 
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
@@ -41,7 +47,7 @@ public class Main extends Game {
     public FitViewport viewport;
     public TransitionManager transitionManager;
 
-    public static FunkinSound sound = new FunkinSound(new MiniAudio());
+    public static FunkinSound sound;
     public static AssetManager assetManager = new AssetManager();
     public static RandomUtil random = new RandomUtil();
 
@@ -51,6 +57,7 @@ public class Main extends Game {
     public void create() {
         try {
             instance = this;
+            signals = new Signals();
             logger = new FunkinLogger("Funkin", 3);
             setupGame();
         } catch (Exception e) {
@@ -77,6 +84,8 @@ public class Main extends Game {
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        sound = new FunkinSound(new MiniAudio());
+
         DiscordClient.getInstance().init();
 
         startModLoading();
@@ -97,7 +106,6 @@ public class Main extends Game {
         StageRegistry.instance.loadEntries();
         StickerRegistry.instance.loadEntries();
 
-
         ReloadAssetsDebugPlugin.initialize();
         PlayerSettings.init();
     }
@@ -111,6 +119,7 @@ public class Main extends Game {
     }
 
     public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {
+        signals.preStateSwitch.dispatch(null);
         transitionManager.setScreen(newScreen, skipOutTransition, skipInTransition);
     }
 

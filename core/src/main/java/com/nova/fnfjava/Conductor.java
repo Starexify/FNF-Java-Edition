@@ -45,6 +45,13 @@ public class Conductor {
     public Conductor() {
     }
 
+    public void forceBPM(Float bpm) {
+        if (bpm != null) Main.logger.setTag(getClass().getSimpleName()).info("Forcing BPM to " + bpm);
+        else Main.logger.setTag(getClass().getSimpleName()).info("Resetting BPM to default");
+
+        this.bpmOverride = bpm;
+    }
+
     public static Conductor getInstance() {
         if (_instance == null) setInstance(new Conductor());
         return _instance;
@@ -86,10 +93,6 @@ public class Conductor {
 
     public static void dispatchStepHit(Signal<Integer> signal, Integer step) {
         stepHit.dispatch(step);
-    }
-
-    public void update() {
-        update(null, true);
     }
 
     public void update(Float songPos, boolean applyOffsets) {
@@ -154,6 +157,14 @@ public class Conductor {
             prevTime = this.songPosition;
             prevTimestamp = System.currentTimeMillis();
         }
+    }
+
+    public void update(Float songPos) {
+        update(songPos, true);
+    }
+
+    public void update() {
+        update(null, true);
     }
 
     public void mapTimeChanges(Array<SongData.SongTimeChange> songTimeChanges) {

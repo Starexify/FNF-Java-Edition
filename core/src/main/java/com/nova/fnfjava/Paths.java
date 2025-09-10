@@ -10,6 +10,24 @@ public class Paths {
         else currentLevel = name.toLowerCase();
     }
 
+    public static String getPath(String file, String library) {
+        if (library != null) return getLibraryPath(file, library);
+
+        if (currentLevel != null) {
+            String levelPath = getLibraryPath(file, currentLevel);
+            if (Assets.exists(levelPath)) return levelPath;
+        }
+
+        String levelPath = getLibraryPath(file, "shared");
+        if (Assets.exists(levelPath)) return levelPath;
+
+        return "assets/" + file;
+    }
+
+    public static String getLibraryPath(String file, String library) {
+        return "assets/" + library + "/" + file;
+    }
+
     public static String getAtlas(String key) {
         return "assets/images/" + key + ".atlas";
     }
@@ -22,12 +40,12 @@ public class Paths {
         return "assets/data/" + key + ".json";
     }
 
-    public static String sound(String key) {
-        return "assets/sounds/" + key + "." + Constants.EXT_SOUND;
+    public static String sound(String key, String library) {
+        return getPath("sounds/" + key + "." + Constants.EXT_SOUND, library);
     }
 
-    public static String sharedSound(String key) {
-        return "assets/shared/sounds/" + key + "." + Constants.EXT_SOUND;
+    public static String sound(String key) {
+        return sound(key, null);
     }
 
     public static String music(String key) {
@@ -36,6 +54,11 @@ public class Paths {
 
     public static String videos(String key) {
         return "assets/videos/" + key + "." + Constants.EXT_VIDEO;
+    }
+
+    public static String voices(String song, String suffix) {
+        if (suffix == null) suffix = "";
+        return "assets/songs/" + song.toLowerCase() + "/Voices" + suffix + "." + Constants.EXT_SOUND;
     }
 
     public static String inst(String song, String suffix, boolean withExtension) {
@@ -47,8 +70,16 @@ public class Paths {
         return inst(song, suffix, true);
     }
 
+    public static String inst(String song) {
+        return inst(song, "", true);
+    }
+
+    public static String image(String key, String library) {
+        return getPath("images/" + key + ".png", library);
+    }
+
     public static String image(String key) {
-        return "assets/images/" + key + ".png";
+        return image(key, null);
     }
 
     public static String font(String key) {

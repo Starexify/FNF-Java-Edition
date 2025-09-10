@@ -417,6 +417,7 @@ public class StoryMenuState extends MusicBeatState {
 
         Highscore.talliesLevel = new Highscore.Tallies();
 
+        StoryMenuState parentState = this;
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -425,7 +426,7 @@ public class StoryMenuState extends MusicBeatState {
 
                 String targetVariation = targetSong.getFirstValidVariation(PlayStatePlaylist.campaignDifficulty);
 
-                LoadingState.loadPlayState(new PlayState.PlayStateParams(targetSong, PlayStatePlaylist.campaignDifficulty, targetVariation), true);
+                LoadingState.loadPlayState(parentState, new PlayState.PlayStateParams(targetSong, PlayStatePlaylist.campaignDifficulty, targetVariation), true);
             }
         }, 1f);
     }

@@ -8,6 +8,7 @@ import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.data.song.SongRegistry;
 import games.rednblack.miniaudio.MASound;
 import games.rednblack.miniaudio.MiniAudio;
+import games.rednblack.miniaudio.loader.MASoundLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class FunkinSound {
 
     public FunkinSound(MiniAudio miniAudio) {
         this.miniAudio = miniAudio;
+        Main.assetManager.setLoader(MASound.class, new MASoundLoader(miniAudio, Main.assetManager.getFileHandleResolver()));
     }
 
     public boolean playMusic(String key, FunkinSoundPlayMusicParams params) {
