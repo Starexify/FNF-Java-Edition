@@ -12,6 +12,7 @@ import com.nova.fnfjava.data.event.SongEventRegistry;
 import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.graphics.FunkinSprite;
+import com.nova.fnfjava.play.components.HealthIcon;
 import com.nova.fnfjava.play.notes.notekind.NoteKind;
 import com.nova.fnfjava.play.notes.notekind.NoteKindManager;
 import com.nova.fnfjava.play.notes.notestyle.NoteStyle;
@@ -86,8 +87,8 @@ public class PlayState extends MusicBeatSubState {
     public FlxText scoreText;
     //public FlxBar healthBar;
     public FunkinSprite healthBarBG;
-    //public HealthIcon iconP1;
-    //public HealthIcon iconP2;
+    public HealthIcon iconP1;
+    public HealthIcon iconP2;
     //public Strumline playerStrumline;
     //public Strumline opponentStrumline;
     //public FlxCamera camHUD;
@@ -240,7 +241,7 @@ public class PlayState extends MusicBeatSubState {
 
         if (needsReset) {
             if (!assertChartExists()) return;
-            //prevScrollTargets = [];
+            prevScrollTargets = new Array<>();
 
             //var retryEvent = new SongRetryEvent(currentDifficulty);
 
@@ -268,9 +269,7 @@ public class PlayState extends MusicBeatSubState {
                 vocals.stop();
                 vocals = getCurrentChart().buildVocals(currentInstrumental);
 
-                if (vocals.sounds.size == 0) {
-                    Main.logger.setTag("PlayState").warn("No vocals found for this song.");
-                }
+                if (vocals.sounds.size == 0) Main.logger.setTag("PlayState").warn("No vocals found for this song.");
             }
 
             if (Main.sound.music != null) Main.sound.music.setVolume(1);
@@ -285,8 +284,47 @@ public class PlayState extends MusicBeatSubState {
             }
 
             currentStage.resetStage();
+
+            if (!fromDeathState) {
+                //playerStrumline.vwooshNotes();
+                //opponentStrumline.vwooshNotes();
+            }
+
+            //playerStrumline.clean();
+            //opponentStrumline.clean();
+
+            regenNoteData();
+
+            cameraBopIntensity = Constants.DEFAULT_BOP_INTENSITY;
+            hudCameraZoomIntensity = (cameraBopIntensity - 1.0f) * 2.0f;
+            cameraZoomRate = Constants.DEFAULT_ZOOM_RATE;
+
+            health = Constants.HEALTH_STARTING;
+            songScore = 0;
+            Highscore.tallies.combo = 0;
+
+            float vwooshDelay = 0.5f;
+            Conductor.getInstance().update(-vwooshDelay * 1000 + startTimestamp + Conductor.getInstance().getBeatLengthMs() * -5);
+
+            vwooshTimer.scheduleTask(new Timer.Task() {
+                @Override
+                public void run() {
+/*                    if (playerStrumline.notes.length == 0) playerStrumline.updateNotes();
+                    if (opponentStrumline.notes.length == 0) opponentStrumline.updateNotes();
+                    playerStrumline.vwooshInNotes();
+                    opponentStrumline.vwooshInNotes();*/
+                    Countdown.performCountdown();
+                }
+            }, vwooshDelay);
+
+            Countdown.stopCountdown();
+
+            currentStage.getBoyfriend().initHealthIcon(false);
+            currentStage.getDad().initHealthIcon(true);
         }
     }
+
+    public Array<Object> prevScrollTargets = new Array<>();
 
     public boolean assertChartExists() {
         if (currentSong == null || getCurrentChart() == null || getCurrentChart().notes == null) {
@@ -337,10 +375,10 @@ public class PlayState extends MusicBeatSubState {
         if (getCurrentChart() == null) throw new IllegalArgumentException("Song difficulty could not be loaded.");
         if (!overrideMusic) {
             // Stop the vocals if they already exist.
-            vocals.stop();
+/*            vocals.stop();
             vocals = getCurrentChart().buildVocals(currentInstrumental);
 
-            if (vocals.sounds.size == 0) Main.logger.setTag("PlayState").warn("No vocals found for this song.");
+            if (vocals.sounds.size == 0) Main.logger.setTag("PlayState").warn("No vocals found for this song.");*/
         }
 
         regenNoteData();

@@ -144,9 +144,9 @@ public class NoteStyleData {
 
     public static class NoteStyleAssetData<T> implements Json.Serializable {
         public String assetPath;
-        public float scale = 1.0f;
+        public Float scale = 1.0f;
         public Array<Float> offsets = new Array<>(new Float[]{0f, 0f});
-        public boolean isPixel = false;
+        public Boolean isPixel = false;
         public float alpha = 1.0f;
         public boolean animated = false;
         public T data = null;

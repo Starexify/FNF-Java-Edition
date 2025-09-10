@@ -127,6 +127,7 @@ public class SongRegistry extends BaseRegistry<Song, SongData.SongMetadata, Song
 
     public SongData.SongChartData parseEntryChartDataWithMigration(String id, String variation) {
         variation = variation == null ? Constants.DEFAULT_VARIATION : variation;
+        Main.logger.info(parseEntryChartData(id, variation).toString());
         return parseEntryChartData(id, variation);
     }
 

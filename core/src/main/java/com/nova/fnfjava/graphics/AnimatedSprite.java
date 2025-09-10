@@ -154,6 +154,10 @@ public class AnimatedSprite extends Actor {
         return this;
     }
 
+    public AnimatedSprite screenCenter() {
+        return screenCenter(Axes.XY);
+    }
+
     public TextureRegion getCurrentDisplayFrame() {
         TextureRegion animFrame = animation.getCurrentFrame();
         if (animFrame != null) return animFrame;

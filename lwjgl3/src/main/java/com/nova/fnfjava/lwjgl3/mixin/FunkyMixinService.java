@@ -1,10 +1,12 @@
 package com.nova.fnfjava.lwjgl3.mixin;
 
 import com.nova.fnfjava.lwjgl3.FunkyClassLoader;
+import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
 import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 import org.spongepowered.asm.service.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
@@ -41,20 +43,45 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
         @Override
         public Class<?> findClass(String name, boolean initialize) throws ClassNotFoundException {
-            try {
-                return Class.forName(name, initialize, Thread.currentThread().getContextClassLoader());
-            } catch (ClassNotFoundException e) {
-                try {
-                    return Class.forName(name, initialize, FunkyMixinService.class.getClassLoader());
-                } catch (ClassNotFoundException exception) {
-                    throw e;
-                }
-            }
+            return Class.forName(name, initialize, classLoader);
         }
 
         @Override
         public Class<?> findAgentClass(String name, boolean initialize) {
             return this.findAgentClass(name, initialize);
+        }
+    };
+
+    public final IClassBytecodeProvider bytecodeProvider = new IClassBytecodeProvider() {
+        @Override
+        public ClassNode getClassNode(String name) throws ClassNotFoundException, IOException {
+            return this.getClassNode(name, false);
+        }
+
+        @Override
+        public ClassNode getClassNode(String name, boolean runTransformers) throws ClassNotFoundException, IOException {
+            return this.getClassNode(name, runTransformers, 0);
+        }
+
+        @Override
+        public ClassNode getClassNode(String name, boolean runTransformers, int readerFlags) throws ClassNotFoundException, IOException {
+            return this.getClassNode(name, runTransformers, readerFlags);
+        }
+    };
+
+    public final ITransformerProvider transformerProvider = new ITransformerProvider() {
+        @Override
+        public Collection<ITransformer> getTransformers() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public Collection<ITransformer> getDelegatedTransformers() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public void addTransformerExclusion(String name) {
         }
     };
 
@@ -65,12 +92,12 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
     @Override
     public IClassBytecodeProvider getBytecodeProvider() {
-        return null;
+        return this.bytecodeProvider;
     }
 
     @Override
     public ITransformerProvider getTransformerProvider() {
-        return null;
+        return this.transformerProvider;
     }
 
     @Override

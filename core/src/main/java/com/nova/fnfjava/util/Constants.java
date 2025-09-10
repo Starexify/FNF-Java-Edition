@@ -12,6 +12,8 @@ public class Constants {
 
     public static final Array<String> DEFAULT_DIFFICULTY_LIST = new Array<>(new String[]{"easy", "normal", "hard"});
 
+    public static final String DEFAULT_HEALTH_ICON = "face";
+
     public static final String DEFAULT_STAGE = "mainStage";
 
     public static final String DEFAULT_VARIATION = "default";
@@ -63,4 +65,6 @@ public class Constants {
     public static final String EXT_VIDEO = "webm"; // mp4 not fully supported by gdx-video so we use webm videos if exists
 
     public static final String LIBRARY_SEPARATOR = ":";
+
+    public static final float COUNTDOWN_VOLUME = 0.6f;
 }

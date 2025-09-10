@@ -1,9 +1,11 @@
 package com.nova.fnfjava.play.notes.notestyle;
 
+import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.notestyle.NoteStyleData;
 import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
+import com.nova.fnfjava.graphics.FunkinSprite;
 import com.nova.fnfjava.play.Countdown;
 import com.nova.fnfjava.play.notes.NoteDirection;
 import com.nova.fnfjava.util.Constants;
@@ -122,6 +124,56 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
     }
 
 
+    public FunkinSprite buildCountdownSprite(Countdown.CountdownStep step) {
+        var result = new FunkinSprite();
+        switch (step) {
+            case THREE:
+                if (getData().assets.countdownThree == null) return getFallback().buildCountdownSprite(step);
+                String assetPath3 = buildCountdownSpritePath(step);
+                if (assetPath3 == null) return null;
+                result.loadTexture(assetPath3);
+                result.setScaleX(getData().assets.countdownThree.scale != null ? getData().assets.countdownThree.scale : 1.0f);
+                result.setScaleY(getData().assets.countdownThree.scale != null ? getData().assets.countdownThree.scale : 1.0f);
+                break;
+
+            case TWO:
+                if (getData().assets.countdownTwo == null) return getFallback().buildCountdownSprite(step);
+                String assetPath2 = buildCountdownSpritePath(step);
+                if (assetPath2 == null) return null;
+                result.loadTexture(assetPath2);
+                result.setScaleX(getData().assets.countdownTwo.scale != null ? getData().assets.countdownTwo.scale : 1.0f);
+                result.setScaleY(getData().assets.countdownTwo.scale != null ? getData().assets.countdownTwo.scale : 1.0f);
+                break;
+
+            case ONE:
+                if (getData().assets.countdownOne == null) return getFallback().buildCountdownSprite(step);
+                String assetPath1 = buildCountdownSpritePath(step);
+                if (assetPath1 == null) return null;
+                result.loadTexture(assetPath1);
+                result.setScaleX(getData().assets.countdownOne.scale != null ? getData().assets.countdownOne.scale : 1.0f);
+                result.setScaleY(getData().assets.countdownOne.scale != null ? getData().assets.countdownOne.scale : 1.0f);
+                break;
+
+            case GO:
+                if (getData().assets.countdownGo == null) return getFallback().buildCountdownSprite(step);
+                String assetPathGo = buildCountdownSpritePath(step);
+                if (assetPathGo == null) return null;
+                result.loadTexture(assetPathGo);
+                result.setScaleX(getData().assets.countdownGo.scale != null ? getData().assets.countdownGo.scale : 1.0f);
+                result.setScaleY(getData().assets.countdownGo.scale != null ? getData().assets.countdownGo.scale : 1.0f);
+                break;
+
+            default:
+                return null;
+        }
+
+        //result.scrollFactor.set(0, 0);
+        //result.antialiasing = !isCountdownSpritePixel(step);
+        result.updateHitbox();
+
+        return result;
+    }
+
     public String buildCountdownSpritePath(Countdown.CountdownStep step) {
         String basePath = switch (step) {
             case THREE -> getData().assets.countdownThree.assetPath;
@@ -137,6 +189,52 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
         if (parts.length < 1) return null;
         if (parts.length == 1) return parts[0];
         return parts[1];
+    }
+
+    public Boolean isCountdownSpritePixel(Countdown.CountdownStep step) {
+        switch (step) {
+            case THREE:
+                Boolean result3 = getData().assets.countdownThree.isPixel;
+                if (result3 == null) result3 = getFallback().isCountdownSpritePixel(step) != null ? getFallback().isCountdownSpritePixel(step) : false;
+                return result3;
+            case TWO:
+                Boolean result2 = getData().assets.countdownTwo.isPixel;
+                if (result2 == null) result2 = getFallback().isCountdownSpritePixel(step) != null ? getFallback().isCountdownSpritePixel(step) : false;
+                return result2;
+            case ONE:
+                Boolean result1 = getData().assets.countdownOne.isPixel;
+                if (result1 == null) result1 = getFallback().isCountdownSpritePixel(step) != null ? getFallback().isCountdownSpritePixel(step) : false;
+                return result1;
+            case GO:
+                Boolean resultGo = getData().assets.countdownGo.isPixel;
+                if (resultGo == null) resultGo = getFallback().isCountdownSpritePixel(step) != null ? getFallback().isCountdownSpritePixel(step) : false;
+                return resultGo;
+            default:
+                return false;
+        }
+    }
+
+    public Array<Float> getCountdownSpriteOffsets(Countdown.CountdownStep step) {
+        switch (step) {
+            case THREE:
+                var result3 = getData().assets.countdownThree.offsets;
+                if (result3 == null) result3 = getFallback().getCountdownSpriteOffsets(step) != null ? getFallback().getCountdownSpriteOffsets(step) : new Array<>(new Float[]{0f, 0f});
+                return result3;
+            case TWO:
+                var result2 = getData().assets.countdownTwo.offsets;
+                if (result2 == null) result2 = getFallback().getCountdownSpriteOffsets(step) != null ? getFallback().getCountdownSpriteOffsets(step) : new Array<>(new Float[]{0f, 0f});
+                return result2;
+            case ONE:
+                var result1 = getData().assets.countdownOne.offsets;
+                if (result1 == null) result1 = getFallback().getCountdownSpriteOffsets(step) != null ? getFallback().getCountdownSpriteOffsets(step) : new Array<>(new Float[]{0f, 0f});
+                return result1;
+            case GO:
+                var result = getData().assets.countdownGo.offsets;
+                if (result == null) result = getFallback().getCountdownSpriteOffsets(step) != null ? getFallback().getCountdownSpriteOffsets(step) : new Array<>(new Float[]{0f, 0f});
+                return result;
+            default:
+                return new Array<>(new Float[]{0f, 0f});
+        }
     }
 
     public String getCountdownSoundPath(Countdown.CountdownStep step, boolean raw) {

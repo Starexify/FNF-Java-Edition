@@ -8,6 +8,10 @@ public class FunkinSprite extends AnimatedSprite {
         super(x, y);
     }
 
+    public FunkinSprite() {
+        this(0, 0);
+    }
+
     public static FunkinSprite create(float x, float y, String atlasPath) {
         FunkinSprite sprite = new FunkinSprite(x, y);
         sprite.atlas = Assets.getAtlas(atlasPath);

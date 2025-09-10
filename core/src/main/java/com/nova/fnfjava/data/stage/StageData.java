@@ -103,13 +103,13 @@ public class StageData {
     }
 
     public static class StageDataCharacter {
-        int zIndex = 0;
-        Array<Float> position = new Array<>(new Float[]{0f, 0f});
+        public int zIndex = 0;
+        public Array<Float> position = new Array<>(new Float[]{0f, 0f});
         public float scale = 1;
-        Array<Float> cameraOffsets;
-        Array<Float> scroll = new Array<>(new Float[]{1f, 1f});
-        float alpha = 1.0f;
-        float angle = 0.0f;
+        public Array<Float> cameraOffsets;
+        public Array<Float> scroll = new Array<>(new Float[]{1f, 1f});
+        public float alpha = 1.0f;
+        public float angle = 0.0f;
 
         public StageDataCharacter() {}
 

@@ -286,7 +286,7 @@ public class SongData {
         }
     }
 
-    public static class SongChartData {
+    public static class SongChartData implements Json.Serializable {
         public ObjectMap<String, Float> scrollSpeed;
         public Array<SongEventData> events;
         public ObjectMap<String, Array<SongNoteData>> notes;
@@ -304,6 +304,47 @@ public class SongData {
             if (result == 0.0f && !Objects.equals(diff, "default")) return getScrollSpeed("default");
 
             return (result == 0.0f) ? 1.0f : result;
+        }
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("scrollSpeed", scrollSpeed);
+            json.writeValue("events", events);
+            json.writeValue("notes", notes);
+            json.writeValue("generatedBy", generatedBy);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            JsonValue scrollSpeedData = jsonData.get("scrollSpeed");
+            if (scrollSpeedData != null) scrollSpeed = json.readValue(ObjectMap.class, Float.class, scrollSpeedData);
+
+            JsonValue eventsData = jsonData.get("events");
+            if (eventsData != null) events = json.readValue(Array.class, SongEventData.class, eventsData);
+
+            JsonValue notesData = jsonData.get("notes");
+            if (notesData != null && notesData.isObject()) {
+                notes = new ObjectMap<>();
+
+                for (JsonValue difficultyEntry = notesData.child; difficultyEntry != null; difficultyEntry = difficultyEntry.next) {
+                    String difficultyId = difficultyEntry.name;
+
+                    if (difficultyEntry.isArray()) {
+                        Array<SongNoteData> noteArray = new Array<>();
+
+                        // Manually deserialize each note
+                        for (JsonValue noteJson = difficultyEntry.child; noteJson != null; noteJson = noteJson.next) {
+                            SongNoteData note = new SongNoteData();
+                            note.read(json, noteJson);
+                            noteArray.add(note);
+                        }
+
+                        notes.put(difficultyId, noteArray);
+                    }
+                }
+            }
+
+            generatedBy = jsonData.getString("generatedBy", SongRegistry.DEFAULT_GENERATEDBY);
         }
     }
 
@@ -619,4 +660,3 @@ public class SongData {
 
     }
 }
-

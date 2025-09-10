@@ -8,13 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Game.class)
 public class GameMixin {
-
-    static {
-        System.out.println("=== GameMixin class loaded! ===");
-    }
-
     @Inject(method = "render()V", at = @At("HEAD"))
     private void renderMixin(CallbackInfo ci) {
-        System.out.println("=== MIXIN RENDER CALLED! ===");
+        System.out.println("GameMixin render called");
     }
 }

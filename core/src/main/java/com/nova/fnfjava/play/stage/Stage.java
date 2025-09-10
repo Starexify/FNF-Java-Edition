@@ -27,19 +27,18 @@ public class Stage extends TypedActorGroup implements IRegistryEntry<StageData> 
             StageData.StageDataCharacter stageCharData = getData().characters.bf;
             float finalScale = getBoyfriend().getBaseScale() * stageCharData.scale;
             getBoyfriend().setScale(finalScale);
-            /*getBoyfriend().cameraFocusPoint.x += stageCharData.cameraOffsets[0];
-            getBoyfriend().cameraFocusPoint.y += stageCharData.cameraOffsets[1];*/
-        } else {
-            Main.logger.setTag("Stage").warn("STAGE RESET: No boyfriend found.");
-        }
+            getBoyfriend().cameraFocusPoint.x += stageCharData.cameraOffsets.get(0);
+            getBoyfriend().cameraFocusPoint.y += stageCharData.cameraOffsets.get(1);
+        } else Main.logger.setTag("Stage").warn("STAGE RESET: No boyfriend found.");
+
         if (getGirlfriend() != null) {
             getGirlfriend().resetCharacter(true);
             // Reapply the camera offsets.
             StageData.StageDataCharacter stageCharData = getData().characters.gf;
             float finalScale = getGirlfriend().getBaseScale() * stageCharData.scale;
             getGirlfriend().setScale(finalScale);
-/*            getGirlfriend().cameraFocusPoint.x += stageCharData.cameraOffsets[0];
-            getGirlfriend().cameraFocusPoint.y += stageCharData.cameraOffsets[1];*/
+            getGirlfriend().cameraFocusPoint.x += stageCharData.cameraOffsets.get(0);
+            getGirlfriend().cameraFocusPoint.y += stageCharData.cameraOffsets.get(1);
         }
         if (getDad() != null) {
             getDad().resetCharacter(true);
@@ -47,8 +46,8 @@ public class Stage extends TypedActorGroup implements IRegistryEntry<StageData> 
             StageData.StageDataCharacter stageCharData = getData().characters.dad;
             float finalScale = getDad().getBaseScale() * stageCharData.scale;
             getDad().setScale(finalScale);
-     /*       getDad().cameraFocusPoint.x += stageCharData.cameraOffsets[0];
-            getDad().cameraFocusPoint.y += stageCharData.cameraOffsets[1];*/
+            getDad().cameraFocusPoint.x += stageCharData.cameraOffsets.get(0);
+            getDad().cameraFocusPoint.y += stageCharData.cameraOffsets.get(1);
         }
 
         // Reset positions of named props.
@@ -63,8 +62,6 @@ public class Stage extends TypedActorGroup implements IRegistryEntry<StageData> 
                 prop.setZIndex(dataProp.zIndex);
             }
         }
-
-        // We can assume unnamed props are not moving.
     }
 
     public BaseCharacter getCharacter(String id) {

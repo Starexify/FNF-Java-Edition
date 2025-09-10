@@ -141,8 +141,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         if (variations == null) variations = new Array<>(new String[]{variation});
 
         for (String currentVariation : variations) {
-            Main.logger.setTag(this.getClass().getSimpleName()).debug(currentVariation);
-            Main.logger.setTag(this.getClass().getSimpleName()).debug(difficulties.toString());
             if (difficulties.get(currentVariation) != null && difficulties.get(currentVariation).containsKey(diffId))
                 return difficulties.get(currentVariation).get(diffId);
         }

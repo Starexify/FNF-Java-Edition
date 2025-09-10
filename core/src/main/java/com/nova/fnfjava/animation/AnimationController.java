@@ -57,6 +57,10 @@ public class AnimationController {
         addAnimation(animData);
     }
 
+    public void add(String name, Integer[] frames, float frameRate, boolean looped, boolean flipX) {
+        this.add(name, frames, frameRate, looped, flipX, false);
+    }
+
     public void add(String name, Integer[] frames, float frameRate) {
         this.add(name, frames, frameRate, true, false, false);
     }
