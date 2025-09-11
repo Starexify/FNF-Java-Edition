@@ -8,11 +8,11 @@ public class CharacterData {
     //public CharacterRenderType renderType;
     public float scale = 1f;
     public HealthIconData healthIcon;
+    public DeathData death;
     public Array<Float> offsets = new Array<>(new Float[]{0f, 0f});
     public Float danceEvery = 1.0f;
 
     public CharacterData() {
-
     }
 
     public class CharacterDataParser {
@@ -36,6 +36,15 @@ public class CharacterData {
 
         public HealthIconData() {
 
+        }
+    }
+
+    public static class DeathData {
+        public Array<Float> cameraOffsets = new Array<>(new Float[]{0f, 0f});
+        public float cameraZoom = 1.0f;
+        public Float preTransitionDelay = 0.0f;
+
+        public DeathData() {
         }
     }
 }

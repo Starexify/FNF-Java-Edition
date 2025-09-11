@@ -44,8 +44,7 @@ public class FunkyClassLoader extends URLClassLoader {
     public static FunkyClassLoader getInstance() {
         if (FunkyClassLoader.instance == null) {
             synchronized (FunkyClassLoader.class) {
-                if (FunkyClassLoader.instance == null)
-                    FunkyClassLoader.instance = new FunkyClassLoader(FunkyClassLoader.class.getClassLoader());
+                if (FunkyClassLoader.instance == null) FunkyClassLoader.instance = new FunkyClassLoader(FunkyClassLoader.class.getClassLoader());
             }
         }
         return FunkyClassLoader.instance;
@@ -94,13 +93,21 @@ public class FunkyClassLoader extends URLClassLoader {
             URL sourceUrl = rawClass.getSource();
 
             if (sourceUrl == null) defined = defineClass(name, bytes, 0, bytes.length);
-            else defined = defineClass(name, bytes, 0, bytes.length, new CodeSource(sourceUrl, (CodeSigner[]) null));
+            else {
+                String path = sourceUrl.getPath();
+                int seperatorIndex = path.lastIndexOf('!');
+                if (seperatorIndex != -1) sourceUrl = new URL(path.substring(0, seperatorIndex));
+                defined = defineClass(name, bytes, 0, bytes.length, new CodeSource(sourceUrl, (CodeSigner[]) null));
+            }
 
             if (resolve) resolveClass(defined);
 
             return defined;
         } catch (LinkageError e) {
             throw new ClassNotFoundException("Invalid bytecode for class " + name, e);
+        } catch (ClassNotFoundException e) {
+
+            throw e;
         }
     }
 

@@ -18,5 +18,7 @@ public final class FunkyMixinBootstrap {
         Mixins.addConfiguration("fnfjava.mixins.json");
 
         MixinBootstrap.getPlatform().inject();
+
+        initialized = true;
     }
 }

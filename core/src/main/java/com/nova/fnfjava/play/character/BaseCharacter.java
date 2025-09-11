@@ -49,6 +49,10 @@ public class BaseCharacter extends Bopper {
         //if (resetCamera) this.resetCameraFocusPoint();
     }
 
+    public void resetCharacter() {
+        resetCharacter(true);
+    }
+
     public void initHealthIcon(boolean isOpponent) {
         if (!isOpponent) {
             if (PlayState.instance.iconP1 == null) {
@@ -66,11 +70,12 @@ public class BaseCharacter extends Bopper {
         }
     }
 
+    // Getters/Setters
     public float getBaseScale() {
         return charData.scale;
     }
 
-    public void resetCharacter() {
-        resetCharacter(true);
+    public Float getDeathPreTransitionDelay() {
+        return charData.death.preTransitionDelay != null ? charData.death.preTransitionDelay : 0.0f;
     }
 }

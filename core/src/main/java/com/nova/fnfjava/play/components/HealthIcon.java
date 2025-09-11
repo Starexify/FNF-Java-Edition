@@ -1,10 +1,12 @@
 package com.nova.fnfjava.play.components;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.nova.fnfjava.Assets;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.graphics.FunkinSprite;
+import com.nova.fnfjava.play.PlayState;
 import com.nova.fnfjava.play.character.CharacterData;
 import com.nova.fnfjava.util.Constants;
 
@@ -54,10 +56,84 @@ public class HealthIcon extends FunkinSprite {
 
             this.size.set(data.scale, data.scale);
 
-            if (data.offsets != null && data.offsets.size == 2) this.iconOffset.set(data.offsets.get(0), data.offsets.get(1));
+            if (data.offsets != null && data.offsets.size == 2)
+                this.iconOffset.set(data.offsets.get(0), data.offsets.get(1));
             else this.iconOffset.set(0, 0);
 
             //this.flipX = data.flipX ?? false;
+        }
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        this.updatePosition();
+    }
+
+    public void updatePosition() {
+        if (autoUpdate && PlayState.instance != null) {
+            switch (playerId) {
+                case 0: // Boyfriend
+                    // Update the animation based on the current state.
+                    updateHealthIcon(PlayState.instance.health);
+                    // Update the position to match the health bar.
+                    //this.setX(PlayState.instance.healthBar.x
+                    //    + (PlayState.instance.healthBar.width * (MathUtils.map(0, 2, 100, 0, PlayState.instance.healthBar.value) * 0.01f) - POSITION_OFFSET));
+                case 1: // Dad
+                    // Update the animation based on the current state.
+                    updateHealthIcon(MAXIMUM_HEALTH - PlayState.instance.health);
+                    // Update the position to match the health bar.
+                    //this.setX(PlayState.instance.healthBar.x
+                    //    + (PlayState.instance.healthBar.width * (MathUtils.map(0, 2, 100, 0, PlayState.instance.healthBar.value) * 0.01f))
+                    //    - (this.getWidth() - POSITION_OFFSET));
+            }
+
+            //this.setFlxY(PlayState.instance.healthBar.y - (this.getHeight() / 2)); // - (PlayState.instance.healthBar.height / 2)
+
+            offset.add(iconOffset);
+        }
+    }
+
+    public void updateHealthIcon(float health) {
+        switch (getCurrentAnimation()) {
+            /*switch (getCurrentAnimation()) {
+                case HealthIconState.IDLE:
+                    if (health < LOSING_THRESHOLD) playAnimation(ToLosing, Losing);
+                    else if (health > WINNING_THRESHOLD) playAnimation(ToWinning, Winning);
+                    else playAnimation(Idle);
+                    break;
+
+                case HealthIconState.WINNING:
+                    if (health < WINNING_THRESHOLD) playAnimation(FromWinning, Idle);
+                    else playAnimation(Winning, Idle);
+                    break;
+
+                case HealthIconState.LOSING:
+                    if (health > LOSING_THRESHOLD) playAnimation(FromLosing, Idle);
+                    else playAnimation(Losing, Idle);
+                    break;
+
+                case HealthIconState.TO_LOSING:
+                    if (isAnimationFinished()) playAnimation(Losing, Idle);
+                    break;
+
+                case HealthIconState.TO_WINNING:
+                    if (isAnimationFinished()) playAnimation(Winning, Idle);
+                    break;
+
+                case HealthIconState.FROM_LOSING | HealthIconState.FROM_WINNING:
+                    if (isAnimationFinished()) playAnimation(Idle);
+                    break;
+
+                case "":
+                    playAnimation(Idle);
+                    break;
+
+                default:
+                    playAnimation(Idle);
+                    break;
+            }*/
         }
     }
 
@@ -105,6 +181,12 @@ public class HealthIcon extends FunkinSprite {
         }
 
         //this.antialiasing = !isPixel;
+    }
+
+    // Getters/Setters
+    public String getCurrentAnimation() {
+        if (this.animation == null || this.animation.curAnim == null) return "";
+        return this.animation.curAnim.name;
     }
 
     public String setCharacterId(String value) {

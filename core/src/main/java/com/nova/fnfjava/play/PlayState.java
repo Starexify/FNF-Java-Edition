@@ -3,6 +3,7 @@ package com.nova.fnfjava.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.Conductor;
@@ -86,6 +87,7 @@ public class PlayState extends MusicBeatSubState {
     // Discord RPC variables
     public String discordRPCAlbum = "";
     public String discordRPCIcon = "";
+
     public FlxText scoreText;
     //public FlxBar healthBar;
     public FunkinSprite healthBarBG;
@@ -227,7 +229,7 @@ public class PlayState extends MusicBeatSubState {
             // Call a script event to start the countdown.
             // Songs with cutscenes should call event.cancel().
             // As long as they call `PlayState.instance.startCountdown()` later, the countdown will start.
-            //startCountdown();
+            startCountdown();
         }
 
         initialized = true;
@@ -332,7 +334,7 @@ public class PlayState extends MusicBeatSubState {
                 Conductor.getInstance().update(Conductor.getInstance().songPosition + delta * 1000, false);
                 if (Conductor.getInstance().songPosition >= (startTimestamp + Conductor.getInstance().getCombinedOffset())) {
                     Main.logger.setTag("PlayState").info("started song at " + Conductor.getInstance().songPosition);
-                    //startSong();
+                    startSong();
                 }
             }
         } else {
@@ -343,7 +345,7 @@ public class PlayState extends MusicBeatSubState {
 /*                final float audioDiff = Math.round(Math.abs(Main.sound.music.time - (Conductor.getInstance().songPosition - Conductor.getInstance().getCombinedOffset())));
                 if (audioDiff <= CONDUCTOR_DRIFT_THRESHOLD) {
                     final float easeRatio = (float) (1.0f - Math.exp(-(MUSIC_EASE_RATIO * playbackRate) * delta));
-                    Conductor.getInstance().update(Math.lerp(Conductor.getInstance().songPosition, Main.sound.music.time + Conductor.getInstance().getCombinedOffset(), easeRatio), false);
+                    Conductor.getInstance().update(MathUtils.lerp(Conductor.getInstance().songPosition, Main.sound.music.time + Conductor.getInstance().getCombinedOffset(), easeRatio), false);
                 } else {
                     Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
                     Conductor.getInstance().update();
@@ -359,6 +361,98 @@ public class PlayState extends MusicBeatSubState {
 
         if (health > Constants.HEALTH_MAX) health = Constants.HEALTH_MAX;
         if (health < Constants.HEALTH_MIN) health = Constants.HEALTH_MIN;
+
+        if (subState == null && cameraZoomRate > 0.0) {
+            cameraBopMultiplier = MathUtils.lerp(1.0f, cameraBopMultiplier, 0.95f);
+            float zoomPlusBop = currentCameraZoom * cameraBopMultiplier;
+            //if (!debugUnbindCameraZoom) FlxG.camera.zoom = zoomPlusBop;
+
+            //camHUD.zoom = FlxMath.lerp(defaultHUDCameraZoom, camHUD.zoom, 0.95);
+        }
+
+        if (currentStage != null && currentStage.getBoyfriend() != null) {
+            //FlxG.watch.addQuick('bfAnim', currentStage.getBoyfriend().getCurrentAnimation());
+        }
+        //FlxG.watch.addQuick('health', health);
+        //FlxG.watch.addQuick('cameraBopIntensity', cameraBopIntensity);
+
+        if (!isInCutscene && !disableKeys) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                health = Constants.HEALTH_MIN;
+                Main.logger.setTag("PlayState").info("RESET = True");
+            }
+
+            if (health <= Constants.HEALTH_MIN && !isPracticeMode && !isPlayerDying) {
+                //vocals.pause();
+
+                if (Main.sound.music != null) Main.sound.music.pause();
+
+                deathCounter += 1;
+
+                //dispatchEvent(new ScriptEvent(GAME_OVER));
+
+                persistentUpdate = false;
+                persistentDraw = false;
+
+                isPlayerDying = true;
+
+                float deathPreTransitionDelay = currentStage.getBoyfriend().getDeathPreTransitionDelay() != null ? currentStage.getBoyfriend().getDeathPreTransitionDelay() : 0.0f;
+                if (deathPreTransitionDelay > 0) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            moveToGameOver();
+                        }
+                    }, deathPreTransitionDelay);
+                } else moveToGameOver();
+
+                DiscordClient.instance.setPresence(
+                    new DiscordClient.DiscordPresenceParams(buildDiscordRPCState(), "Game Over - ${buildDiscordRPCDetails()}", discordRPCAlbum, discordRPCIcon)
+                );
+            } else if (isPlayerDying) {
+                // Wait up.
+            }
+        }
+
+        //processSongEvents();
+
+        // Handle keybinds
+        //processInputQueue();
+        //if (!isInCutscene && !disableKeys) debugKeyShit();
+        //if (isInCutscene && !disableKeys) handleCutsceneKeys(elapsed);
+
+        // Moving notes into position is now done by Strumline.update().
+        //if (!isInCutscene) processNotes(elapsed);
+
+        justUnpaused = false;
+
+        //if (Preferences.autoPause) Main.autoPause = !mayPauseGame;
+    }
+
+    public void moveToGameOver() {
+        //playerStrumline.clean();
+        //opponentStrumline.clean();
+
+        vwooshTimer.clear();
+
+        songScore = 0;
+        updateScoreText();
+
+        health = Constants.HEALTH_STARTING;
+        healthLerp = health;
+
+        //healthBar.value = healthLerp;
+
+        if (!isMinimalMode) {
+            iconP1.updatePosition();
+            iconP2.updatePosition();
+        }
+
+        /*var gameOverSubState = new GameOverSubState({
+                isChartingMode: isChartingMode,
+            transparent: persistentDraw
+      });*/
+        //openSubState(gameOverSubState);
     }
 
     public Array<Object> prevScrollTargets = new Array<>();
@@ -478,6 +572,93 @@ public class PlayState extends MusicBeatSubState {
 
     public void regenNoteData() {
         regenNoteData(0);
+    }
+
+    public void startCountdown() {
+        boolean result = Countdown.performCountdown();
+        if (!result) return;
+
+        isInCutscene = false;
+
+        //camHUD.visible = true;
+    }
+
+    public void startSong() {
+        startingSong = false;
+
+        //if (!overrideMusic && !getIsGamePaused() && getCurrentChart() != null) getCurrentChart().playInst(1.0, currentInstrumental, false);
+
+        if (Main.sound.music == null) {
+            Main.logger.setTag("PlayState").error("PlayState failed to initialize instrumental!");
+            return;
+        }
+
+/*        Main.sound.music.onComplete = () -> {
+            if (mayPauseGame) endSong(skipEndingTransition);
+        };*/
+
+        Main.sound.music.pause();
+        Main.sound.music.seekTo(startTimestamp);
+        Main.sound.music.setPitch(playbackRate);
+
+        // Prevent the volume from being wrong.
+        Main.sound.music.setVolume(1.0f);
+        //if (Main.sound.music.fadeTween != null) Main.sound.music.fadeTween.cancel();
+
+        if (vocals != null) {
+            Main.logger.setTag("PlayState").info("Playing vocals...");
+            add(vocals);
+
+            /*vocals.time = startTimestamp - Conductor.instance.instrumentalOffset;
+            vocals.pitch = playbackRate;
+            vocals.volume = 1.0;*/
+
+            //vocals.play();
+        }
+
+        Main.sound.music.play();
+
+        DiscordClient.instance.setPresence(
+            new DiscordClient.DiscordPresenceParams(buildDiscordRPCState(), buildDiscordRPCDetails(), discordRPCAlbum, discordRPCIcon)
+        );
+
+        if (startTimestamp > 0) {
+            // FlxG.sound.music.time = startTimestamp - Conductor.instance.combinedOffset;
+            //handleSkippedNotes();
+        }
+
+        //dispatchEvent(new ScriptEvent(SONG_START));
+
+        resyncVocals();
+    }
+
+    public void resyncVocals() {
+        if (vocals == null) return;
+
+        // Skip this if the music is paused (GameOver, Pause menu, start-of-song offset, etc.)
+        if (!Main.sound.music.isPlaying()) return;
+
+        float timeToPlayAt = Math.min(Main.sound.music.getLength(),
+            Math.max(Math.min(Conductor.getInstance().getCombinedOffset(), 0), Conductor.getInstance().songPosition) - Conductor.getInstance().getCombinedOffset());
+
+        Main.logger.setTag("PlayState").info("Resyncing vocals to " + timeToPlayAt);
+
+        Main.sound.music.pause();
+        //vocals.pause();
+
+        //Main.sound.music.time = timeToPlayAt;
+        //Main.sound.music.play(false, timeToPlayAt);
+
+        //vocals.time = timeToPlayAt;
+        //vocals.play(false, timeToPlayAt);
+    }
+
+    public void updateScoreText() {
+        if (isBotPlayMode) scoreText.setText("Bot Play Enabled");
+        else {
+            boolean commaSeparated = true;
+            scoreText.setText("Score: " + StringTools.formatMoney(songScore, false, commaSeparated));
+        }
     }
 
     // Getters/Setters
