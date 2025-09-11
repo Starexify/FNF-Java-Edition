@@ -4,7 +4,7 @@
   "package": "com.nova.fnfjava.lwjgl3.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "GameMixin"
+    "MainMixin"
   ],
   "injectors": {
     "defaultRequire": 1

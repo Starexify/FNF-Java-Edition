@@ -62,7 +62,7 @@ public class FunkyClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (isClassBlacklisted(name)) return super.loadClass(name, resolve);
 
         try {
@@ -124,6 +124,8 @@ public class FunkyClassLoader extends URLClassLoader {
         if (transform) transformedBytes = this.transformBytes(originalBytes, name, Utils.toCodeSourceURI(url, name));
         else transformedBytes = originalBytes;
 
+        if (originalBytes.length != transformedBytes.length) System.out.println("Original byte size: " + originalBytes.length + " Transformed byte size: " + transformedBytes.length);
+
         return new RawClassData(url, transformedBytes);
     }
 
@@ -141,16 +143,10 @@ public class FunkyClassLoader extends URLClassLoader {
                 String internalName = node.name;
                 if (internalName == null) throw new NullPointerException();
 
-                System.out.println("[FunkinClassLoader] " + transformer.getClass().getSimpleName() + " could be able to transform " + internalName);
-
+                transformer.transformClass(node, codeSourceURI);
                 System.out.println("[FunkinClassLoader] " + internalName + " was transformed by a " + transformer.getClass().getSimpleName());
-                /*if (!transformer.isValid()) {
-                    transformer.remove();
-                }*/
-            } catch (Throwable t) {
-                // Apparently errors would get absorbed otherwise.
-                System.out.println("[FunkinClassLoader] Error within ASM transforming process. CLASS " + qualifiedName + " WILL NOT BE MODIFIED - THIS MAY BE LETHAL." + "\n" + t);
 
+            } catch (Throwable t) {
                 throw new RuntimeException("Error within ASM transforming process for class " + qualifiedName, t);
             }
 
@@ -162,6 +158,7 @@ public class FunkyClassLoader extends URLClassLoader {
                     }
                 };
                 node.accept(writer);
+                classBytecode = Objects.requireNonNull(writer.toByteArray());
             } catch (Throwable t) {
                 try {
                     StringWriter disassembledClass = new StringWriter();

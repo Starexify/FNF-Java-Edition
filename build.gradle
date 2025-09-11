@@ -50,6 +50,7 @@ configure(subprojects) {
   processResources.dependsOn 'generateAssetList'
 
   compileJava {
+    options.compilerArgs += '-proc:none'
     options.incremental = true
   }
 }

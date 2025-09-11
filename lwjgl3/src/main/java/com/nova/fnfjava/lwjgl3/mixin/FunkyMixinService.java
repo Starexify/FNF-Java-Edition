@@ -139,6 +139,7 @@ public class FunkyMixinService extends MixinServiceAbstract {
             throw thrownException;
         }
     };
+
     @Override
     public IClassProvider getClassProvider() {
         return this.classProvider;
@@ -181,7 +182,7 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
     @Override
     protected ILogger createLogger(String name) {
-        return new FunkinMixinLogger(name);
+        return new FunkyMixinLogger(name);
     }
 
     public final <T extends IMixinInternal> T getMixinInternal(Class<T> type) {

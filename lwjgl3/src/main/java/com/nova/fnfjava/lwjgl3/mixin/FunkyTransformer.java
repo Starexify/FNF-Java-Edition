@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformerFactory;
 
+import java.net.URI;
 import java.util.Objects;
 
 public class FunkyTransformer {
@@ -15,7 +16,7 @@ public class FunkyTransformer {
         this.transformer = Objects.requireNonNull(factory.createTransformer(), "factory may not create a null transformer");
     }
 
-    public boolean transformClass(ClassNode node) {
+    public boolean transformClass(ClassNode node, URI codeSourceURI) {
         boolean ret = this.transformer.transformClass(MixinEnvironment.getEnvironment(MixinEnvironment.Phase.PREINIT), node.name.replace("/", "."), node);
         return ret;
     }

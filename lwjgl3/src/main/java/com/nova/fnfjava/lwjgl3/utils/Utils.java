@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Utils {
 
-    public static final URI toCodeSourceURI(URL url, String internalClassName) {
+    public static URI toCodeSourceURI(URL url, String internalClassName) {
         if (url == null) return null;
 
         String urlPath = url.getPath();
