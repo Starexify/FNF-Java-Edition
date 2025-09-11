@@ -1,5 +1,7 @@
 package com.nova.fnfjava.play;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
@@ -321,7 +323,42 @@ public class PlayState extends MusicBeatSubState {
 
             currentStage.getBoyfriend().initHealthIcon(false);
             currentStage.getDad().initHealthIcon(true);
+
+            needsReset = false;
         }
+
+        if (startingSong) {
+            if (isInCountdown) {
+                Conductor.getInstance().update(Conductor.getInstance().songPosition + delta * 1000, false);
+                if (Conductor.getInstance().songPosition >= (startTimestamp + Conductor.getInstance().getCombinedOffset())) {
+                    Main.logger.setTag("PlayState").info("started song at " + Conductor.getInstance().songPosition);
+                    //startSong();
+                }
+            }
+        } else {
+            /*if (Constants.EXT_SOUND == "mp3") Conductor.getInstance().formatOffset = Constants.MP3_DELAY_MS;
+            else Conductor.getInstance().formatOffset = 0.0f;*/
+
+            if (Main.sound.music.isPlaying()) {
+/*                final float audioDiff = Math.round(Math.abs(Main.sound.music.time - (Conductor.getInstance().songPosition - Conductor.getInstance().getCombinedOffset())));
+                if (audioDiff <= CONDUCTOR_DRIFT_THRESHOLD) {
+                    final float easeRatio = (float) (1.0f - Math.exp(-(MUSIC_EASE_RATIO * playbackRate) * delta));
+                    Conductor.getInstance().update(Math.lerp(Conductor.getInstance().songPosition, Main.sound.music.time + Conductor.getInstance().getCombinedOffset(), easeRatio), false);
+                } else {
+                    Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
+                    Conductor.getInstance().update();
+                }*/
+                Conductor.getInstance().update();
+            }
+        }
+
+        boolean pauseButtonCheck = false;
+        boolean androidPause = false;
+
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || androidPause || pauseButtonCheck)) pause();
+
+        if (health > Constants.HEALTH_MAX) health = Constants.HEALTH_MAX;
+        if (health < Constants.HEALTH_MIN) health = Constants.HEALTH_MIN;
     }
 
     public Array<Object> prevScrollTargets = new Array<>();

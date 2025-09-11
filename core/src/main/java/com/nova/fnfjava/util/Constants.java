@@ -60,6 +60,8 @@ public class Constants {
 
     public static final float HEALTH_STARTING = HEALTH_MAX / 2.0f;
 
+    public static final float HEALTH_MIN = 0.0f;
+
     public static final String EXT_SOUND = "ogg";
 
     public static final String EXT_VIDEO = "webm"; // mp4 not fully supported by gdx-video so we use webm videos if exists

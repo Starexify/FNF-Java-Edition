@@ -1,10 +1,14 @@
 package com.nova.fnfjava.lwjgl3.mixin;
 
 import com.nova.fnfjava.lwjgl3.FunkyClassLoader;
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
 import org.spongepowered.asm.launch.platform.container.IContainerHandle;
+import org.spongepowered.asm.logging.ILogger;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.service.*;
+import org.spongepowered.asm.util.IConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +17,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class FunkyMixinService extends MixinServiceAbstract {
+    public static FunkyMixinService instance;
+
     public static final FunkyClassLoader classLoader = FunkyClassLoader.getInstance();
+
+    @Override
+    public void init() {
+        FunkyMixinService.instance = this;
+        super.init();
+    }
 
     @Override
     public String getName() {
@@ -47,8 +59,8 @@ public class FunkyMixinService extends MixinServiceAbstract {
         }
 
         @Override
-        public Class<?> findAgentClass(String name, boolean initialize) {
-            return this.findAgentClass(name, initialize);
+        public Class<?> findAgentClass(String name, boolean initialize) throws ClassNotFoundException {
+            return Class.forName(name, initialize, ClassLoader.getSystemClassLoader());
         }
     };
 
@@ -65,26 +77,24 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
         @Override
         public ClassNode getClassNode(String name, boolean runTransformers, int readerFlags) throws ClassNotFoundException, IOException {
-            return this.getClassNode(name, runTransformers, readerFlags);
+            String path = name.replace(".", "/") + ".class";
+            InputStream stream = classLoader.getResourceAsStream(path);
+
+            if (stream == null) stream = classLoader.getParent().getResourceAsStream(path);
+
+            if (stream == null)
+                throw new ClassNotFoundException("Could not find class " + name);
+
+            try {
+                ClassNode node = new ClassNode();
+                ClassReader reader = new ClassReader(stream);
+                reader.accept(node, readerFlags);
+                return node;
+            } finally {
+                stream.close();
+            }
         }
     };
-
-    public final ITransformerProvider transformerProvider = new ITransformerProvider() {
-        @Override
-        public Collection<ITransformer> getTransformers() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public Collection<ITransformer> getDelegatedTransformers() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public void addTransformerExclusion(String name) {
-        }
-    };
-
     @Override
     public IClassProvider getClassProvider() {
         return this.classProvider;
@@ -97,7 +107,7 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
     @Override
     public ITransformerProvider getTransformerProvider() {
-        return this.transformerProvider;
+        return null;
     }
 
     @Override
@@ -123,5 +133,33 @@ public class FunkyMixinService extends MixinServiceAbstract {
     @Override
     public InputStream getResourceAsStream(String name) {
         return FunkyClassLoader.getInstance().getResourceAsStream(name);
+    }
+
+    @Override
+    protected ILogger createLogger(String name) {
+        return new FunkinMixinLogger(name);
+    }
+
+    public final <T extends IMixinInternal> T getMixinInternal(Class<T> type) {
+        return this.getInternal(type);
+    }
+
+
+    @Override
+    public void unwire() {
+        super.unwire();
+        this.wiredPhaseConsumer = null;
+    }
+
+    @Override
+    public void wire(MixinEnvironment.Phase phase, IConsumer<MixinEnvironment.Phase> phaseConsumer) {
+        super.wire(phase, phaseConsumer);
+        this.wiredPhaseConsumer = phaseConsumer;
+    }
+
+    private IConsumer<MixinEnvironment.Phase> wiredPhaseConsumer;
+
+    public IConsumer<MixinEnvironment.Phase> getPhaseConsumer() {
+        return this.wiredPhaseConsumer;
     }
 }
