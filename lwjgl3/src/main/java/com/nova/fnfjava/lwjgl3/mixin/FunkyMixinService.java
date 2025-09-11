@@ -13,8 +13,8 @@ import org.spongepowered.asm.util.IConsumer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 public class FunkyMixinService extends MixinServiceAbstract {
     public static FunkyMixinService instance;
@@ -77,22 +77,66 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
         @Override
         public ClassNode getClassNode(String name, boolean runTransformers, int readerFlags) throws ClassNotFoundException, IOException {
-            String path = name.replace(".", "/") + ".class";
-            InputStream stream = classLoader.getResourceAsStream(path);
+            List<Exception> caughtExceptions = new ArrayList<>();
 
-            if (stream == null) stream = classLoader.getParent().getResourceAsStream(path);
+            Callable<ClassReader>[] suppliers = new Callable[4];
 
-            if (stream == null)
-                throw new ClassNotFoundException("Could not find class " + name);
+            int i = 0;
+            int systemClassLoaderIndex;
 
-            try {
-                ClassNode node = new ClassNode();
-                ClassReader reader = new ClassReader(stream);
-                reader.accept(node, readerFlags);
-                return node;
-            } finally {
-                stream.close();
+            if (FunkyMixinService.classLoader.isClassProtected(name)) systemClassLoaderIndex = i++;
+            else systemClassLoaderIndex = suppliers.length - 1;
+
+
+            suppliers[systemClassLoaderIndex] = () -> {
+                ClassLoader cl = ClassLoader.getPlatformClassLoader();
+                InputStream input;
+                if (cl == null) input = ClassLoader.getSystemResourceAsStream(name.replace('.', '/') + ".class");
+                else input = cl.getResourceAsStream(name.replace('.', '/') + ".class");
+
+                return new ClassReader(input);
+            };
+
+
+            suppliers[i++] = () -> {
+                return new ClassReader(FunkyMixinService.classLoader.loadClassBytes(name, false).getBytes());
+            };
+
+            /*suppliers[i++] = () -> {
+                return new ClassReader(FunkyMixinService.classLoader.loadBytesWithChildren(name, false));
+            };*/
+
+            suppliers[i++] = () -> {
+                return new ClassReader(FunkyMixinService.classLoader.getResourceAsStream(name.replace('.', '/') + ".class"));
+            };
+
+            for (Callable<ClassReader> supplier : suppliers) {
+                try {
+                    @SuppressWarnings("null")
+                    ClassReader reader = supplier.call();
+                    ClassNode node = new ClassNode();
+                    reader.accept(node, readerFlags);
+                    return node;
+                } catch (Exception e) {
+                    caughtExceptions.add(e);
+                }
             }
+
+            Exception causedBy;
+            ListIterator<Exception> it = caughtExceptions.listIterator(caughtExceptions.size());
+
+            if (it.hasPrevious()) {
+                causedBy = it.previous();
+                while (it.hasPrevious()) {
+                    causedBy.addSuppressed(it.previous());
+                }
+            } else {
+                causedBy = null;
+            }
+
+            ClassNotFoundException thrownException = new ClassNotFoundException("Could not load ClassNode with name " + name, causedBy);
+
+            throw thrownException;
         }
     };
     @Override

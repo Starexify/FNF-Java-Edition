@@ -15,11 +15,7 @@ public class FunkyTransformer {
         this.transformer = Objects.requireNonNull(factory.createTransformer(), "factory may not create a null transformer");
     }
 
-    public IMixinTransformer getTransformer() {
-        return this.transformer;
-    }
-
-    public boolean transformClass(String name, ClassNode node) {
+    public boolean transformClass(ClassNode node) {
         boolean ret = this.transformer.transformClass(MixinEnvironment.getEnvironment(MixinEnvironment.Phase.PREINIT), node.name.replace("/", "."), node);
         return ret;
     }

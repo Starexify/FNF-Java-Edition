@@ -1,17 +1,26 @@
 package com.nova.fnfjava.lwjgl3;
 
 import com.nova.fnfjava.lwjgl3.mixin.FunkyTransformer;
+import com.nova.fnfjava.lwjgl3.utils.Utils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.util.CheckClassAdapter;
+import org.objectweb.asm.util.TraceClassVisitor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSigner;
 import java.security.CodeSource;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FunkyClassLoader extends URLClassLoader {
     public static FunkyClassLoader instance;
@@ -23,8 +32,10 @@ public class FunkyClassLoader extends URLClassLoader {
     };
 
     private static final String[] PROTECTED_PREFIXES = {
-
+        "com.nova.fnfjava.lwjgl3.mixin."
     };
+
+    private final Map<String, URI> classCodeSourceURIs = new ConcurrentHashMap<>();
 
     public FunkyClassLoader(ClassLoader parent) {
         super(new URL[0], parent);
@@ -33,7 +44,8 @@ public class FunkyClassLoader extends URLClassLoader {
     public static FunkyClassLoader getInstance() {
         if (FunkyClassLoader.instance == null) {
             synchronized (FunkyClassLoader.class) {
-                if (FunkyClassLoader.instance == null) FunkyClassLoader.instance = new FunkyClassLoader(FunkyClassLoader.class.getClassLoader());
+                if (FunkyClassLoader.instance == null)
+                    FunkyClassLoader.instance = new FunkyClassLoader(FunkyClassLoader.class.getClassLoader());
             }
         }
         return FunkyClassLoader.instance;
@@ -82,9 +94,8 @@ public class FunkyClassLoader extends URLClassLoader {
             URL sourceUrl = rawClass.getSource();
 
             if (sourceUrl == null) defined = defineClass(name, bytes, 0, bytes.length);
-            else defined = defineClass(name, bytes, 0, bytes.length, new CodeSource(sourceUrl, (CodeSigner []) null));
+            else defined = defineClass(name, bytes, 0, bytes.length, new CodeSource(sourceUrl, (CodeSigner[]) null));
 
-            System.out.println("[DEBUG] Loaded class: " + defined);
             if (resolve) resolveClass(defined);
 
             return defined;
@@ -93,7 +104,7 @@ public class FunkyClassLoader extends URLClassLoader {
         }
     }
 
-    private RawClassData loadClassBytes(String name, boolean transform) throws IOException {
+    public RawClassData loadClassBytes(String name, boolean transform) throws IOException {
         String path = name.replace(".", "/") + ".class";
         URL url = this.findResource(path);
 
@@ -106,43 +117,80 @@ public class FunkyClassLoader extends URLClassLoader {
             if (input == null) input = ClassLoader.getSystemResourceAsStream(path);
         } else input = url.openStream();
 
-        try {
-            ClassNode node = new ClassNode();
-            ClassReader reader = new ClassReader(input);
-            reader.accept(node, 0);
+        byte[] originalBytes = input.readAllBytes();
+        input.close();
+        byte[] transformedBytes;
 
-            // Apply mixin transformations
-            if (transform) getTransformer().transformClass(name, node);
+        if (transform) transformedBytes = this.transformBytes(originalBytes, name, Utils.toCodeSourceURI(url, name));
+        else transformedBytes = originalBytes;
 
-            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
-                @Override
-                protected ClassLoader getClassLoader() {
-                    return FunkyClassLoader.this.asmClassLoader;
-                }
-            };
-            node.accept(writer);
-            byte[] transformedCode = writer.toByteArray();
-
-            URL sourceUrl = url;
-            if (sourceUrl != null) {
-                String urlPath = sourceUrl.getPath();
-                int separatorIndex = urlPath.lastIndexOf('!');
-                if (separatorIndex != -1) {
-                    sourceUrl = new URL(urlPath.substring(0, separatorIndex));
-                }
-            }
-
-            return new RawClassData(sourceUrl, transformedCode);
-        } finally {
-            input.close();
-        }
+        return new RawClassData(url, transformedBytes);
     }
 
-    private boolean isClassBlacklisted(String name) {
+    synchronized byte[] transformBytes(byte[] classBytecode, String qualifiedName, URI codeSourceURI) {
+        if (!this.isClassProtected(qualifiedName)) {
+            ClassReader reader = new ClassReader(classBytecode);
+            ClassNode node = new ClassNode();
+
+            reader.accept(node, 0);
+
+            if (codeSourceURI != null) this.classCodeSourceURIs.putIfAbsent(node.name, codeSourceURI);
+
+            try {
+                FunkyTransformer transformer = getTransformer();
+                String internalName = node.name;
+                if (internalName == null) throw new NullPointerException();
+
+                System.out.println("[FunkinClassLoader] " + transformer.getClass().getSimpleName() + " could be able to transform " + internalName);
+
+                System.out.println("[FunkinClassLoader] " + internalName + " was transformed by a " + transformer.getClass().getSimpleName());
+                /*if (!transformer.isValid()) {
+                    transformer.remove();
+                }*/
+            } catch (Throwable t) {
+                // Apparently errors would get absorbed otherwise.
+                System.out.println("[FunkinClassLoader] Error within ASM transforming process. CLASS " + qualifiedName + " WILL NOT BE MODIFIED - THIS MAY BE LETHAL." + "\n" + t);
+
+                throw new RuntimeException("Error within ASM transforming process for class " + qualifiedName, t);
+            }
+
+            try {
+                ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
+                    @Override
+                    protected ClassLoader getClassLoader() {
+                        return FunkyClassLoader.this.asmClassLoader;
+                    }
+                };
+                node.accept(writer);
+            } catch (Throwable t) {
+                try {
+                    StringWriter disassembledClass = new StringWriter();
+                    TraceClassVisitor traceVisitor = new TraceClassVisitor(new PrintWriter(disassembledClass));
+                    CheckClassAdapter checkAdapter = new CheckClassAdapter(Opcodes.ASM9, traceVisitor, true) {
+                        @Override
+                        public void visitInnerClass(String name, String outerName, String innerName, int access) {
+                            super.visitInnerClass(name, outerName, innerName, access & ~Opcodes.ACC_SUPER);
+                        }
+                    };
+                    node.accept(checkAdapter);
+
+                    throw new RuntimeException("The class seems to be intact, but ASM does not like it anyways. In order to help on your debugging journey, take this:\n" + disassembledClass);
+                } catch (Throwable e) {
+                    t.addSuppressed(e);
+                }
+
+                throw new RuntimeException("Unable to write ASM Classnode to bytecode for class " + qualifiedName, t);
+            }
+        }
+        return classBytecode;
+    }
+
+    public boolean isClassBlacklisted(String name) {
         for (String prefix : BLACKLISTED_PREFIXES) if (name.startsWith(prefix)) return true;
         return false;
     }
-    private boolean isClassProtected(String name) {
+
+    public boolean isClassProtected(String name) {
         for (String prefix : PROTECTED_PREFIXES) if (name.startsWith(prefix)) return true;
         return false;
     }
