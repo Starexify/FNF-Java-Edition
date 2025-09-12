@@ -15,6 +15,7 @@ import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.ui.*;
 import com.nova.fnfjava.ui.freeplay.FreeplayState;
+import com.nova.fnfjava.ui.options.OptionsState;
 import com.nova.fnfjava.ui.story.StoryMenuState;
 import com.nova.fnfjava.ui.title.TitleState;
 import com.nova.fnfjava.util.Constants;
@@ -85,6 +86,8 @@ public class MainMenuState extends MusicBeatState {
 
         menuItems.enabled = true;
         createMenuItem("storymode", "mainmenu/storymode", () -> {
+            Assets.clearFreeplay();
+            Assets.purgeCache();
             startExitState(new StoryMenuState(main));
         });
         createMenuItem("freeplay", "mainmenu/freeplay", () -> {
@@ -95,7 +98,7 @@ public class MainMenuState extends MusicBeatState {
             openSubState(new FreeplayState(main));
             System.out.println("Freeplay selected!");
         });
-        createMenuItem("options", "mainmenu/options", () -> System.out.println("Options selected!"));
+        createMenuItem("options", "mainmenu/options", () -> startExitState(new OptionsState(main)));
         createMenuItem("credits", "mainmenu/credits", () -> System.out.println("Credits selected!"));
 
         final float spacing = 160;

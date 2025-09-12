@@ -1,6 +1,8 @@
 package com.nova.fnfjava.ui;
 
 import com.badlogic.ashley.signals.Signal;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.graphics.AnimatedSprite;
@@ -26,9 +28,7 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
     public ObjectMap<String, T> byName = new ObjectMap<>();
 
     public boolean busy = false;
-
     public boolean isMainMenuState = false;
-
     public Array<T> items = new Array<>();
 
     public MenuTypedList(NavControls navControls, WrapMode wrapMode) {
@@ -127,7 +127,7 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
     }
 
     public void accept() {
-        T menuItem = (T) getChild(selectedIndex);
+        T menuItem = items.get(selectedIndex);
 
         if (!menuItem.available) return;
 
@@ -217,6 +217,47 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
         public void callback() {
             if (callback != null && available) callback.run();
         }
+    }
+
+    static class MenuTypedItem<T extends Actor> extends MenuListItem {
+        public T label;
+
+        public MenuTypedItem(float x, float y, T label, String name, Runnable callback, boolean available) {
+            super(x, y, name, callback, available);
+            this.label = label;
+        }
+
+        public MenuTypedItem(T label, String name, Runnable callback) {
+            this(0, 0, label, name, callback, true);
+        }
+
+        public T setLabel(T value) {
+            if (value != null) {
+                value.setX(this.getX());
+                value.setY(this.getY());
+                value.getColor().a = this.getColor().a;
+            }
+            return this.label = value;
+        }
+
+        @Override
+        public void act(float delta) {
+            super.act(delta);
+            if (label != null) label.act(delta);
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            super.draw(batch, parentAlpha);
+
+            if (label != null) {
+           /*     label.cameras = cameras;
+                label.scrollFactor.copyFrom(scrollFactor);*/
+                label.draw(batch, parentAlpha);
+            }
+        }
+
+
     }
 
     public enum NavControls {

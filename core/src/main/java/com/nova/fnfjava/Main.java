@@ -111,12 +111,11 @@ public class Main extends Game {
     }
 
     public void startModLoading() {
-/*        modLoader = new FunkyModLoader();
+        modLoader = new FunkyModLoader();
 
         // Instead of loading immediately, show loading screen
         Screen titleScreen = new TitleState(this); // Your target screen
-        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));*/
-        setScreen(new TitleState(this));
+        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
     }
 
     public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {
@@ -136,7 +135,7 @@ public class Main extends Game {
 
         ReloadAssetsDebugPlugin.update();
 
-        if (modLoader != null) modLoader.renderMods();
+        //if (modLoader != null) modLoader.renderMods();
 
         if (Preferences.getDebugDisplay()) {
             spriteBatch.begin();
