@@ -46,7 +46,7 @@ public class Countdown {
                 if (countdownStep == CountdownStep.AFTER) stopCountdown();
 
             }
-        }, Conductor.getInstance().getBeatLengthMs() / 1000, 0, 4);
+        }, Conductor.getInstance().getBeatLengthMs() / 1000, Conductor.getInstance().getBeatLengthMs() / 1000, 4);
 
         return true;
     }

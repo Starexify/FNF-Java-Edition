@@ -240,8 +240,8 @@ public class PlayState extends MusicBeatSubState {
         if (criticalFailure) return;
         super.render(delta);
 
-        /*updateHealthBar();
-        updateScoreText();*/
+        //updateHealthBar();
+        updateScoreText();
 
         if (needsReset) {
             if (!assertChartExists()) return;
@@ -339,18 +339,17 @@ public class PlayState extends MusicBeatSubState {
             }
         } else {
             /*if (Constants.EXT_SOUND == "mp3") Conductor.getInstance().formatOffset = Constants.MP3_DELAY_MS;
-            else Conductor.getInstance().formatOffset = 0.0f;*/
+            else */Conductor.getInstance().formatOffset = 0.0f;
 
             if (Main.sound.music.isPlaying()) {
-/*                final float audioDiff = Math.round(Math.abs(Main.sound.music.time - (Conductor.getInstance().songPosition - Conductor.getInstance().getCombinedOffset())));
-                if (audioDiff <= CONDUCTOR_DRIFT_THRESHOLD) {
+                //final float audioDiff = Math.round(Math.abs(Main.sound.music.time - (Conductor.getInstance().songPosition - Conductor.getInstance().getCombinedOffset())));
+                /*if (audioDiff <= CONDUCTOR_DRIFT_THRESHOLD) {
                     final float easeRatio = (float) (1.0f - Math.exp(-(MUSIC_EASE_RATIO * playbackRate) * delta));
                     Conductor.getInstance().update(MathUtils.lerp(Conductor.getInstance().songPosition, Main.sound.music.time + Conductor.getInstance().getCombinedOffset(), easeRatio), false);
-                } else {
+                } else {*/
                     Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
                     Conductor.getInstance().update();
-                }*/
-                Conductor.getInstance().update();
+                //}
             }
         }
 

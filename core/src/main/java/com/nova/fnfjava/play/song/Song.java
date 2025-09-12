@@ -315,7 +315,7 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
 
         public void cacheVocals() {
             for (String voice : buildVoiceList()) {
-                Main.logger.setTag("SongDifficulty").info("Caching vocal track: $voice");
+                Main.logger.setTag("SongDifficulty").info("Caching vocal track: " + voice);
                 Assets.cacheSound(voice);
             }
         }

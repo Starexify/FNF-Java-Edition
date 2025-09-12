@@ -96,8 +96,8 @@ public class Conductor {
     }
 
     public void update(Float songPos, boolean applyOffsets) {
-        float currentTime = Main.sound.isMusicPlaying() ? Main.sound.getMusicTime() : 0.0f;
-        float currentLength = Main.sound.isMusicPlaying() ? Main.sound.getMusicLength() : 0.0f;
+        float currentTime = Main.sound.isPlaying() ? Main.sound.getTime() : 0.0f;
+        float currentLength = Main.sound.isPlaying() ? Main.sound.getLength() : 0.0f;
         if (songPos == null) songPos = currentTime;
 
         songPos += applyOffsets ? getCombinedOffset() : 0;
@@ -106,9 +106,9 @@ public class Conductor {
         float oldBeat = this.currentBeat;
         float oldStep = this.currentStep;
 
-        if (Main.sound.isMusicPlaying()) {
+        if (Main.sound.isPlaying()) {
             this.songPosition = MathUtils.clamp(Math.min(getCombinedOffset(), 0), songPos, currentLength);
-            this.songPositionDelta += Gdx.graphics.getDeltaTime() * 1000f * Main.sound.getMusicPitch();
+            this.songPositionDelta += Gdx.graphics.getDeltaTime() * 1000f * Main.sound.getPitch();
         } else {
             this.songPosition = songPos;
         }
@@ -124,7 +124,7 @@ public class Conductor {
             }
         }
 
-        if (currentTimeChange == null && bpmOverride == null && Main.sound.isMusicPlaying()) {
+        if (currentTimeChange == null && bpmOverride == null && Main.sound.isPlaying()) {
             Main.logger.setTag(this.getClass().getSimpleName()).warn("Conductor is broken, timeChanges is empty.");
         } else if (currentTimeChange != null && this.songPosition > 0.0f) {
             float songPositionMs = this.songPosition * 1000f;

@@ -1,5 +1,7 @@
 package com.nova.fnfjava.audio;
 
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.Conductor;
 import com.nova.fnfjava.Main;
@@ -10,16 +12,21 @@ import games.rednblack.miniaudio.MASound;
 import games.rednblack.miniaudio.MiniAudio;
 import games.rednblack.miniaudio.loader.MASoundLoader;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class FunkinSound {
     public MiniAudio miniAudio;
     public MASound music;
-    public static Map<String, MASound> soundCache = new HashMap<>();
+
+    public static Pool<OneShotSound> soundPool = new Pool<>() {
+        @Override
+        protected OneShotSound newObject() {
+            return new OneShotSound();
+        }
+    };
+    public static Array<OneShotSound> activeSounds = new Array<>();
+
+    public static final int MAX_ACTIVE_SOUNDS = 32;
 
     public float currentMusicPitch = 1.0f;
-
     public String label = "unknown";
 
     public FunkinSound(MiniAudio miniAudio) {
@@ -50,7 +57,9 @@ public class FunkinSound {
         String pathToUse = pathsFunction == Paths.PathsFunction.INST ? Paths.inst(key, suffix) : Paths.music(key + "/" + key);
 
         try {
-            music = miniAudio.createSound(pathToUse);
+            if (Main.assetManager.isLoaded(pathToUse, MASound.class)) music = Main.assetManager.get(pathToUse, MASound.class);
+            else music = miniAudio.createSound(pathToUse);
+
             if (music != null) {
                 label = pathToUse;
                 music.setVolume(params.startingVolume);
@@ -66,36 +75,53 @@ public class FunkinSound {
         }
     }
 
-    public void playOnce(String key, float volume) {
-        MASound soundEffect = soundCache.computeIfAbsent(key, k -> miniAudio.createSound(k));
-        soundEffect.setVolume(volume);
-        soundEffect.play();
+    public boolean playOnce(String key, float volume, boolean important) {
+        if (activeSounds.size >= MAX_ACTIVE_SOUNDS && !important) {
+            Main.logger.setTag("FunkinSound").warn("Cannot play sound, too many active channels: " + activeSounds.size);
+            return false;
+        }
 
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                soundEffect.stop();
-            }
-        }, soundEffect.getLength());
+        OneShotSound pooledSound = soundPool.obtain();
+
+        if (pooledSound.load(key, volume, miniAudio)) {
+            activeSounds.add(pooledSound);
+            pooledSound.play();
+            return true;
+        } else {
+            // Failed to load, return to pool
+            soundPool.free(pooledSound);
+            return false;
+        }
     }
 
-    public void playOnce(String key) {
-        playOnce(key, 1.0f);
+    public boolean playOnce(String key, float volume) {
+        return playOnce(key, volume, false);
     }
 
-    public float getMusicTime() {
+    public boolean playOnce(String key) {
+        return playOnce(key, 1.0f, false);
+    }
+
+    public void stopAllOneShotSounds() {
+        // Copy array to avoid concurrent modification
+        Array<OneShotSound> soundsCopy = new Array<>(activeSounds);
+        for (OneShotSound sound : soundsCopy) sound.stop();
+        activeSounds.clear();
+    }
+
+    public float getTime() {
         return (music != null) ? music.getCursorPosition() : 0f;
     }
 
-    public float getMusicLength() {
+    public float getLength() {
         return music.getLength();
     }
 
-    public float getMusicPitch() {
+    public float getPitch() {
         return currentMusicPitch;
     }
 
-    public boolean isMusicPlaying() {
+    public boolean isPlaying() {
         return (music != null && music.isPlaying());
     }
 
@@ -108,13 +134,7 @@ public class FunkinSound {
     }
 
     public void dispose() {
-        for (MASound sound : soundCache.values()) {
-            if (sound != null) {
-                sound.stop();
-                sound.dispose();
-            }
-        }
-        soundCache.clear();
+        stopAllOneShotSounds();
 
         if (music != null) {
             music.stop();
@@ -123,6 +143,86 @@ public class FunkinSound {
         }
 
         if (miniAudio != null) miniAudio.dispose();
+    }
+
+    public static class OneShotSound implements Pool.Poolable {
+        private MASound sound;
+        private String key;
+        private boolean active;
+        private Timer.Task cleanupTask;
+
+        public boolean load(String soundKey, float volume, MiniAudio miniAudio) {
+            try {
+                this.key = soundKey;
+                this.sound = miniAudio.createSound(soundKey);
+
+                if (this.sound != null) {
+                    this.sound.setVolume(volume);
+                    this.active = true;
+                    return true;
+                }
+                return false;
+            } catch (Exception e) {
+                Main.logger.setTag("FunkinSound").error("Failed to load sound: " + soundKey, e);
+                return false;
+            }
+        }
+
+        public void play() {
+            if (sound != null && active) {
+                sound.play();
+                scheduleCleanup();
+            }
+        }
+
+        private void scheduleCleanup() {
+            if (sound != null) {
+                cleanupTask = Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        stop();
+                    }
+                }, sound.getLength() + 0.1f);
+            }
+        }
+
+        public void stop() {
+            if (cleanupTask != null) {
+                cleanupTask.cancel();
+                cleanupTask = null;
+            }
+
+            if (sound != null) {
+                sound.stop();
+                sound.dispose();
+                sound = null;
+            }
+
+            if (active) {
+                active = false;
+                activeSounds.removeValue(this, true);
+                soundPool.free(this); // Return to pool
+            }
+        }
+
+        public boolean isPlaying() {
+            return sound != null && sound.isPlaying() && active;
+        }
+
+        @Override
+        public void reset() {
+            if (sound != null) {
+                sound.stop();
+                sound.dispose();
+                sound = null;
+            }
+            if (cleanupTask != null) {
+                cleanupTask.cancel();
+                cleanupTask = null;
+            }
+            key = null;
+            active = false;
+        }
     }
 
     public static class FunkinSoundPlayMusicParams {

@@ -111,11 +111,12 @@ public class Main extends Game {
     }
 
     public void startModLoading() {
-        modLoader = new FunkyModLoader();
+/*        modLoader = new FunkyModLoader();
 
         // Instead of loading immediately, show loading screen
         Screen titleScreen = new TitleState(this); // Your target screen
-        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
+        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));*/
+        setScreen(new TitleState(this));
     }
 
     public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {
@@ -131,7 +132,7 @@ public class Main extends Game {
     public void render() {
         super.render();
 
-        if (modLoader != null) modLoader.updateMods();
+        //if (modLoader != null) modLoader.updateMods();
 
         ReloadAssetsDebugPlugin.update();
 
@@ -174,9 +175,9 @@ public class Main extends Game {
         super.dispose();
 
         if (DiscordClient.instance != null) DiscordClient.shutdown();
-        if (sound != null) sound.dispose();
         if (spriteBatch != null) spriteBatch.dispose();
         if (assetManager != null) assetManager.dispose();
+        if (sound != null) sound.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
 
         if (fpsCounter != null) fpsCounter.dispose();
