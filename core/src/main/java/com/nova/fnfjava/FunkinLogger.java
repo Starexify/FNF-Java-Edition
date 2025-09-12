@@ -121,7 +121,7 @@ public class FunkinLogger extends Logger {
         }
     }
 
-    public void writeToFile(String message, boolean isDebug, boolean writeToLatest, boolean writeToDebug) {
+    public void writeToFile(String message, boolean writeToLatest, boolean writeToDebug) {
         if (!fileLoggingEnabled) return;
 
         try {
@@ -171,65 +171,65 @@ public class FunkinLogger extends Logger {
         }
     }
 
-    public void writeExceptionToFiles(Throwable exception, boolean isDebug, boolean writeToLatest, boolean writeToDebug) {
+    public void writeExceptionToFiles(Throwable exception, boolean writeToLatest, boolean writeToDebug) {
         String exceptionMsg = "Exception: " + exception.toString();
-        writeToFile(exceptionMsg, isDebug, writeToLatest, writeToDebug);
+        writeToFile(exceptionMsg, writeToLatest, writeToDebug);
 
-        for (StackTraceElement element : exception.getStackTrace()) writeToFile("    at " + element.toString(), isDebug, writeToLatest, writeToDebug);
+        for (StackTraceElement element : exception.getStackTrace()) writeToFile("    at " + element.toString(), writeToLatest, writeToDebug);
     }
 
-    public String formatLogLevel(String level) {
-        return "[" + customTag + "/" + level + "]";
+    public String formatLine(String level) {
+        return "[" + customTag + "/" + level + "] ";
     }
 
     @Override
     public void info(String message) {
         super.info(message);
-        writeToFile(formatLogLevel("INFO") + ": " + message, false, true, true);
+        writeToFile(formatLine("INFO") + message, true, true);
     }
 
     @Override
     public void info(String message, Exception exception) {
         super.info(message, exception);
-        writeToFile(formatLogLevel("INFO") + ": " + message, false, true, true);
-        if (exception != null) writeExceptionToFiles(exception, false, true, true);
+        writeToFile(formatLine("INFO") + message, true, true);
+        if (exception != null) writeExceptionToFiles(exception, true, true);
     }
 
     public void warn(String message) {
         super.error(message);
-        writeToFile(formatLogLevel("WARN") + ": " + message, false, true, true);
+        writeToFile(formatLine("WARN") + message, true, true);
     }
 
     public void warn(String message, Exception exception) {
         super.error(message, exception);
-        writeToFile(formatLogLevel("WARN") + ": " + message, false, true, true);
-        if (exception != null) writeExceptionToFiles(exception, false, true, true);
+        writeToFile(formatLine("WARN") + message, true, true);
+        if (exception != null) writeExceptionToFiles(exception, true, true);
     }
 
     @Override
     public void error(String message) {
         super.error(message);
-        writeToFile(formatLogLevel("ERROR") + ": " + message, false, true, true);
+        writeToFile(formatLine("ERROR") + message, true, true);
     }
 
     @Override
     public void error(String message, Throwable exception) {
         super.error(message, exception);
-        writeToFile(formatLogLevel("ERROR") + ": " + message, false, true, true);
-        if (exception != null) writeExceptionToFiles(exception, false, true, true);
+        writeToFile(formatLine("ERROR") + message, true, true);
+        if (exception != null) writeExceptionToFiles(exception, true, true);
     }
 
     @Override
     public void debug(String message) {
         super.debug(message);
-        writeToFile(formatLogLevel("DEBUG") + ": " + message, true, false, true);
+        writeToFile(formatLine("DEBUG") + message, false, true);
     }
 
     @Override
     public void debug(String message, Exception exception) {
         super.debug(message, exception);
-        writeToFile(formatLogLevel("DEBUG") + ": " + message, true, false, true);
-        if (exception != null) writeExceptionToFiles(exception, true, false, true);
+        writeToFile(formatLine("DEBUG") + message, false, true);
+        if (exception != null) writeExceptionToFiles(exception, false, true);
     }
 
     // Crash-specific methods
@@ -251,28 +251,28 @@ public class FunkinLogger extends Logger {
     // Additional logging methods with custom tags (one-time use)
     public void info(String tag, String message) {
         super.info(message);
-        writeToFile("[" + tag + "/INFO]: " + message, false, true, true);
+        writeToFile("[" + tag + "/INFO]: " + message, true, true);
     }
 
     public void error(String tag, String message) {
         super.error(message);
-        writeToFile("[" + tag + "/ERROR]: " + message, false, true, true);
+        writeToFile("[" + tag + "/ERROR]: " + message, true, true);
     }
 
     public void debug(String tag, String message) {
         super.debug(message);
-        writeToFile("[" + tag + "/DEBUG]: " + message, true, false, true);
+        writeToFile("[" + tag + "/DEBUG]: " + message, false, true);
     }
 
     public void error(String tag, String message, Throwable exception) {
         super.error(message, exception);
-        writeToFile("[" + tag + "/ERROR]: " + message, false, true, true);
-        if (exception != null) writeExceptionToFiles(exception, false, true, true);
+        writeToFile("[" + tag + "/ERROR]: " + message, true, true);
+        if (exception != null) writeExceptionToFiles(exception, true, true);
     }
 
     public void performance(String operation, long timeMs) {
         String message = "Performance - " + operation + " took " + timeMs + "ms";
-        writeToFile(formatLogLevel("PERF") + ": " + message, false, true, true);
+        writeToFile(formatLine("PERF") + message, true, true);
         super.info(message);
     }
 
@@ -355,7 +355,7 @@ public class FunkinLogger extends Logger {
             byte[] compressed = compressString(content);
             target.writeBytes(compressed, false);
         } catch (Exception e) {
-            System.err.println("Failed to compress " + source.name() + ": " + e.getMessage());
+            System.err.println("Failed to compress " + source.name() + e.getMessage());
             // Fallback: copy uncompressed
             try {
                 source.copyTo(Gdx.files.local(target.path().replace(".gz", "")));

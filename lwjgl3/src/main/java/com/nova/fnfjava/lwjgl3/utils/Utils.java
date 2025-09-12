@@ -1,5 +1,7 @@
 package com.nova.fnfjava.lwjgl3.utils;
 
+import com.nova.fnfjava.lwjgl3.mixin.FunkyMixinService;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,7 +20,7 @@ public class Utils {
                     try {
                         return new URI(urlPath.substring(0, index0));
                     } catch (URISyntaxException e) {
-                        System.out.println("[Utils] Unable to assimilate jar-protocol-URL: " + url + "\n" + e);
+                        FunkyMixinService.logger.warn("Unable to assimilate jar-protocol-URL: " + url + "\n" + e);
                     }
                 }
             } else if (urlProtocol.equals("file")) {
@@ -27,7 +29,7 @@ public class Utils {
                     try {
                         return new URI("file", null, url.getHost(), url.getPort(), urlPath.substring(0, urlPath.length() - expectedSuffix.length()), null, null);
                     } catch (URISyntaxException e) {
-                        System.out.println("[Utils] Unable to assimilate file-protocol-URL: " + url + "\n" + e);
+                        FunkyMixinService.logger.warn("Unable to assimilate file-protocol-URL: " + url + "\n" + e);
                     }
                 }
             }
@@ -36,7 +38,7 @@ public class Utils {
         try {
             return url.toURI();
         } catch (URISyntaxException e) {
-            System.out.println("[Utils] Cannot convert URL " + url + " to a URI." + "\n" + e);
+            FunkyMixinService.logger.warn("Cannot convert URL " + url + " to a URI." + "\n" + e);
             return null;
         }
     }

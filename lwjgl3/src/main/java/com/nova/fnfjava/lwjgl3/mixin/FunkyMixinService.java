@@ -19,6 +19,16 @@ import java.util.concurrent.Callable;
 public class FunkyMixinService extends MixinServiceAbstract {
     public static FunkyMixinService instance;
 
+    public static final FunkyMixinLogger logger;
+
+    static {
+        try {
+            logger = new FunkyMixinLogger("FunkyMixin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final FunkyClassLoader classLoader = FunkyClassLoader.getInstance();
 
     @Override
@@ -48,7 +58,7 @@ public class FunkyMixinService extends MixinServiceAbstract {
             try {
                 return FunkyMixinService.classLoader.findClass(name);
             } catch (ClassNotFoundException e) {
-                System.out.println("[FunkyMixinService] Unable to find class" + e.getMessage());
+                FunkyMixinService.logger.warn("Unable to find class" + name, e);
                 throw e;
             }
         }
@@ -182,7 +192,7 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
     @Override
     protected ILogger createLogger(String name) {
-        return new FunkyMixinLogger(name);
+        return logger;
     }
 
     public final <T extends IMixinInternal> T getMixinInternal(Class<T> type) {

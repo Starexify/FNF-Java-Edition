@@ -1,5 +1,6 @@
 package com.nova.fnfjava.lwjgl3;
 
+import com.nova.fnfjava.lwjgl3.mixin.FunkyMixinService;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyTransformer;
 import com.nova.fnfjava.lwjgl3.utils.Utils;
 import org.objectweb.asm.ClassReader;
@@ -132,7 +133,7 @@ public class FunkyClassLoader extends URLClassLoader {
         if (transform) transformedBytes = this.transformBytes(originalBytes, name, qualifiedName);
         else transformedBytes = originalBytes;
 
-        if (originalBytes.length != transformedBytes.length) System.out.println("Original byte size: " + originalBytes.length + " Transformed byte size: " + transformedBytes.length);
+        if (originalBytes.length != transformedBytes.length) FunkyMixinService.logger.info("Transformed class: " + name + " - Original byte size: " + originalBytes.length + " Transformed byte size: " + transformedBytes.length);
 
         return new RawClassData(url, transformedBytes);
     }
@@ -152,7 +153,7 @@ public class FunkyClassLoader extends URLClassLoader {
                 if (internalName == null) throw new NullPointerException();
 
                 transformer.transformClass(node, codeSourceURI);
-                System.out.println("[FunkinClassLoader] " + internalName + " was transformed by a " + transformer.getClass().getSimpleName());
+                //System.out.println("[FunkinClassLoader] " + internalName + " was transformed by a " + transformer.getClass().getSimpleName());
 
             } catch (Throwable t) {
                 throw new RuntimeException("Error within ASM transforming process for class " + qualifiedName, t);

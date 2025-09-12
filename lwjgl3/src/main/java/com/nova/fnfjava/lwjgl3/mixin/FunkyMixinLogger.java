@@ -3,9 +3,59 @@ package com.nova.fnfjava.lwjgl3.mixin;
 import org.spongepowered.asm.logging.Level;
 import org.spongepowered.asm.logging.LoggerAdapterAbstract;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class FunkyMixinLogger extends LoggerAdapterAbstract {
-    public FunkyMixinLogger(String id) {
+    public static final String LOG_DIR = "logs";
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("[HH:mm:ss]");
+    private final Path logFile;
+
+    public FunkyMixinLogger(String id) throws IOException {
         super(id);
+        Path logDir = Paths.get(LOG_DIR);
+        if (!Files.exists(logDir)) Files.createDirectories(logDir);
+
+        logFile = logDir.resolve("mixin.log");
+
+        Files.writeString(logFile, "", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    private String timestamp() {
+        return TIMESTAMP_FORMAT.format(new Date());
+    }
+
+    private void writeToFile(String message) {
+        String line = timestamp() + " " + message;
+        System.out.println(line);
+        try {
+            Files.writeString(logFile, line + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeThrowable(Throwable t, Path file) {
+        if (t == null) return;
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement e : t.getStackTrace()) sb.append("\tat ").append(e).append("\n");
+        System.out.print(sb);
+        if (file != null) {
+            try {
+                Files.writeString(file, sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public String formatLine(Level level) {
+        return "[Mixin/" + level.name() + "] ";
     }
 
     @Override
@@ -16,60 +66,16 @@ public class FunkyMixinLogger extends LoggerAdapterAbstract {
     @Override
     public void log(Level level, String message, Object... params) {
         FormattedMessage formatted = new FormattedMessage(message, params);
-        String levelPrefix = "[" + level.name() + "] ";
-
-        System.out.println(levelPrefix + formatted.getMessage());
-
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
+        String logLine = formatLine(level) + formatted.getMessage();
+        writeToFile(logLine);
+        if (formatted.hasThrowable()) writeThrowable(formatted.getThrowable(), logFile);
     }
 
     @Override
     public void log(Level level, String message, Throwable t) {
-        String levelPrefix = "[" + level.name() + "] ";
-        System.out.println(levelPrefix + message);
-        if (t != null) t.printStackTrace(System.out);
-    }
-
-    @Override
-    public void debug(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[DEBUG] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
-    }
-
-    @Override
-    public void info(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[INFO] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
-    }
-
-    @Override
-    public void trace(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[TRACE] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
-    }
-
-    @Override
-    public void warn(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[WARN] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
-    }
-
-    @Override
-    public void error(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[ERROR] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
-    }
-
-    @Override
-    public void fatal(String message, Object... params) {
-        FormattedMessage formatted = new FormattedMessage(message, params);
-        System.out.println("[FATAL] " + formatted.getMessage());
-        if (formatted.hasThrowable()) formatted.getThrowable().printStackTrace(System.out);
+        String logLine = formatLine(level) + message;
+        writeToFile(logLine);
+        writeThrowable(t, logFile);
     }
 
     @Override
