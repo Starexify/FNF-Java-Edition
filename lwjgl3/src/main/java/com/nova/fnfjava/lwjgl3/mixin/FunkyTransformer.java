@@ -17,7 +17,7 @@ public class FunkyTransformer {
     }
 
     public boolean transformClass(ClassNode node, URI codeSourceURI) {
-        boolean ret = this.transformer.transformClass(MixinEnvironment.getEnvironment(MixinEnvironment.Phase.PREINIT), node.name.replace("/", "."), node);
+        boolean ret = this.transformer.transformClass(MixinEnvironment.getEnvironment(MixinEnvironment.Phase.DEFAULT), node.name.replace("/", "."), node);
         return ret;
     }
 }

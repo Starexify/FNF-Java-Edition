@@ -16,12 +16,7 @@ public class SortUtil {
         if (a == null && b == null) return 0;
         if (a == null) return 1;
         if (b == null) return -1;
-
-        a = a.toUpperCase();
-        b = b.toUpperCase();
-
-        // Sort alphabetically. Yes that's how this works.
-        return a.equals(b) ? 0 : a.compareTo(b) > 0 ? 1 : -1;
+        return a.compareToIgnoreCase(b);
     }
 
     /**

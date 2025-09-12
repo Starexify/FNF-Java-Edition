@@ -78,7 +78,7 @@ public class FunkyClassLoader extends URLClassLoader {
         }
     }
 
-    private Class<?> define(String name, boolean resolve) throws IOException, ClassNotFoundException {
+    public Class<?> define(String name, boolean resolve) throws IOException, ClassNotFoundException {
         try {
             RawClassData rawClass;
             try {
@@ -128,7 +128,8 @@ public class FunkyClassLoader extends URLClassLoader {
         input.close();
         byte[] transformedBytes;
 
-        if (transform) transformedBytes = this.transformBytes(originalBytes, name, Utils.toCodeSourceURI(url, name));
+        var qualifiedName = Utils.toCodeSourceURI(url, name);
+        if (transform) transformedBytes = this.transformBytes(originalBytes, name, qualifiedName);
         else transformedBytes = originalBytes;
 
         if (originalBytes.length != transformedBytes.length) System.out.println("Original byte size: " + originalBytes.length + " Transformed byte size: " + transformedBytes.length);

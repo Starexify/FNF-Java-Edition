@@ -117,7 +117,7 @@ public class OptionsState extends MusicBeatState {
 
             items.onChange.add((signal, object) -> onMenuChange(object));
 
-            System.out.println("OptionsMenu: " + items);
+            System.out.println("OptionsMenu: " + items.items);
             onMenuChange(items.members.get(0));
 
             items.selectItem(OptionsState.rememberedSelectedIndex);
