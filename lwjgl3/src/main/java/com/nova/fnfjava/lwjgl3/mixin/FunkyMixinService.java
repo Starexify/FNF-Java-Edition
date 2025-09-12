@@ -189,7 +189,6 @@ public class FunkyMixinService extends MixinServiceAbstract {
         return this.getInternal(type);
     }
 
-
     @Override
     public void unwire() {
         super.unwire();

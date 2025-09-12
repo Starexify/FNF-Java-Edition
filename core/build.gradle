@@ -33,7 +33,3 @@ dependencies {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
 }
-
-jar {
-  from(sourceSets.main.resources)
-}
