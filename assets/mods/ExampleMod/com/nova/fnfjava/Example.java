@@ -5,8 +5,7 @@ import com.nova.fnfjava.modding.api.ScriptedModule;
 
 public class Example implements ScriptedModule {
     public void create() {
-        System.out.println("Create called from Example");
-        ExampleClass.method();
+        System.out.println(getClass().getClassLoader().getName());
     }
 
     public void update(float delta) {

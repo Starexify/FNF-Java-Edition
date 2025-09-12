@@ -3,6 +3,7 @@ package com.nova.fnfjava.lwjgl3;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyMixinService;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyTransformer;
 import com.nova.fnfjava.lwjgl3.utils.Utils;
+import com.nova.fnfjava.modding.loader.FunkyModLoader;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class FunkyClassLoader extends URLClassLoader {
+public class FunkyClassLoader extends FunkyModLoader.ExposedClassLoader {
     public static FunkyClassLoader instance;
 
     public ClassLoader asmClassLoader = URLClassLoader.newInstance(new URL[0], this);
@@ -61,6 +62,7 @@ public class FunkyClassLoader extends URLClassLoader {
         }
     }
 
+    // The process of class loading from their bytes and then transforming them
     @Override
     public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (isClassBlacklisted(name)) return super.loadClass(name, resolve);
@@ -220,11 +222,6 @@ public class FunkyClassLoader extends URLClassLoader {
 
         public URL getSource() {
             return this.source;
-        }
-
-        @Override
-        public String toString() {
-            return "RawClassData{bytes=" + bytes + ", source=" + source + '}';
         }
     }
 }

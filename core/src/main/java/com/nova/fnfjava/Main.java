@@ -111,7 +111,7 @@ public class Main extends Game {
     }
 
     public void startModLoading() {
-        modLoader = new FunkyModLoader();
+        if (modLoader == null) modLoader = new FunkyModLoader();
 
         // Instead of loading immediately, show loading screen
         Screen titleScreen = new TitleState(this); // Your target screen
@@ -186,5 +186,9 @@ public class Main extends Game {
         Assets.dispose();
 
         if (logger != null) logger.shutdown();
+    }
+
+    public void setModLoader(FunkyModLoader modLoader) {
+        this.modLoader = modLoader;
     }
 }

@@ -33,11 +33,20 @@ public class FunkyModLoader implements ModLoader {
     public final ObjectMap<String, LoadedModRecord> modRegistry = new ObjectMap<>();
     public Json json = new Json();
 
-    public FunkyModLoader() {
+    private ExposedClassLoader modClassLoader;
+
+    public FunkyModLoader(ExposedClassLoader classLoader) {
         json.setIgnoreUnknownFields(true);
+        this.modClassLoader = classLoader;
     }
 
-    public record LoadedModRecord(ModMetadata metadata, Array<ScriptedModule> modules, ModType type, URLClassLoader classLoader, long lastModified, FileHandle sourceFile) implements LoadedMod {
+    public FunkyModLoader() {
+        json.setIgnoreUnknownFields(true);
+        // Create a basic URLClassLoader as fallback
+        this.modClassLoader = new ExposedClassLoader(new URL[0], getClass().getClassLoader());
+    }
+
+    public record LoadedModRecord(ModMetadata metadata, Array<ScriptedModule> modules, ModType type, ExposedClassLoader classLoader, long lastModified, FileHandle sourceFile) implements LoadedMod {
         @Override
         public ModMetadata getMetadata() { return metadata; }
 
@@ -277,28 +286,38 @@ public class FunkyModLoader implements ModLoader {
     }
 
     private LoadedModRecord loadFromJar(ModCandidate candidate) throws Exception {
-        URL[] urls = {candidate.file.file().toURI().toURL()};
-        URLClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+        URL jarUrl = candidate.file.file().toURI().toURL();
+        if (modClassLoader instanceof ExposedClassLoader funkyLoader) {
+            funkyLoader.addURL(jarUrl);
+        } else {
+            URL[] urls = {jarUrl};
+            modClassLoader = new ExposedClassLoader(urls, modClassLoader);
+        }
 
-        Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), classLoader);
+        Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), modClassLoader);
 
         return new LoadedModRecord(
             candidate.metadata, modules, candidate.type,
-            classLoader, candidate.file.file().lastModified(), candidate.file
+            modClassLoader, candidate.file.file().lastModified(), candidate.file
         );
     }
 
     private LoadedModRecord loadFromSource(ModCandidate candidate) throws Exception {
         File compiledJar = compileSourceToJar(candidate);
 
-        URL[] urls = {compiledJar.toURI().toURL()};
-        URLClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+        URL jarUrl = compiledJar.toURI().toURL();
+        if (modClassLoader instanceof ExposedClassLoader funkyLoader) {
+            funkyLoader.addURL(jarUrl);
+        } else {
+            URL[] urls = {jarUrl};
+            modClassLoader = new ExposedClassLoader(urls, modClassLoader);
+        }
 
-        Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), classLoader);
+        Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), modClassLoader);
 
         return new LoadedModRecord(
             candidate.metadata, modules, candidate.type,
-            classLoader, candidate.file.file().lastModified(), candidate.file
+            modClassLoader, candidate.file.file().lastModified(), candidate.file
         );
     }
 
@@ -466,13 +485,6 @@ public class FunkyModLoader implements ModLoader {
     }
 
     @Override
-    public void dispose() {
-        for (LoadedModRecord mod : loadedMods) mod.dispose();
-        loadedMods.clear();
-        modRegistry.clear();
-    }
-
-    @Override
     public Array<LoadedMod> getLoadedMods() {
         Array<LoadedMod> result = new Array<>();
         for (LoadedModRecord record : loadedMods) result.add(record);
@@ -519,10 +531,28 @@ public class FunkyModLoader implements ModLoader {
         }));
     }
 
+    @Override
+    public void dispose() {
+        for (LoadedModRecord mod : loadedMods) mod.dispose();
+        loadedMods.clear();
+        modRegistry.clear();
+    }
+
     public record ModCandidate(ModMetadata metadata, FileHandle file, ModType type) {}
 
     public enum ModType {
         JAR, SOURCE
+    }
+
+    public static class ExposedClassLoader extends URLClassLoader {
+        public ExposedClassLoader(URL[] urls, ClassLoader parent) {
+            super(urls, parent);
+        }
+
+        @Override
+        public void addURL(URL url) {
+            super.addURL(url);
+        }
     }
 
     public interface ModProgressCallback {
