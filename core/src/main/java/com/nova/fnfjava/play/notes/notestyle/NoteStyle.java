@@ -1,6 +1,7 @@
 package com.nova.fnfjava.play.notes.notestyle;
 
 import com.badlogic.gdx.utils.Array;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 import com.nova.fnfjava.data.IRegistryEntry;
 import com.nova.fnfjava.data.notestyle.NoteStyleData;
@@ -130,7 +131,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
             case THREE:
                 if (getData().assets.countdownThree == null) return getFallback().buildCountdownSprite(step);
                 String assetPath3 = buildCountdownSpritePath(step);
-                if (assetPath3 == null) return null;
+                if (assetPath3.isEmpty()) return null;
                 result.loadTexture(assetPath3);
                 result.setScaleX(getData().assets.countdownThree.scale != null ? getData().assets.countdownThree.scale : 1.0f);
                 result.setScaleY(getData().assets.countdownThree.scale != null ? getData().assets.countdownThree.scale : 1.0f);
@@ -139,7 +140,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
             case TWO:
                 if (getData().assets.countdownTwo == null) return getFallback().buildCountdownSprite(step);
                 String assetPath2 = buildCountdownSpritePath(step);
-                if (assetPath2 == null) return null;
+                if (assetPath2.isEmpty()) return null;
                 result.loadTexture(assetPath2);
                 result.setScaleX(getData().assets.countdownTwo.scale != null ? getData().assets.countdownTwo.scale : 1.0f);
                 result.setScaleY(getData().assets.countdownTwo.scale != null ? getData().assets.countdownTwo.scale : 1.0f);
@@ -148,7 +149,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
             case ONE:
                 if (getData().assets.countdownOne == null) return getFallback().buildCountdownSprite(step);
                 String assetPath1 = buildCountdownSpritePath(step);
-                if (assetPath1 == null) return null;
+                if (assetPath1.isEmpty()) return null;
                 result.loadTexture(assetPath1);
                 result.setScaleX(getData().assets.countdownOne.scale != null ? getData().assets.countdownOne.scale : 1.0f);
                 result.setScaleY(getData().assets.countdownOne.scale != null ? getData().assets.countdownOne.scale : 1.0f);
@@ -157,7 +158,7 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
             case GO:
                 if (getData().assets.countdownGo == null) return getFallback().buildCountdownSprite(step);
                 String assetPathGo = buildCountdownSpritePath(step);
-                if (assetPathGo == null) return null;
+                if (assetPathGo.isEmpty()) return null;
                 result.loadTexture(assetPathGo);
                 result.setScaleX(getData().assets.countdownGo.scale != null ? getData().assets.countdownGo.scale : 1.0f);
                 result.setScaleY(getData().assets.countdownGo.scale != null ? getData().assets.countdownGo.scale : 1.0f);
@@ -246,10 +247,13 @@ public class NoteStyle implements IRegistryEntry<NoteStyleData> {
                 case GO -> getData().assets.countdownGo.data.audioPath;
                 default -> null;
             };
-            return (rawPath == null) ? getFallback().getCountdownSoundPath(step, true) : rawPath;
+            return (rawPath == null && getFallback() != null) ? getFallback().getCountdownSoundPath(step, true) : rawPath;
         }
 
-        String[] parts = getCountdownSoundPath(step, true).split(Constants.LIBRARY_SEPARATOR);
+        String rawPath = getCountdownSoundPath(step, true);
+        if (rawPath == null) return null;
+
+        String[] parts = rawPath.split(Constants.LIBRARY_SEPARATOR);
         if (parts.length == 0) return null;
         if (parts.length == 1) return Paths.image(parts[0]);
         return Paths.sound(parts[1], parts[0]);

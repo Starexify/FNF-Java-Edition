@@ -98,7 +98,7 @@ public class Countdown {
 
     public static void playCountdownSound(CountdownStep step) {
         fetchNoteStyle();
-        var path = noteStyle.getCountdownSoundPath(step);
+        String path = noteStyle.getCountdownSoundPath(step);
         if (path == null) return;
 
         Main.sound.playOnce(path, Constants.COUNTDOWN_VOLUME);
