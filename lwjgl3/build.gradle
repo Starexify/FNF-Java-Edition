@@ -34,11 +34,8 @@ dependencies {
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   implementation project(':core')
 
-/*  implementation "org.spongepowered:mixin:0.8.7"
-  implementation "com.google.guava:guava:33.4.8-jre"
-  implementation "org.ow2.asm:asm-tree:9.8"*/
-
-  implementation "net.fabricmc:sponge-mixin:0.16.3+mixin.0.8.7"
+  implementation "net.fabricmc:sponge-mixin:$mixinVersion"
+  implementation "io.github.llamalad7:mixinextras-fabric:$mixinExtrasVersion"
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion"

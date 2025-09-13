@@ -97,7 +97,6 @@ public class FunkyMixinService extends MixinServiceAbstract {
             if (FunkyMixinService.classLoader.isClassProtected(name)) systemClassLoaderIndex = i++;
             else systemClassLoaderIndex = suppliers.length - 1;
 
-
             suppliers[systemClassLoaderIndex] = () -> {
                 ClassLoader cl = ClassLoader.getPlatformClassLoader();
                 InputStream input;
@@ -106,7 +105,6 @@ public class FunkyMixinService extends MixinServiceAbstract {
 
                 return new ClassReader(input);
             };
-
 
             suppliers[i++] = () -> {
                 return new ClassReader(FunkyMixinService.classLoader.loadClassBytes(name, false).getBytes());

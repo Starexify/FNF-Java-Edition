@@ -16,12 +16,12 @@ import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.modding.api.LoadedMod;
-import com.nova.fnfjava.modding.loader.FunkyModLoader;
+import com.nova.fnfjava.modding.api.ModLoader;
 import com.nova.fnfjava.ui.MusicBeatState;
 
 public class FunkyLoadingScreen extends MusicBeatState {
     private final Screen nextScreen;
-    private final FunkyModLoader modLoader;
+    private final ModLoader modLoader;
 
     private Table rootTable;
     private Label titleLabel;
@@ -34,10 +34,11 @@ public class FunkyLoadingScreen extends MusicBeatState {
     private String currentStatus = "Initializing...";
     private Array<String> loadedMods = new Array<>();
     private boolean loadingComplete = false;
+    private boolean loadingStarted = false;
     private float transitionTimer = 0f;
     private static final float TRANSITION_TIME = 1.5f;
 
-    public FunkyLoadingScreen(Main main, Screen nextScreen, FunkyModLoader modLoader) {
+    public FunkyLoadingScreen(Main main, Screen nextScreen, ModLoader modLoader) {
         super(main);
         this.nextScreen = nextScreen;
         this.modLoader = modLoader;
@@ -50,9 +51,33 @@ public class FunkyLoadingScreen extends MusicBeatState {
 
         createUI();
 
-        Thread loadingThread = new Thread(this::loadMods);
-        loadingThread.setDaemon(true);
-        loadingThread.start();
+        loadingStarted = false;
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+
+        if (!loadingStarted && !loadingComplete) {
+            loadingStarted = true;
+            loadMods();
+        }
+
+        if (loadingComplete) {
+            transitionTimer += delta;
+
+            // Fade effect or pulsing when complete
+            float alpha = 0.5f + 0.5f * MathUtils.sin(transitionTimer * 8f);
+            titleLabel.setColor(titleLabel.getColor().r, titleLabel.getColor().g, titleLabel.getColor().b, alpha);
+
+            if (transitionTimer >= TRANSITION_TIME) {
+                main.switchState(nextScreen, true, true);
+            }
+        } else {
+            // Pulsing progress bar when loading
+            float pulseAlpha = 0.7f + 0.3f * MathUtils.sin(delta * 4f);
+            progressBar.setColor(1f, 1f, 1f, pulseAlpha);
+        }
     }
 
     private void createUI() {
@@ -151,22 +176,27 @@ public class FunkyLoadingScreen extends MusicBeatState {
     }
 
     private void loadMods() {
-        updateStatus("Scanning mod directory...");
-        setProgress(0.1f);
+        try {
+            updateStatus("Scanning mod directory...");
+            setProgress(0.1f);
 
-        modLoader.loadAllModsWithProgress(this::onModProgress);
+            modLoader.loadAllModsWithProgress(this::onModProgress);
 
-        // Count actual loaded mods after loading is complete
-        Gdx.app.postRunnable(() -> {
+            // Count actual loaded mods after loading is complete
             Array<LoadedMod> actualLoadedMods = modLoader.getLoadedMods();
             loadedMods.clear();
             for (LoadedMod mod : actualLoadedMods) loadedMods.add(mod.getMetadata().title);
             updateModsCount();
-        });
 
-        updateStatus("Loading complete!");
-        setProgress(1.0f);
-        loadingComplete = true;
+            updateStatus("Loading complete!");
+            setProgress(1.0f);
+            loadingComplete = true;
+        } catch (Exception e) {
+            updateStatus("Loading failed: " + e.getMessage());
+            System.err.println("Mod loading error:");
+            e.printStackTrace();
+            loadingComplete = true;
+        }
     }
 
     public void onModProgress(String modName, float progress, String status) {
@@ -191,26 +221,5 @@ public class FunkyLoadingScreen extends MusicBeatState {
 
     private void updateModsCount() {
         modsCountLabel.setText("Loaded " + loadedMods.size + " mods");
-    }
-
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-
-        if (loadingComplete) {
-            transitionTimer += delta;
-
-            // Fade effect or pulsing when complete
-            float alpha = 0.5f + 0.5f * MathUtils.sin(transitionTimer * 8f);
-            titleLabel.setColor(titleLabel.getColor().r, titleLabel.getColor().g, titleLabel.getColor().b, alpha);
-
-            if (transitionTimer >= TRANSITION_TIME) {
-                main.switchState(nextScreen, true, true);
-            }
-        } else {
-            // Pulsing progress bar when loading
-            float pulseAlpha = 0.7f + 0.3f * MathUtils.sin(delta * 4f);
-            progressBar.setColor(1f, 1f, 1f, pulseAlpha);
-        }
     }
 }

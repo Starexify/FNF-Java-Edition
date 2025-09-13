@@ -3,7 +3,6 @@ package com.nova.fnfjava.lwjgl3;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyMixinService;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyTransformer;
 import com.nova.fnfjava.lwjgl3.utils.Utils;
-import com.nova.fnfjava.modding.loader.FunkyModLoader;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -24,8 +23,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class FunkyClassLoader extends FunkyModLoader.ExposedClassLoader {
+public class FunkyClassLoader extends URLClassLoader {
     public static FunkyClassLoader instance;
+    private FunkyTransformer transformerInstance;
+    private FunkyMixinService mixinServiceInstance;
 
     public ClassLoader asmClassLoader = URLClassLoader.newInstance(new URL[0], this);
 
@@ -60,6 +61,11 @@ public class FunkyClassLoader extends FunkyModLoader.ExposedClassLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void addURL(URL url) {
+        super.addURL(url);
     }
 
     // The process of class loading from their bytes and then transforming them
@@ -203,8 +209,26 @@ public class FunkyClassLoader extends FunkyModLoader.ExposedClassLoader {
         return false;
     }
 
+    public void setTransformer(FunkyTransformer transformer) {
+        this.transformerInstance = transformer;
+    }
+
+    public void setMixinService(FunkyMixinService service) {
+        this.mixinServiceInstance = service;
+    }
+
     public FunkyTransformer getTransformer() {
-        return Lwjgl3Launcher.transformer;
+        System.out.println("=== getTransformer Debug ===");
+        System.out.println("Thread: " + Thread.currentThread().getName());
+        System.out.println("This ClassLoader: " + this.getClass().getClassLoader());
+        System.out.println("transformerInstance: " + (transformerInstance != null ? "present" : "null"));
+        System.out.println("mixinServiceInstance: " + (mixinServiceInstance != null ? "present" : "null"));
+
+        if (transformerInstance == null || mixinServiceInstance == null) {
+            throw new IllegalStateException("FunkyClassLoader transformer is not ready yet!");
+        }
+
+        return transformerInstance;
     }
 
     public static class RawClassData {

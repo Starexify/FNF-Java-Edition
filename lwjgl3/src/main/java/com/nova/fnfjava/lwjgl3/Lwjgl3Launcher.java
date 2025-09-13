@@ -3,19 +3,17 @@ package com.nova.fnfjava.lwjgl3;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyMixinService;
 import com.nova.fnfjava.lwjgl3.mixin.FunkyTransformer;
-import com.nova.fnfjava.modding.loader.FunkyModLoader;
+import com.nova.fnfjava.lwjgl3.modding.FunkyModLoader;
 import com.nova.fnfjava.util.Constants;
 import org.spongepowered.asm.mixin.MixinEnvironment;
-
-import java.net.URLClassLoader;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
     public static FunkyTransformer transformer;
-    private static FunkyModLoader modLoader;
 
     public static void main(String[] args) {
         if (StartupHelper.startNewJvmIfRequired()) return;
@@ -25,11 +23,14 @@ public class Lwjgl3Launcher {
         transformer = new FunkyTransformer(FunkyMixinService.instance);
         FunkyClassLoader cl = FunkyClassLoader.getInstance();
 
+        cl.setTransformer(transformer);
+        cl.setMixinService(FunkyMixinService.instance);
+
+        MixinExtrasBootstrap.init();
         FunkyMixinService.instance.getPhaseConsumer().accept(MixinEnvironment.Phase.PREINIT);
+
         FunkyMixinService.instance.getPhaseConsumer().accept(MixinEnvironment.Phase.INIT);
         FunkyMixinService.instance.getPhaseConsumer().accept(MixinEnvironment.Phase.DEFAULT);
-
-        initializeModLoader(cl);
 
         // Create application using Reflection and a custom ClassLoader that handles ASM/Mixin Transformation
         try {
@@ -40,15 +41,10 @@ public class Lwjgl3Launcher {
         }
     }
 
-    private static void initializeModLoader(FunkyModLoader.ExposedClassLoader cl) {
-        modLoader = new FunkyModLoader(cl);
-        //modLoader.scanForMods();
-    }
-
     public static class ReflectionBootstrap {
         public static Lwjgl3Application createApplication() {
             Main main = new Main();
-            main.setModLoader(modLoader);
+            main.setModLoader(new FunkyModLoader(FunkyClassLoader.getInstance()));
             return new Lwjgl3Application(main, getDefaultConfiguration());
         }
 

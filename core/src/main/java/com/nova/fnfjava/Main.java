@@ -17,7 +17,7 @@ import com.nova.fnfjava.data.stickers.StickerRegistry;
 import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.input.CursorHandler;
 import com.nova.fnfjava.modding.FunkyLoadingScreen;
-import com.nova.fnfjava.modding.loader.FunkyModLoader;
+import com.nova.fnfjava.modding.api.ModLoader;
 import com.nova.fnfjava.util.RandomUtil;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
@@ -37,7 +37,7 @@ public class Main extends Game {
     }
     public static Signals signals;
 
-    public FunkyModLoader modLoader;
+    public ModLoader modLoader;
 
     public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 
@@ -111,10 +111,13 @@ public class Main extends Game {
     }
 
     public void startModLoading() {
-        if (modLoader == null) modLoader = new FunkyModLoader();
+        if (modLoader == null) {
+            // Fallback - no mod support on this platform
+            setScreen(new TitleState(this));
+            return;
+        }
 
-        // Instead of loading immediately, show loading screen
-        Screen titleScreen = new TitleState(this); // Your target screen
+        Screen titleScreen = new TitleState(this);
         setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
     }
 
@@ -188,7 +191,7 @@ public class Main extends Game {
         if (logger != null) logger.shutdown();
     }
 
-    public void setModLoader(FunkyModLoader modLoader) {
+    public void setModLoader(ModLoader modLoader) {
         this.modLoader = modLoader;
     }
 }

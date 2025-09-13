@@ -14,7 +14,7 @@ import java.util.Date;
 public class FunkyMixinLogger extends LoggerAdapterAbstract {
     public static final String LOG_DIR = "logs";
     public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("[HH:mm:ss]");
-    private final Path logFile;
+    public final Path logFile;
 
     public FunkyMixinLogger(String id) throws IOException {
         super(id);
@@ -26,11 +26,11 @@ public class FunkyMixinLogger extends LoggerAdapterAbstract {
         Files.writeString(logFile, "", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
 
-    private String timestamp() {
+    public String timestamp() {
         return TIMESTAMP_FORMAT.format(new Date());
     }
 
-    private void writeToFile(String message) {
+    public void writeToFile(String message) {
         String line = timestamp() + " " + message;
         System.out.println(line);
         try {
@@ -40,7 +40,7 @@ public class FunkyMixinLogger extends LoggerAdapterAbstract {
         }
     }
 
-    private void writeThrowable(Throwable t, Path file) {
+    public void writeThrowable(Throwable t, Path file) {
         if (t == null) return;
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement e : t.getStackTrace()) sb.append("\tat ").append(e).append("\n");

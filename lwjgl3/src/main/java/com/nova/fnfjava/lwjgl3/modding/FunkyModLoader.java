@@ -1,4 +1,4 @@
-package com.nova.fnfjava.modding.loader;
+package com.nova.fnfjava.lwjgl3.modding;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -6,10 +6,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.Main;
+import com.nova.fnfjava.lwjgl3.FunkyClassLoader;
 import com.nova.fnfjava.modding.api.LoadedMod;
 import com.nova.fnfjava.modding.api.ModLoader;
-import com.nova.fnfjava.modding.api.metadata.ModMetadata;
 import com.nova.fnfjava.modding.api.ScriptedModule;
+import com.nova.fnfjava.modding.api.metadata.ModMetadata;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
@@ -23,7 +24,8 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -33,20 +35,14 @@ public class FunkyModLoader implements ModLoader {
     public final ObjectMap<String, LoadedModRecord> modRegistry = new ObjectMap<>();
     public Json json = new Json();
 
-    private ExposedClassLoader modClassLoader;
+    private FunkyClassLoader modClassLoader;
 
-    public FunkyModLoader(ExposedClassLoader classLoader) {
+    public FunkyModLoader(FunkyClassLoader classLoader) {
         json.setIgnoreUnknownFields(true);
         this.modClassLoader = classLoader;
     }
 
-    public FunkyModLoader() {
-        json.setIgnoreUnknownFields(true);
-        // Create a basic URLClassLoader as fallback
-        this.modClassLoader = new ExposedClassLoader(new URL[0], getClass().getClassLoader());
-    }
-
-    public record LoadedModRecord(ModMetadata metadata, Array<ScriptedModule> modules, ModType type, ExposedClassLoader classLoader, long lastModified, FileHandle sourceFile) implements LoadedMod {
+    public record LoadedModRecord(ModMetadata metadata, Array<ScriptedModule> modules, ModType type, URLClassLoader classLoader, long lastModified, FileHandle sourceFile) implements LoadedMod {
         @Override
         public ModMetadata getMetadata() { return metadata; }
 
@@ -79,6 +75,7 @@ public class FunkyModLoader implements ModLoader {
         }
     }
 
+    @Override
     public void loadAllModsWithProgress(ModProgressCallback callback) {
         Main.logger.setTag("FunkyModLoader").info("Starting mod loading...");
 
@@ -287,12 +284,7 @@ public class FunkyModLoader implements ModLoader {
 
     private LoadedModRecord loadFromJar(ModCandidate candidate) throws Exception {
         URL jarUrl = candidate.file.file().toURI().toURL();
-        if (modClassLoader instanceof ExposedClassLoader funkyLoader) {
-            funkyLoader.addURL(jarUrl);
-        } else {
-            URL[] urls = {jarUrl};
-            modClassLoader = new ExposedClassLoader(urls, modClassLoader);
-        }
+        modClassLoader.addURL(jarUrl);
 
         Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), modClassLoader);
 
@@ -306,12 +298,7 @@ public class FunkyModLoader implements ModLoader {
         File compiledJar = compileSourceToJar(candidate);
 
         URL jarUrl = compiledJar.toURI().toURL();
-        if (modClassLoader instanceof ExposedClassLoader funkyLoader) {
-            funkyLoader.addURL(jarUrl);
-        } else {
-            URL[] urls = {jarUrl};
-            modClassLoader = new ExposedClassLoader(urls, modClassLoader);
-        }
+        modClassLoader.addURL(jarUrl);
 
         Array<ScriptedModule> modules = loadModules(candidate.metadata.getEntryPoints(), modClassLoader);
 
@@ -491,6 +478,7 @@ public class FunkyModLoader implements ModLoader {
         return result;
     }
 
+    @Override
     public void updateMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
@@ -501,6 +489,7 @@ public class FunkyModLoader implements ModLoader {
         }));
     }
 
+    @Override
     public void renderMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
@@ -511,6 +500,7 @@ public class FunkyModLoader implements ModLoader {
         }));
     }
 
+    @Override
     public void pauseMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
@@ -521,6 +511,7 @@ public class FunkyModLoader implements ModLoader {
         }));
     }
 
+    @Override
     public void resumeMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
@@ -542,20 +533,5 @@ public class FunkyModLoader implements ModLoader {
 
     public enum ModType {
         JAR, SOURCE
-    }
-
-    public static class ExposedClassLoader extends URLClassLoader {
-        public ExposedClassLoader(URL[] urls, ClassLoader parent) {
-            super(urls, parent);
-        }
-
-        @Override
-        public void addURL(URL url) {
-            super.addURL(url);
-        }
-    }
-
-    public interface ModProgressCallback {
-        void onProgress(String modName, float progress, String status);
     }
 }
