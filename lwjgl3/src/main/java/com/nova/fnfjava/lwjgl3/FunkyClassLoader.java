@@ -218,16 +218,9 @@ public class FunkyClassLoader extends URLClassLoader {
     }
 
     public FunkyTransformer getTransformer() {
-        System.out.println("=== getTransformer Debug ===");
-        System.out.println("Thread: " + Thread.currentThread().getName());
-        System.out.println("This ClassLoader: " + this.getClass().getClassLoader());
-        System.out.println("transformerInstance: " + (transformerInstance != null ? "present" : "null"));
-        System.out.println("mixinServiceInstance: " + (mixinServiceInstance != null ? "present" : "null"));
-
         if (transformerInstance == null || mixinServiceInstance == null) {
             throw new IllegalStateException("FunkyClassLoader transformer is not ready yet!");
         }
-
         return transformerInstance;
     }
 
