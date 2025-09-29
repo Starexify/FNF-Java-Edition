@@ -5,8 +5,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.data.freeplay.player.PlayerRegistry;
@@ -18,6 +20,7 @@ import com.nova.fnfjava.data.story.level.LevelRegistry;
 import com.nova.fnfjava.input.CursorHandler;
 import com.nova.fnfjava.modding.FunkyLoadingScreen;
 import com.nova.fnfjava.modding.api.ModLoader;
+import com.nova.fnfjava.ui.debug.FunkinDebugDisplay;
 import com.nova.fnfjava.util.RandomUtil;
 import com.nova.fnfjava.save.Save;
 import com.nova.fnfjava.audio.FunkinSound;
@@ -43,7 +46,9 @@ public class Main extends Game {
 
     public static FunkinLogger logger;
 
+    public Stage stage;
     public SpriteBatch spriteBatch;
+    public ShapeRenderer shapeRenderer;
     public FitViewport viewport;
     public TransitionManager transitionManager;
 
@@ -51,6 +56,7 @@ public class Main extends Game {
     public static AssetManager assetManager = new AssetManager();
     public static RandomUtil random = new RandomUtil();
 
+    public static FunkinDebugDisplay debugDisplay;
     public static Save save;
 
     @Override
@@ -65,15 +71,9 @@ public class Main extends Game {
         }
     }
 
-    public static BitmapFont fpsCounter;
-    public static BitmapFont memoryCounter;
-
     public void setupGame() {
         CursorHandler.initCursors();
         //CursorHandler.hide();
-
-        fpsCounter = new BitmapFont();
-        memoryCounter = new BitmapFont();
 
         save = Save.getInstance();
 
@@ -81,8 +81,14 @@ public class Main extends Game {
         Gdx.graphics.setVSync(Preferences.getVSyncMode());
         Gdx.graphics.setForegroundFPS(Preferences.getFramerate());
 
+        shapeRenderer = new ShapeRenderer();
         spriteBatch = new SpriteBatch();
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        stage = new Stage(viewport, spriteBatch);
+        debugDisplay = new FunkinDebugDisplay(10, 0, Color.WHITE, shapeRenderer);
+        debugDisplay.setY(Gdx.graphics.getHeight() - debugDisplay.getCalculatedHeight() - 10);
+        stage.addActor(debugDisplay);
 
         sound = new FunkinSound(new MiniAudio());
 
@@ -134,23 +140,12 @@ public class Main extends Game {
     public void render() {
         super.render();
 
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
         //if (modLoader != null) modLoader.updateMods();
-
         ReloadAssetsDebugPlugin.update();
-
         //if (modLoader != null) modLoader.renderMods();
-
-        if (Preferences.getDebugDisplay()) {
-            spriteBatch.begin();
-            fpsCounter.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, Gdx.graphics.getHeight() - 3);
-
-            long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024;
-            long totalMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
-            long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
-            memoryCounter.draw(spriteBatch, "Memory: " + usedMemory + "MB / " + totalMemory + "MB (max: " + maxMemory + "MB)", 10, Gdx.graphics.getHeight() - fpsCounter.getCapHeight() - 6);
-
-            spriteBatch.end();
-        }
     }
 
     @Override
@@ -177,13 +172,15 @@ public class Main extends Game {
         super.dispose();
 
         if (DiscordClient.instance != null) DiscordClient.shutdown();
+
+        if (shapeRenderer != null) shapeRenderer.dispose();
+        if (debugDisplay != null) debugDisplay.dispose();
+        if (stage != null) stage.dispose();
+
         if (spriteBatch != null) spriteBatch.dispose();
         if (assetManager != null) assetManager.dispose();
         if (sound != null) sound.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
-
-        if (fpsCounter != null) fpsCounter.dispose();
-        if (memoryCounter != null) memoryCounter.dispose();
 
         CursorHandler.dispose();
         Assets.dispose();

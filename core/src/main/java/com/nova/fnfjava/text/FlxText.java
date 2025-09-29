@@ -97,9 +97,7 @@ public class FlxText extends Label implements Disposable {
                     break;
 
                 case NONE:
-                default:
-                    // No effects
-                    break;
+                default: break;
             }
 
             currentFont = generator.generateFont(parameter);
