@@ -6,6 +6,8 @@ public class Preferences {
     public static final String PREFS_NAME = "Funkin";
     public static com.badlogic.gdx.Preferences prefs;
 
+    public static final boolean NAUGHTYNESS = true;
+    public static final boolean DOWNSCROLL = false;
     public static final boolean FLASHING_LIGHTS = true;
     public static final int GLOBAL_OFFSET = 0;
     public static final boolean VSYNC_MODE = false;
@@ -14,6 +16,26 @@ public class Preferences {
 
     public static void init() {
         prefs = Gdx.app.getPreferences(PREFS_NAME);
+    }
+
+    public static boolean getNaughtyness() {
+        return prefs.getBoolean("naughtyness", NAUGHTYNESS);
+    }
+
+    public static boolean setNaughtyness(boolean value) {
+        prefs.putBoolean("naughtyness", value);
+        prefs.flush();
+        return value;
+    }
+
+    public static boolean getDownscroll() {
+        return prefs.getBoolean("downscroll", DOWNSCROLL);
+    }
+
+    public static boolean setDownscroll(boolean value) {
+        prefs.putBoolean("downscroll", value);
+        prefs.flush();
+        return value;
     }
 
     public static boolean getFlashingLights() {

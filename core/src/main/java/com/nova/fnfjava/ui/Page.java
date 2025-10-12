@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
-import com.nova.fnfjava.input.Controls;
 
 public class Page<T> extends Group {
     public final Signal<T> onSwitch = new Signal<>();
@@ -33,7 +32,6 @@ public class Page<T> extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-
         if (enabled) updateEnabled(delta);
     }
 

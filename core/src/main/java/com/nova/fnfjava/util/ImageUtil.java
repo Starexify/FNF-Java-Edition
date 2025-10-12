@@ -24,8 +24,4 @@ public class ImageUtil {
     public static Image blackScreen() {
         return createColored(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
     }
-
-    public static Image redRectangle(float width, float height) {
-        return createColored(width, height, Color.RED);
-    }
 }

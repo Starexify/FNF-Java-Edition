@@ -22,9 +22,15 @@ public class Codex<T> extends Group {
     }
 
     public void setPage(T name) {
-        if (pages.containsKey(currentName)) getCurrentPage().setVisible(false);
+        if (pages.containsKey(currentName)) {
+            getCurrentPage().setVisible(false);
+            getCurrentPage().enabled = false;
+        }
         currentName = name;
-        if (pages.containsKey(currentName)) getCurrentPage().setVisible(true);
+        if (pages.containsKey(currentName)) {
+            getCurrentPage().setVisible(true);
+            getCurrentPage().enabled = true;
+        }
     }
 
     public void switchPage(T name) {

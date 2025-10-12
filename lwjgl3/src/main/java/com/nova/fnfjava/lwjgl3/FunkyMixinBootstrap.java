@@ -15,7 +15,6 @@ public final class FunkyMixinBootstrap {
         System.setProperty("mixin.service", FunkyMixinService.class.getName());
 
         MixinBootstrap.init();
-        Mixins.addConfiguration("lwjgl3.mixins.json");
         Mixins.addConfiguration("fnfjava.mixins.json");
 
         MixinBootstrap.getPlatform().inject();

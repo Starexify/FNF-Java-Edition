@@ -101,8 +101,6 @@ public class OptionsState extends MusicBeatState {
 
     public static class OptionsMenu extends Page<OptionsMenuPageName> {
         public TextMenuList items;
-        //var camFocusPoint:FlxObject;
-        public final int CAMERA_MARGIN = 150;
 
         public OptionsMenu(SaveDataMenu saveDataMenu) {
             add(items = new TextMenuList());
@@ -112,8 +110,8 @@ public class OptionsState extends MusicBeatState {
             //createItem("LAG ADJUSTMENT", () -> codex.switchPage(OptionsMenuPageName.Offsets));
             //createItem("OPEN DATA FOLDER", () -> System.out.println("Open Data Folder not implemented yet"));
 
-            if (saveDataMenu.hasMultipleOptions()) createItem("SAVE DATA OPTIONS", () -> codex.switchPage(OptionsMenuPageName.SaveData));
-            else createItem("CLEAR SAVE DATA", () -> System.out.println("Clear Save Data not implemented yet"));
+/*            if (saveDataMenu.hasMultipleOptions()) createItem("SAVE DATA OPTIONS", () -> codex.switchPage(OptionsMenuPageName.SaveData));
+            else createItem("CLEAR SAVE DATA", () -> System.out.println("Clear Save Data not implemented yet"));*/
 
             createItem("EXIT", this::exit);
 
@@ -124,9 +122,7 @@ public class OptionsState extends MusicBeatState {
             items.selectItem(OptionsState.rememberedSelectedIndex);
         }
 
-        public void onMenuChange(TextMenuList.TextMenuItem selected) {
-            //camFocusPoint.y = selected.getY();
-        }
+        public void onMenuChange(TextMenuList.TextMenuItem selected) {}
 
         public TextMenuList.TextMenuItem createItem(String name, Runnable callback, boolean fireInstantly) {
             TextMenuList.TextMenuItem item = items.createItem(0, Gdx.graphics.getHeight() - (100 + items.length * 100), name, AtlasText.AtlasFont.BOLD, callback);
