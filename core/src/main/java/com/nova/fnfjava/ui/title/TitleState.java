@@ -161,7 +161,7 @@ public class TitleState extends MusicBeatState {
     @Override
     public void render(float delta) {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
         Conductor.getInstance().update();
 

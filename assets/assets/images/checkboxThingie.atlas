@@ -1,0 +1,103 @@
+checkboxThingie.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Check Box Selected Static
+  rotate: false
+  xy: 0, 198
+  size: 120, 174
+  orig: 140, 225
+  offset: 0, 0
+  index: 0
+Check Box Selected Static
+  rotate: false
+  xy: 0, 198
+  size: 120, 174
+  orig: 140, 225
+  offset: 0, 0
+  index: 1
+Check Box selecting animation
+  rotate: false
+  xy: 371, 0
+  size: 121, 82
+  orig: 140, 225
+  offset: -15, -133
+  index: 0
+Check Box selecting animation
+  rotate: false
+  xy: 371, 0
+  size: 121, 82
+  orig: 140, 225
+  offset: -15, -133
+  index: 1
+Check Box selecting animation
+  rotate: false
+  xy: 132, 0
+  size: 127, 180
+  orig: 140, 225
+  offset: -4, -45
+  index: 2
+Check Box selecting animation
+  rotate: false
+  xy: 0, 0
+  size: 127, 193
+  orig: 140, 225
+  offset: 0, 0
+  index: 3
+Check Box selecting animation
+  rotate: false
+  xy: 0, 0
+  size: 127, 193
+  orig: 140, 225
+  offset: 0, 0
+  index: 4
+Check Box selecting animation
+  rotate: false
+  xy: 257, 185
+  size: 138, 146
+  orig: 140, 225
+  offset: -2, -62
+  index: 5
+Check Box selecting animation
+  rotate: false
+  xy: 257, 185
+  size: 138, 146
+  orig: 140, 225
+  offset: -2, -62
+  index: 6
+Check Box selecting animation
+  rotate: false
+  xy: 132, 185
+  size: 120, 176
+  orig: 140, 225
+  offset: -12, -29
+  index: 7
+Check Box selecting animation
+  rotate: false
+  xy: 132, 185
+  size: 120, 176
+  orig: 140, 225
+  offset: -12, -29
+  index: 8
+Check Box selecting animation
+  rotate: false
+  xy: 0, 198
+  size: 120, 174
+  orig: 140, 225
+  offset: -12, -29
+  index: 9
+Check Box selecting animation
+  rotate: false
+  xy: 0, 198
+  size: 120, 174
+  orig: 140, 225
+  offset: -12, -29
+  index: 10
+Check Box unselected
+  rotate: false
+  xy: 264, 0
+  size: 102, 103
+  orig: 102, 103
+  offset: 0, 0
+  index: 0

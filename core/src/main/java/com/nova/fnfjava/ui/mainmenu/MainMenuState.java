@@ -209,7 +209,7 @@ public class MainMenuState extends MusicBeatState {
     public void handleInputs() {
         if (!getCanInteract()) return;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) goBack();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) goBack();
     }
 
     public void goBack() {

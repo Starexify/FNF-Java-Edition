@@ -7,6 +7,7 @@ import com.nova.fnfjava.group.TypedActorGroup;
 import com.nova.fnfjava.text.FlxText;
 import com.nova.fnfjava.ui.Page;
 import com.nova.fnfjava.ui.TextMenuList;
+import com.nova.fnfjava.ui.options.items.CheckboxPreferenceItem;
 
 public class PreferencesMenu extends Page<OptionsState.OptionsMenuPageName> {
     TextMenuList items;
@@ -30,15 +31,15 @@ public class PreferencesMenu extends Page<OptionsState.OptionsMenuPageName> {
     }
 
     public void createPrefItemCheckbox(String prefName, String prefDesc) {
-        //CheckboxPreferenceItem checkbox = new CheckboxPreferenceItem(0, 120 * (items.length - 1 + 1));
+        CheckboxPreferenceItem checkbox = new CheckboxPreferenceItem(0, 120 * (items.length - 1 + 1));
 
 /*        items.createItem(0, (120 * items.length) + 30, prefName, AtlasFont.BOLD, function() {
             var value = !checkbox.currentValue;
             onChange(value);
             checkbox.currentValue = value;
-        }, false, available);
+        }, false, available);*/
 
         preferenceItems.add(checkbox);
-        preferenceDesc.push(prefDesc);*/
+        preferenceDesc.add(prefDesc);
     }
 }
