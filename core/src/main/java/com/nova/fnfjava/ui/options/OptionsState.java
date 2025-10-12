@@ -109,15 +109,16 @@ public class OptionsState extends MusicBeatState {
 
             createItem("PREFERENCES", () -> codex.switchPage(OptionsMenuPageName.Preferences));
             createItem("CONTROLS", () -> codex.switchPage(OptionsMenuPageName.Controls));
-            createItem("LAG ADJUSTMENT", () -> codex.switchPage(OptionsMenuPageName.Offsets));
-            createItem("OPEN DATA FOLDER", () -> System.out.println("Open Data Folder not implemented yet"));
+            //createItem("LAG ADJUSTMENT", () -> codex.switchPage(OptionsMenuPageName.Offsets));
+            //createItem("OPEN DATA FOLDER", () -> System.out.println("Open Data Folder not implemented yet"));
+
             if (saveDataMenu.hasMultipleOptions()) createItem("SAVE DATA OPTIONS", () -> codex.switchPage(OptionsMenuPageName.SaveData));
             else createItem("CLEAR SAVE DATA", () -> System.out.println("Clear Save Data not implemented yet"));
+
             createItem("EXIT", this::exit);
 
             items.onChange.add((signal, object) -> onMenuChange(object));
 
-            System.out.println("OptionsMenu: " + items.items);
             onMenuChange(items.members.get(0));
 
             items.selectItem(OptionsState.rememberedSelectedIndex);

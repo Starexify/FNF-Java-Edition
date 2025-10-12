@@ -5,6 +5,7 @@ import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.LogLevel;
 import de.jcm.discordgamesdk.activity.Activity;
+import de.jcm.discordgamesdk.activity.ActivityType;
 
 import java.time.Instant;
 import java.util.concurrent.Executors;
@@ -71,17 +72,22 @@ public class DiscordClient {
     public static Activity buildActivity(DiscordPresenceParams params) {
         Activity activity = new Activity();
 
-        activity.timestamps().setStart(Instant.now());
+        if (params.endTime != null) {
+            activity.setType(ActivityType.LISTENING);
+            activity.timestamps().setStartAndEnd(Instant.now(), Instant.now().plusSeconds(params.endTime));
+        } else {
+            activity.timestamps().setStart(Instant.now());
+        }
 
         activity.assets().setLargeText("Friday Night Funkin': Java Edition");
 
         if (params.state != null && !params.state.isEmpty()) activity.setState(params.state);
         if (params.details != null && !params.details.isEmpty()) activity.setDetails(params.details);
-        if (params.largeImageKey != null && !params.largeImageKey.isEmpty())
-            activity.assets().setLargeImage(params.largeImageKey);
+
+        if (params.largeImageKey != null && !params.largeImageKey.isEmpty()) activity.assets().setLargeImage(params.largeImageKey);
         else activity.assets().setLargeImage("icon");
-        if (params.smallImageKey != null && !params.smallImageKey.isEmpty())
-            activity.assets().setSmallImage(params.smallImageKey);
+
+        if (params.smallImageKey != null && !params.smallImageKey.isEmpty()) activity.assets().setSmallImage(params.smallImageKey);
 
         return activity;
     }
@@ -104,16 +110,24 @@ public class DiscordClient {
         public String details;
         public String largeImageKey;
         public String smallImageKey;
+        public Integer startTime;
+        public Integer endTime;
 
-        public DiscordPresenceParams(String state, String details, String largeImageKey, String smallImageKey) {
+        public DiscordPresenceParams(String state, String details, String largeImageKey, String smallImageKey, Integer startTime, Integer endTime) {
             this.state = state;
             this.details = details;
             this.largeImageKey = largeImageKey;
             this.smallImageKey = smallImageKey;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        public DiscordPresenceParams(String state, String details, String largeImageKey, String smallImageKey) {
+            this(state, details, largeImageKey, smallImageKey, null, null);
         }
 
         public DiscordPresenceParams(String state, String details) {
-            this(state, details, null, null);
+            this(state, details, null, null, null, null);
         }
     }
 }

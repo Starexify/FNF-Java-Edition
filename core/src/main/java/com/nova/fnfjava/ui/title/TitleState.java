@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.*;
+import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.graphics.AnimatedSprite;
 import com.nova.fnfjava.ui.AtlasText;
@@ -25,7 +26,8 @@ public class TitleState extends MusicBeatState {
     public static boolean initialized = false;
 
     public Image blackScreen;
-
+    public Group credGroup;
+    public Group textGroup;
     public AnimatedSprite ngSpr;
 
     public Array<String> curWacky = new Array<>();
@@ -35,9 +37,6 @@ public class TitleState extends MusicBeatState {
     public AnimatedSprite gfDance;
     public boolean danceLeft = false;
     public AnimatedSprite titleText;
-
-    public Group credGroup;
-    public Group textGroup;
 
     public Timer.Task attractTimer;
 
@@ -58,6 +57,8 @@ public class TitleState extends MusicBeatState {
 
     public void startIntro() {
         if (!initialized || Main.sound.music == null) playMenuMusic();
+
+        DiscordClient.instance.setPresence(new DiscordClient.DiscordPresenceParams("In Title Screen", null));
 
         logoBl = new AnimatedSprite(-150, 100);
         logoBl.atlas = new TextureAtlas("assets/images/logoBumpin.atlas");

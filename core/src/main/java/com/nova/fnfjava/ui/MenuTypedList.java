@@ -76,6 +76,8 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
     }
 
     public void updateControls() {
+        if (getChildren().size == 0) return;
+
         Controls controls = PlayerSettings.player1.controls;
 
         boolean wrapX = wrapMode.match(WrapMode.HORIZONTAL, WrapMode.BOTH);
@@ -83,10 +85,10 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
 
         int newIndex = 0;
 
-        final boolean inputUp = controls.UI_UP_P() || !isMainMenuState;
-        final boolean inputDown = controls.UI_DOWN_P() || !isMainMenuState;
-        final boolean inputLeft = controls.UI_LEFT_P() || !isMainMenuState;
-        final boolean inputRight = controls.UI_RIGHT_P() || !isMainMenuState;
+        final boolean inputUp = controls.UI_UP_P();
+        final boolean inputDown = controls.UI_DOWN_P();
+        final boolean inputLeft = controls.UI_LEFT_P();
+        final boolean inputRight = controls.UI_RIGHT_P();
 
         newIndex = switch (navControls) {
             case VERTICAL -> navList(inputUp, inputDown, wrapY);
@@ -142,6 +144,9 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
     }
 
     public void selectItem(int index) {
+        if (getChildren().size == 0) return;
+        if (index < 0 || index >= getChildren().size) return;
+
         ((MenuListItem) getChild(selectedIndex)).idle();
 
         if (!((MenuListItem) getChild(index)).available) {
@@ -207,11 +212,11 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
         }
 
         public void idle() {
-            getColor().a = 0.6f;
+            setAlpha(0.6f);
         }
 
         public void select() {
-            getColor().a = 1.0f;
+            setAlpha(1f);
         }
 
         public void callback() {
@@ -224,7 +229,7 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
 
         public MenuTypedItem(float x, float y, T label, String name, Runnable callback, boolean available) {
             super(x, y, name, callback, available);
-            this.label = label;
+            setLabel(label);
         }
 
         public MenuTypedItem(T label, String name, Runnable callback) {
@@ -247,6 +252,24 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
         }
 
         @Override
+        public void setAlpha(float value) {
+            if (label != null) label.getColor().a = value;
+            super.setAlpha(value);
+        }
+
+        @Override
+        public void setX(float x) {
+            if (label != null) label.setX(x);
+            super.setX(x);
+        }
+
+        @Override
+        public void setY(float y) {
+            if (label != null) label.setY(y);
+            super.setY(y);
+        }
+
+        @Override
         public void draw(Batch batch, float parentAlpha) {
             super.draw(batch, parentAlpha);
 
@@ -256,8 +279,6 @@ public class MenuTypedList<T extends MenuTypedList.MenuListItem> extends TypedAc
                 label.draw(batch, parentAlpha);
             }
         }
-
-
     }
 
     public enum NavControls {

@@ -274,4 +274,8 @@ public class AnimatedSprite extends Actor {
         float libgdxY = Gdx.graphics.getHeight() - flxY - getHeight();
         setY(libgdxY, Align.bottom);
     }
+
+    public void setAlpha(float value) {
+        getColor().a = value;
+    }
 }

@@ -16,7 +16,7 @@ public class TextMenuList extends MenuTypedList<TextMenuList.TextMenuItem> {
         public AtlasText atlasText;
 
         public TextMenuItem(float x, float y, String name, AtlasText.AtlasFont font, Runnable callback, boolean available) {
-            super(x, y, new AtlasText(0, 0, name, font), name, callback, available);
+            super(x, y, new AtlasText(x, y, name, font), name, callback, available);
             atlasText = label;
         }
 
