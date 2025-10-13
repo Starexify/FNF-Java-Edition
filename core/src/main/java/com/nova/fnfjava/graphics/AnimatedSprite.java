@@ -30,7 +30,7 @@ public class AnimatedSprite extends Actor {
 
     public AnimatedSprite(float x, float y) {
         animation = new AnimationController(this);
-        setPosition(x, y, Align.bottom);
+        setPosition(x, y);
     }
 
     public AnimatedSprite() {

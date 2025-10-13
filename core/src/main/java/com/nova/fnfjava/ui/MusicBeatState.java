@@ -38,7 +38,7 @@ public class MusicBeatState extends TransitionableScreenAdapter {
 
     @Override
     public void show() {
-        stage = new ScrollableStage(main.viewport, main.spriteBatch);
+        stage = new ScrollableStage(main.viewport, main.batch);
         stage.setParentState(this);
         createWatermarkText();
 

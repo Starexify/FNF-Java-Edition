@@ -22,7 +22,7 @@ public class AnimationData {
     public Integer[] frameIndices = null;
 
     public transient Animation<TextureRegion> gdxAnimation;
-    public transient Array<TextureRegion> frames;
+    public transient Array<TextureAtlas.AtlasRegion> frames;
     public transient float stateTime = 0f;
     public transient boolean paused = true;
     public transient boolean finished = false;
@@ -43,40 +43,7 @@ public class AnimationData {
             return;
         }
 
-        frames = new Array<>();
-
-        if (frameIndices != null && frameIndices.length > 0) {
-            // Use specific frame indices
-            for (int index : frameIndices) {
-                TextureAtlas.AtlasRegion region = atlas.findRegion(prefix, index);
-                if (region != null) {
-                    if (region.rotate) {
-                        // Create a properly rotated TextureRegion
-                        TextureRegion rotatedFrame = new TextureRegion(region.getTexture(), region.getRegionX(), region.getRegionY(), region.getRegionHeight(), region.getRegionWidth());
-                        frames.add(rotatedFrame);
-                    } else {
-                        TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
-                        if (flipX || flipY) frame.flip(flipX, flipY);
-                        frames.add(frame);
-                    }
-                }
-            }
-        } else {
-            // Use all frames with the prefix
-            Array<TextureAtlas.AtlasRegion> foundRegions = atlas.findRegions(prefix);
-            foundRegions.sort(Comparator.comparingInt(a -> a.index));
-
-            for (TextureAtlas.AtlasRegion region : foundRegions) {
-                if (region.rotate) {
-                    TextureRegion rotatedFrame = new TextureRegion(region.getTexture(), region.getRegionX(), region.getRegionY(), region.getRegionHeight(), region.getRegionWidth());
-                    frames.add(rotatedFrame);
-                } else {
-                    TextureAtlas.AtlasRegion frame = new TextureAtlas.AtlasRegion(region);
-                    if (flipX || flipY) frame.flip(flipX, flipY);
-                    frames.add(frame);
-                }
-            }
-        }
+        frames = atlas.findRegions(prefix);
 
         if (frames.size > 0) {
             gdxAnimation = new Animation<>(

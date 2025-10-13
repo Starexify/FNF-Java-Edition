@@ -493,7 +493,7 @@ public class FunkyModLoader implements ModLoader {
     public void renderMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
-                module.render(Main.instance.spriteBatch);
+                module.render(Main.instance.batch);
             } catch (Exception e) {
                 Main.logger.setTag("ModLoader").error("Render error in " + mod.metadata().modId, e);
             }
@@ -515,7 +515,7 @@ public class FunkyModLoader implements ModLoader {
     public void resumeMods() {
         loadedMods.forEach(mod -> mod.modules().forEach(module -> {
             try {
-                module.render(Main.instance.spriteBatch);
+                module.render(Main.instance.batch);
             } catch (Exception e) {
                 Main.logger.setTag("ModLoader").error("Resume error in " + mod.metadata().modId, e);
             }

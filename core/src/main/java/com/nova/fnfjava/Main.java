@@ -47,7 +47,7 @@ public class Main extends Game {
     public static FunkinLogger logger;
 
     public Stage stage;
-    public SpriteBatch spriteBatch;
+    public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
     public FitViewport viewport;
     public TransitionManager transitionManager;
@@ -82,10 +82,10 @@ public class Main extends Game {
         Gdx.graphics.setForegroundFPS(Preferences.getFramerate());
 
         shapeRenderer = new ShapeRenderer();
-        spriteBatch = new SpriteBatch();
+        batch = new SpriteBatch();
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        stage = new Stage(viewport, spriteBatch);
+        stage = new Stage(viewport, batch);
         debugDisplay = new FunkinDebugDisplay(10, 0, Color.WHITE, shapeRenderer);
         debugDisplay.setY(Gdx.graphics.getHeight() - debugDisplay.getCalculatedHeight() - 10);
         stage.addActor(debugDisplay);
@@ -124,7 +124,8 @@ public class Main extends Game {
         }
 
         Screen titleScreen = new TitleState(this);
-        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
+        setScreen(new SpriteTestState(this));
+        //setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
     }
 
     public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {
@@ -177,7 +178,7 @@ public class Main extends Game {
         if (debugDisplay != null) debugDisplay.dispose();
         if (stage != null) stage.dispose();
 
-        if (spriteBatch != null) spriteBatch.dispose();
+        if (batch != null) batch.dispose();
         if (assetManager != null) assetManager.dispose();
         if (sound != null) sound.dispose();
         if (CameraFlash.getInstance() != null) CameraFlash.getInstance().dispose();
