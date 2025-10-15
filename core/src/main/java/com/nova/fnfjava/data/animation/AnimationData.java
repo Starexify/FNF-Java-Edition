@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.animation.AnimationController;
 
-import java.util.Comparator;
-
 public class AnimationData {
     public String name;
     public String prefix;
@@ -30,11 +28,13 @@ public class AnimationData {
     public AnimationData() {
     }
 
-    public AnimationData(String name, String prefix, int frameRate, boolean looped) {
+    public AnimationData(String name, String prefix, int frameRate, boolean looped, boolean flipX, boolean flipY) {
         this.name = name;
         this.prefix = prefix;
         this.frameRate = frameRate;
         this.looped = looped;
+        this.flipX = flipX;
+        this.flipY = flipY;
     }
 
     public void createAnimation(TextureAtlas atlas) {
@@ -44,6 +44,7 @@ public class AnimationData {
         }
 
         frames = atlas.findRegions(prefix);
+        if (frameIndices != null) Main.logger.setTag("AnimationData").info(frameIndices.toString());
 
         if (frames.size > 0) {
             gdxAnimation = new Animation<>(

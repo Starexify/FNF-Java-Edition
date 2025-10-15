@@ -14,6 +14,7 @@ import com.nova.fnfjava.*;
 import com.nova.fnfjava.api.discord.DiscordClient;
 import com.nova.fnfjava.audio.FunkinSound;
 import com.nova.fnfjava.graphics.AnimatedSprite;
+import com.nova.fnfjava.graphics.FunkinSprite;
 import com.nova.fnfjava.ui.AtlasText;
 import com.nova.fnfjava.ui.mainmenu.MainMenuState;
 import com.nova.fnfjava.ui.MusicBeatState;
@@ -33,10 +34,10 @@ public class TitleState extends MusicBeatState {
     public Array<String> curWacky = new Array<>();
     public int lastBeat = 0;
 
-    public AnimatedSprite logoBl;
-    public AnimatedSprite gfDance;
+    public FunkinSprite logoBl;
+    public FunkinSprite gfDance;
     public boolean danceLeft = false;
-    public AnimatedSprite titleText;
+    public FunkinSprite titleText;
 
     public Timer.Task attractTimer;
 
@@ -60,23 +61,19 @@ public class TitleState extends MusicBeatState {
 
         DiscordClient.instance.setPresence(new DiscordClient.DiscordPresenceParams("In Title Screen", null));
 
-        logoBl = new AnimatedSprite(-150, 100);
-        logoBl.atlas = new TextureAtlas("assets/images/logoBumpin.atlas");
+        logoBl = FunkinSprite.create(-150, 120, Paths.getAtlas("logoBumpin"));
         logoBl.animation.addByPrefix("bump", "logo bumpin", 24);
         logoBl.animation.play("bump");
 
-        gfDance = new AnimatedSprite(Gdx.graphics.getWidth() * 0.4F, Gdx.graphics.getHeight() * 0.07F);
-        gfDance.atlas = new TextureAtlas("assets/images/gfDanceTitle.atlas");
+        gfDance = FunkinSprite.create(Gdx.graphics.getWidth() * 0.4F, Gdx.graphics.getHeight() * 0.01F, Paths.getAtlas("gfDanceTitle"));
         //gfDance.setFlxY(Gdx.graphics.getHeight() * 0.07F);
         gfDance.animation.addByIndices("danceLeft", "gfDance", new Array<>(new Integer[]{30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}), 24);
         gfDance.animation.addByIndices("danceRight", "gfDance", new Array<>(new Integer[]{15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}), 24);
 
         add(logoBl);
-
         add(gfDance);
 
-        titleText = new AnimatedSprite(50, main.viewport.getWorldHeight() * 0.2F);
-        titleText.atlas = new TextureAtlas("assets/images/titleEnter.atlas");
+        titleText = FunkinSprite.create(100, Gdx.graphics.getHeight() * 0.07F, Paths.getAtlas("titleEnter"));
         titleText.animation.addByPrefix("idle", "Press Enter to Begin", 24);
         titleText.animation.addByPrefix("press", "ENTER PRESSED", 24);
         titleText.animation.play("idle");
@@ -160,7 +157,6 @@ public class TitleState extends MusicBeatState {
 
     @Override
     public void render(float delta) {
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
         Conductor.getInstance().update();

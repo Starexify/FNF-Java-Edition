@@ -45,13 +45,7 @@ public class AnimationController {
     }
 
     public void add(String name, Integer[] frames, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        AnimationData animData = new AnimationData();
-        animData.name = name;
-        animData.prefix = "frame";  // Assuming your atlas uses "frame" prefix
-        animData.frameRate = (int) frameRate;
-        animData.looped = looped;
-        animData.flipX = flipX;
-        animData.flipY = flipY;
+        AnimationData animData = new AnimationData(name, "frame", (int) frameRate, looped, flipX, flipY);
         animData.frameIndices = frames;
 
         addAnimation(animData);
@@ -77,14 +71,11 @@ public class AnimationController {
      * @param flipY     Whether the frames should be flipped vertically.
      */
     public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        AnimationData animData = new AnimationData();
-        animData.name = name;
-        animData.prefix = prefix;
-        animData.frameRate = (int) frameRate;
-        animData.looped = looped;
-        animData.flipX = flipX;
-        animData.flipY = flipY;
+        AnimationData animData = new AnimationData(name, prefix, (int) frameRate, looped, flipX, flipY);
+        Main.logger.setTag("AnimationController").info(indices + "");
         animData.frameIndices = indices.toArray();
+        Main.logger.setTag("AnimationController").info(indices.toArray() + "");
+        Main.logger.setTag("AnimationController").info(animData.frameIndices + "");
 
         addAnimation(animData);
     }
@@ -105,10 +96,7 @@ public class AnimationController {
      * @param flipY     Whether the frames should be flipped vertically.
      */
     public void addByPrefix(String name, String prefix, float frameRate, boolean looped, boolean flipX, boolean flipY) {
-        AnimationData animData = new AnimationData(name, prefix, (int) frameRate, looped);
-        animData.flipX = flipX;
-        animData.flipY = flipY;
-
+        AnimationData animData = new AnimationData(name, prefix, (int) frameRate, looped, flipX, flipY);
         addAnimation(animData);
     }
 

@@ -1,383 +1,165 @@
 titleEnter.png
-size: 2017,1950
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
+size:4493,1455
+repeat:none
 ENTER PRESSED
-  rotate: false
-  xy: 1, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 0
+index:1
+bounds:2,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1006, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 1
+index:6
+bounds:2,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 2
+index:3
+bounds:2,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1006, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 3
+index:8
+bounds:2,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 4
+index:5
+bounds:2,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1006, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 5
+index:0
+bounds:1481,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1006, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 6
+index:7
+bounds:1481,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 7
+index:2
+bounds:1481,2,1477,79
 ENTER PRESSED
-  rotate: false
-  xy: 1006, 1870
-  size: 1002, 79
-  orig: 1477, 79
-  offset: 0, 0
-  index: 8
+index:4
+bounds:1481,2,1477,79
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 0
+index:21
+bounds:2,1357,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 90
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 1
+index:34
+bounds:2,1259,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 179
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 2
+index:3
+bounds:1499,1357,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 268
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 3
+index:13
+bounds:2,1161,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 357
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 4
+index:26
+bounds:1499,1259,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 446
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 5
+index:39
+bounds:2996,1357,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 535
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 6
+index:8
+bounds:2,1063,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 624
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 7
+index:31
+bounds:1499,1161,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 713
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 8
+index:18
+bounds:2996,1259,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 802
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 9
+index:44
+bounds:2,965,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 891
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 10
+index:0
+bounds:2,965,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 980
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 11
+index:10
+bounds:1499,1063,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 12
+index:23
+bounds:2996,1161,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 90
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 13
+index:22
+bounds:2996,1161,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 179
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 14
+index:36
+bounds:2,867,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 268
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 15
+index:5
+bounds:1499,965,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 357
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 16
+index:15
+bounds:2996,1063,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 446
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 17
+index:28
+bounds:2,769,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 535
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 18
+index:41
+bounds:1499,867,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 624
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 19
+index:20
+bounds:2996,965,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 713
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 20
+index:25
+bounds:2996,965,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 802
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 21
+index:33
+bounds:2,671,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 891
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 22
+index:2
+bounds:1499,769,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 891
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 23
+index:12
+bounds:2996,867,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 980
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 24
+index:38
+bounds:2,573,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 713
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 25
+index:7
+bounds:1499,671,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1069
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 26
+index:30
+bounds:2996,769,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1069
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 27
+index:17
+bounds:2,475,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1158
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 28
+index:43
+bounds:1499,573,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1158
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 29
+index:35
+bounds:2996,671,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1247
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 30
+index:4
+bounds:2,377,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1247
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 31
+index:14
+bounds:1499,475,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1336
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 32
+index:27
+bounds:2996,573,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1336
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 33
+index:40
+bounds:2,279,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1425
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 34
+index:9
+bounds:1499,377,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1425
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 35
+index:32
+bounds:2996,475,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1514
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 36
+index:19
+bounds:2,181,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1514
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 37
+index:1
+bounds:1499,279,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1603
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 38
+index:11
+bounds:2996,377,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1603
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 39
+index:24
+bounds:2,83,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1692
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 40
+index:37
+bounds:1499,181,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1692
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 41
+index:6
+bounds:2996,279,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1781
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 42
+index:16
+bounds:1499,83,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1010, 1781
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 43
+index:29
+bounds:2996,181,1495,96
 Press Enter to Begin
-  rotate: false
-  xy: 1, 1
-  size: 1006, 86
-  orig: 1495, 96
-  offset: -4, -3
-  index: 44
+index:42
+bounds:2996,83,1495,96

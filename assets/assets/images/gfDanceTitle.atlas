@@ -1,215 +1,93 @@
 gfDanceTitle.png
-size: 4096,4096
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
+size:3617,2658
+repeat:none
 gfDance
-  rotate: false
-  xy: 0, 0
-  size: 717, 648
-  orig: 721, 662
-  offset: -2, -14
-  index: 0
+index:12
+bounds:2,1994,721,662
 gfDance
-  rotate: false
-  xy: 727, 0
-  size: 721, 648
-  orig: 721, 662
-  offset: 0, -14
-  index: 1
+index:11
+bounds:2,1994,721,662
 gfDance
-  rotate: false
-  xy: 1458, 0
-  size: 721, 646
-  orig: 721, 662
-  offset: 0, -16
-  index: 2
+index:10
+bounds:2,1994,721,662
 gfDance
-  rotate: false
-  xy: 2189, 0
-  size: 717, 646
-  orig: 721, 662
-  offset: -2, -16
-  index: 3
+index:2
+bounds:2,1330,721,662
 gfDance
-  rotate: false
-  xy: 2916, 0
-  size: 717, 649
-  orig: 721, 662
-  offset: -2, -13
-  index: 4
+index:25
+bounds:725,1994,721,662
 gfDance
-  rotate: false
-  xy: 0, 659
-  size: 717, 649
-  orig: 721, 662
-  offset: -2, -13
-  index: 5
+index:27
+bounds:725,1994,721,662
 gfDance
-  rotate: false
-  xy: 727, 659
-  size: 717, 650
-  orig: 721, 662
-  offset: -2, -12
-  index: 6
+index:26
+bounds:725,1994,721,662
 gfDance
-  rotate: false
-  xy: 1454, 659
-  size: 717, 661
-  orig: 721, 662
-  offset: -2, -1
-  index: 7
+index:17
+bounds:2,666,721,662
 gfDance
-  rotate: false
-  xy: 1454, 659
-  size: 717, 661
-  orig: 721, 662
-  offset: -2, -1
-  index: 8
+index:7
+bounds:725,1330,721,662
 gfDance
-  rotate: false
-  xy: 1454, 659
-  size: 717, 661
-  orig: 721, 662
-  offset: -2, -1
-  index: 9
+index:9
+bounds:725,1330,721,662
 gfDance
-  rotate: false
-  xy: 2181, 659
-  size: 717, 662
-  orig: 721, 662
-  offset: -2, 0
-  index: 10
+index:8
+bounds:725,1330,721,662
 gfDance
-  rotate: false
-  xy: 2181, 659
-  size: 717, 662
-  orig: 721, 662
-  offset: -2, 0
-  index: 11
+index:22
+bounds:1448,1994,721,662
 gfDance
-  rotate: false
-  xy: 2181, 659
-  size: 717, 662
-  orig: 721, 662
-  offset: -2, 0
-  index: 12
+index:24
+bounds:1448,1994,721,662
 gfDance
-  rotate: false
-  xy: 2908, 659
-  size: 717, 661
-  orig: 721, 662
-  offset: -2, -1
-  index: 13
+index:23
+bounds:1448,1994,721,662
 gfDance
-  rotate: false
-  xy: 2908, 659
-  size: 717, 661
-  orig: 721, 662
-  offset: -2, -1
-  index: 14
+index:14
+bounds:2,2,721,662
 gfDance
-  rotate: false
-  xy: 0, 1331
-  size: 717, 650
-  orig: 721, 662
-  offset: -2, -12
-  index: 15
+index:13
+bounds:2,2,721,662
 gfDance
-  rotate: false
-  xy: 727, 1331
-  size: 721, 650
-  orig: 721, 662
-  offset: 0, -12
-  index: 16
+index:4
+bounds:725,666,721,662
 gfDance
-  rotate: false
-  xy: 1458, 1331
-  size: 721, 650
-  orig: 721, 662
-  offset: 0, -12
-  index: 17
+index:19
+bounds:1448,1330,721,662
 gfDance
-  rotate: false
-  xy: 2189, 1331
-  size: 717, 650
-  orig: 721, 662
-  offset: -2, -12
-  index: 18
+index:1
+bounds:2171,1994,721,662
 gfDance
-  rotate: false
-  xy: 2916, 1331
-  size: 717, 651
-  orig: 721, 662
-  offset: -2, -11
-  index: 19
+index:16
+bounds:725,2,721,662
 gfDance
-  rotate: false
-  xy: 0, 1992
-  size: 717, 651
-  orig: 721, 662
-  offset: -2, -11
-  index: 20
+index:29
+bounds:1448,666,721,662
 gfDance
-  rotate: false
-  xy: 727, 1992
-  size: 717, 652
-  orig: 721, 662
-  offset: -2, -10
-  index: 21
+index:28
+bounds:1448,666,721,662
 gfDance
-  rotate: false
-  xy: 1454, 1992
-  size: 717, 657
-  orig: 721, 662
-  offset: -2, -5
-  index: 22
+index:6
+bounds:2171,1330,721,662
 gfDance
-  rotate: false
-  xy: 1454, 1992
-  size: 717, 657
-  orig: 721, 662
-  offset: -2, -5
-  index: 23
+index:21
+bounds:2894,1994,721,662
 gfDance
-  rotate: false
-  xy: 1454, 1992
-  size: 717, 657
-  orig: 721, 662
-  offset: -2, -5
-  index: 24
+index:3
+bounds:1448,2,721,662
 gfDance
-  rotate: false
-  xy: 2181, 1992
-  size: 717, 656
-  orig: 721, 662
-  offset: -2, -6
-  index: 25
+index:18
+bounds:2171,666,721,662
 gfDance
-  rotate: false
-  xy: 2181, 1992
-  size: 717, 656
-  orig: 721, 662
-  offset: -2, -6
-  index: 26
+index:0
+bounds:2894,1330,721,662
 gfDance
-  rotate: false
-  xy: 2181, 1992
-  size: 717, 656
-  orig: 721, 662
-  offset: -2, -6
-  index: 27
+index:15
+bounds:2171,2,721,662
 gfDance
-  rotate: false
-  xy: 2908, 1992
-  size: 717, 656
-  orig: 721, 662
-  offset: -2, -6
-  index: 28
+index:5
+bounds:2894,666,721,662
 gfDance
-  rotate: false
-  xy: 2908, 1992
-  size: 717, 656
-  orig: 721, 662
-  offset: -2, -6
-  index: 29
+index:20
+bounds:2894,2,721,662
