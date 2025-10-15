@@ -1,6 +1,6 @@
 package com.nova.fnfjava.animation;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.nova.fnfjava.Main;
@@ -72,10 +72,7 @@ public class AnimationController {
      */
     public void addByIndices(String name, String prefix, Array<Integer> indices, float frameRate, boolean looped, boolean flipX, boolean flipY) {
         AnimationData animData = new AnimationData(name, prefix, (int) frameRate, looped, flipX, flipY);
-        Main.logger.setTag("AnimationController").info(indices + "");
         animData.frameIndices = indices.toArray();
-        Main.logger.setTag("AnimationController").info(indices.toArray() + "");
-        Main.logger.setTag("AnimationController").info(animData.frameIndices + "");
 
         addAnimation(animData);
     }
@@ -123,8 +120,6 @@ public class AnimationController {
             curAnim = newAnim;
             currentAnimName = name;
             curAnim.play(force, 0);
-
-            sprite.dirty = true;
         }
     }
 
@@ -136,7 +131,7 @@ public class AnimationController {
         return animations.get(name);
     }
 
-    public TextureRegion getCurrentFrame() {
+    public TextureAtlas.AtlasRegion getCurrentFrame() {
         return curAnim != null ? curAnim.getCurrentFrame() : null;
     }
 

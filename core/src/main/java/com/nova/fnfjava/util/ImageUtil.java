@@ -11,7 +11,6 @@ import com.nova.fnfjava.Assets;
 
 public class ImageUtil {
     public static Image createColored(float width, float height, Color color) {
-        // Use your existing white pixel from Assets
         Texture whitePixel = Assets.createColoredTexture(1, 1, Color.WHITE);
 
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(whitePixel)));

@@ -5,25 +5,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import com.nova.fnfjava.Assets;
-import com.nova.fnfjava.util.Axes;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.animation.AnimationController;
+import com.nova.fnfjava.util.Axes;
 
 public class AnimatedSprite extends Actor {
     public AnimationController animation;
 
     public boolean active = true;
-    public boolean dirty = true;
 
     public int frameWidth = 0, frameHeight = 0;
 
-    public TextureRegion frame;
-    public TextureAtlas.AtlasSprite sprite;
+    public TextureAtlas.AtlasRegion frame;
     public TextureAtlas atlas;
 
     public Vector2 offset = new Vector2();
@@ -72,7 +69,7 @@ public class AnimatedSprite extends Actor {
             atlas = createAtlasFromTexture(texture, frameWidth, frameHeight);
         } else {
             // Single frame
-            frame = new TextureRegion(texture, 0, 0, frameWidth, frameHeight);
+            frame = new TextureAtlas.AtlasRegion(texture, 0, 0, frameWidth, frameHeight);
             atlas = null;
         }
 
@@ -93,7 +90,7 @@ public class AnimatedSprite extends Actor {
         Texture texture = Assets.createColoredTexture(width, height, color, unique, key);
         this.frameWidth = width;
         this.frameHeight = height;
-        this.frame = new TextureRegion(texture, 0, 0, width, height);
+        this.frame = new TextureAtlas.AtlasRegion(texture, 0, 0, width, height);
         this.atlas = null;
 
         setSize(width, height);
@@ -108,27 +105,14 @@ public class AnimatedSprite extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        TextureRegion currentFrame = getCurrentDisplayFrame();
+        TextureAtlas.AtlasRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame == null) return;
 
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
 
-        float drawX = getX() - offset.x;
-        float drawY = getY() - offset.y;
+        float drawX = getX() - offset.x + currentFrame.offsetX;
+        float drawY = getY() - offset.y + currentFrame.offsetY;;
         float rotationToApply = getRotation();
-
-        if (currentFrame instanceof TextureAtlas.AtlasRegion) {
-            TextureAtlas.AtlasRegion atlasFrame = (TextureAtlas.AtlasRegion) currentFrame;
-            drawX += atlasFrame.offsetX;
-            drawY += atlasFrame.offsetY;
-
-            // Check if this atlas region was rotated
-            if (atlasFrame.rotate) {
-                rotationToApply += 90f;
-                Main.logger.info("Applying rotation: " + rotationToApply + " to frame: " + atlasFrame.name);
-                Main.logger.info("Frame dimensions: " + currentFrame.getRegionWidth() + "x" + currentFrame.getRegionHeight());
-            }
-        }
 
         batch.draw(currentFrame, drawX, drawY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), rotationToApply);
 
@@ -141,10 +125,9 @@ public class AnimatedSprite extends Actor {
         super.act(delta);
         animation.update(delta);
 
-        TextureRegion currentFrame = getCurrentDisplayFrame();
+        TextureAtlas.AtlasRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame != null && (getWidth() == 0 || getHeight() == 0)) {
             setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-            dirty = true;
         }
     }
 
@@ -158,8 +141,8 @@ public class AnimatedSprite extends Actor {
         return screenCenter(Axes.XY);
     }
 
-    public TextureRegion getCurrentDisplayFrame() {
-        TextureRegion animFrame = animation.getCurrentFrame();
+    public TextureAtlas.AtlasRegion getCurrentDisplayFrame() {
+        TextureAtlas.AtlasRegion animFrame = animation.getCurrentFrame();
         if (animFrame != null) return animFrame;
 
         return frame;
@@ -173,8 +156,7 @@ public class AnimatedSprite extends Actor {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                TextureAtlas.AtlasRegion region = new TextureAtlas.AtlasRegion(texture,
-                    col * frameWidth, row * frameHeight, frameWidth, frameHeight);
+                TextureAtlas.AtlasRegion region = new TextureAtlas.AtlasRegion(texture, col * frameWidth, row * frameHeight, frameWidth, frameHeight);
                 region.index = index++;
                 region.name = "frame";
                 atlas.getRegions().add(region);
@@ -199,7 +181,7 @@ public class AnimatedSprite extends Actor {
 
     // Similar to updateHitbox till I fix updateHitbox to be similar to Flixel's one
     public void updateHitboxFromCurrentFrame() {
-        TextureRegion currentFrame = getCurrentDisplayFrame();
+        TextureAtlas.AtlasRegion currentFrame = getCurrentDisplayFrame();
         if (currentFrame != null) {
             int currentFrameWidth = currentFrame.getRegionWidth();
             int currentFrameHeight = currentFrame.getRegionHeight();
@@ -218,11 +200,6 @@ public class AnimatedSprite extends Actor {
         }
     }
 
-    public void calcFrame(boolean force) {
-        if (!dirty && !force) return;
-
-    }
-
     public void centerOrigin() {
         setOrigin(frameWidth * 0.5f, frameHeight * 0.5f);
     }
@@ -230,7 +207,6 @@ public class AnimatedSprite extends Actor {
     public void resetHelpers() {
         resetFrameSize();
         centerOrigin();
-        dirty = true;
     }
 
     public void resetFrameSize() {
@@ -254,7 +230,8 @@ public class AnimatedSprite extends Actor {
     // Getter and Setters
     public void setAntialiasing(boolean bool) {
         if (bool)
-            for (Texture texture : atlas.getTextures()) texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            for (Texture texture : atlas.getTextures())
+                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
     public void setAtlas(String path) {

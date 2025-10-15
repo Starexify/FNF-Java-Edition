@@ -2,7 +2,6 @@ package com.nova.fnfjava.data.animation;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.Main;
@@ -19,7 +18,7 @@ public class AnimationData {
     public Integer frameRate = 24;
     public Integer[] frameIndices = null;
 
-    public transient Animation<TextureRegion> gdxAnimation;
+    public transient Animation<TextureAtlas.AtlasRegion> gdxAnimation;
     public transient Array<TextureAtlas.AtlasRegion> frames;
     public transient float stateTime = 0f;
     public transient boolean paused = true;
@@ -44,12 +43,24 @@ public class AnimationData {
         }
 
         frames = atlas.findRegions(prefix);
-        if (frameIndices != null) Main.logger.setTag("AnimationData").info(frameIndices.toString());
 
         if (frames.size > 0) {
+            Array<TextureAtlas.AtlasRegion> orderedFrames = frames;
+
+            if (frameIndices != null && frameIndices.length > 0) {
+                orderedFrames = new Array<>(frameIndices.length);
+                for (Integer index : frameIndices) {
+                    if (index >= 0 && index < frames.size) {
+                        orderedFrames.add(frames.get(index));
+                    } else {
+                        Main.logger.setTag("AnimationData").warn("Frame index " + index + " out of bounds for animation: " + name);
+                    }
+                }
+            }
+
             gdxAnimation = new Animation<>(
                 1.0f / frameRate,
-                frames,
+                orderedFrames,
                 looped ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL
             );
         } else {
@@ -93,7 +104,7 @@ public class AnimationData {
         paused = false;
     }
 
-    public TextureRegion getCurrentFrame() {
+    public TextureAtlas.AtlasRegion getCurrentFrame() {
         if (gdxAnimation == null) return null;
         return gdxAnimation.getKeyFrame(stateTime, looped);
     }
