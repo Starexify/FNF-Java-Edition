@@ -4,6 +4,7 @@ import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.audio.FunkinSound;
+import com.nova.fnfjava.flxanimate.AnimateSprite;
 import com.nova.fnfjava.graphics.FunkinSprite;
 import com.nova.fnfjava.ui.MusicBeatState;
 
@@ -11,6 +12,7 @@ public class SpriteTestState extends MusicBeatState {
     public static Main main;
 
     public FunkinSprite gfDance;
+    public AnimateSprite bfChill;
 
     public SpriteTestState(Main main) {
         super(main);
@@ -22,10 +24,8 @@ public class SpriteTestState extends MusicBeatState {
 
         if (Main.sound.music == null) playMenuMusic();
 
-        gfDance = FunkinSprite.create(Gdx.graphics.getWidth() * 0.4F, Gdx.graphics.getHeight() * 0.07F, Paths.getAtlas("gfDanceTitle"));
-        gfDance.animation.addByIndices("danceLeft", "gfDance", new Array<>(new Integer[]{30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}), 24);
-        gfDance.animation.addByIndices("danceRight", "gfDance", new Array<>(new Integer[]{15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}), 24);
-        add(gfDance);
+        bfChill = new AnimateSprite(Paths.animateAtlas("charSelect/bfChill"));
+        add(bfChill);
     }
 
     @Override
