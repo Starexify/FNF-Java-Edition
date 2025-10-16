@@ -8,7 +8,6 @@ public class SpritemapData {
 
     public static class AtlasData {
         public Array<SpriteWrapper> SPRITES;
-
     }
 
     public static class SpriteWrapper {
