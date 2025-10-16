@@ -124,8 +124,8 @@ public class Main extends Game {
         }
 
         Screen titleScreen = new TitleState(this);
-        //setScreen(new SpriteTestState(this));
-        setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
+        setScreen(new SpriteTestState(this));
+        //setScreen(new FunkyLoadingScreen(this, titleScreen, modLoader));
     }
 
     public void switchState(Screen newScreen, boolean skipOutTransition, boolean skipInTransition) {

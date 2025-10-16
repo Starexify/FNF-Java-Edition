@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Conductor {
-    public static Conductor _instance;
+    private static Conductor _instance;
 
     public static Signal<Integer> measureHit = new Signal<>();
     public Signal<Integer> onMeasureHit = new Signal<>();

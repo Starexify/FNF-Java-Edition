@@ -144,5 +144,6 @@ public class AttractState extends MusicBeatState {
         vid.getVideoPlayer().resume();
     }
 
-    public record VideoEntry(String path) { }
+    public record VideoEntry(String path) {
+    }
 }

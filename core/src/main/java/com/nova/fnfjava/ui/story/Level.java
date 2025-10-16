@@ -144,14 +144,10 @@ public class Level implements IRegistryEntry<LevelData> {
 
     @Override
     public void destroy() {
-
     }
 
     @Override
     public String toString() {
-        return "Level{" +
-            "id='" + id + '\'' +
-            ", levelData=" + levelData +
-            '}';
+        return "Level{id='" + id + "'" + ", levelData=" + levelData + "}";
     }
 }
