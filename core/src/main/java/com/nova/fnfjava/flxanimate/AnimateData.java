@@ -1,6 +1,7 @@
 package com.nova.fnfjava.flxanimate;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
 public class AnimateData {
     public AnimationNode AN;
@@ -22,13 +23,50 @@ public class AnimateData {
         public SymbolInstance SI;
     }
 
-    public static class Timeline {
+    public static class Timeline implements Disposable {
         public Array<Layer> L; // Layers
+
+        public int currentFrame;
+
+        public Timeline() {
+            currentFrame = 0;
+        }
+
+        public void draw() {
+            var i = L.size - 1;
+            while (i >= 0) {
+                Layer layer = L.get(i--);
+
+                var frame = layer.getFrameAtIndex(currentFrame);
+
+                frame.draw(currentFrame);
+            }
+        }
+
+        @Override
+        public void dispose() {
+
+        }
     }
 
     public static class Layer {
         public String LN; // Layer Name
         public Array<Frame> FR; // Frames
+
+        public Frame getFrameAtIndex(int index) {
+            index = FlxMath.maxInt(index, 0);
+
+            if (index > (FR.size - 1)) return null;
+
+            for (Frame frame : FR) {
+                for (int i = 0; i < frame.DU; i++) {
+
+                }
+            }
+
+            Frame frameIndex = FR.get;
+            return FR.get(frameIndex);
+        }
     }
 
     public static class Frame {
@@ -75,5 +113,10 @@ public class AnimateData {
 
     public static class MetaData {
         public float FRT; // Frame Rate
+    }
+
+    @Override
+    public String toString() {
+        return "AnimateData{AN=" + AN + ", SD=" + SD + ", MD=" + MD + '}';
     }
 }

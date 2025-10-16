@@ -12,6 +12,7 @@ public class AnimateAtlas {
 
     public String path;
     public Array<SpritemapInput> spritemaps;
+    public AnimateData animateData;
 
     public AnimateAtlas() {
         setupParser();
@@ -29,24 +30,29 @@ public class AnimateAtlas {
         }
 
         FileHandle animation = Gdx.files.internal(path + "/Animation.json");
-        FileHandle pathToSpritemap = Gdx.files.internal(path + "/spritemap1.json");
-        String jsonContent = pathToSpritemap.readString("UTF-8");
-
-        if (jsonContent.startsWith("\uFEFF")) jsonContent = jsonContent.substring(1);
-        SpritemapData smData = parser.fromJson(SpritemapData.class, jsonContent);
-        AnimateData animData = parser.fromJson(AnimateData.class, animation);
+        String animContent = animation.readString("UTF-8");
+        if (animContent.startsWith("\uFEFF")) animContent = animContent.substring(1);
+        AnimateData animData = parser.fromJson(AnimateData.class, animContent);
 
         Array<SpritemapInput> spritemaps = new Array<>();
         for (String file : Assets.listFilesInDirectory(path)) {
-            if (file.contains("spritemap") && file.endsWith(".json")) spritemaps.add(new SpritemapInput(file, file));
+            if (file.contains("spritemap") && file.endsWith(".json")) {
+                FileHandle spritemapFile = Gdx.files.internal(file);
+                String jsonContent = spritemapFile.readString("UTF-8");
+                if (jsonContent.startsWith("\uFEFF")) jsonContent = jsonContent.substring(1);
+
+                SpritemapData smData = parser.fromJson(SpritemapData.class, jsonContent);
+                spritemaps.add(new SpritemapInput(smData.meta.image, smData));
+            }
         }
 
         AnimateAtlas frames = new AnimateAtlas();
+        frames.path = path;
+        frames.animateData = animData;
         frames.spritemaps = spritemaps;
 
         return frames;
     }
 
-    public record SpritemapInput(String graphic, String json) {
-    }
+    public record SpritemapInput(String graphic, SpritemapData json) { }
 }
