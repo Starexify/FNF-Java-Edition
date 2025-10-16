@@ -32,6 +32,14 @@ public class Paths {
         return "assets/images/" + key + ".atlas";
     }
 
+    public static String animateAtlas(String key, String library) {
+        return getPath("images/" + key, library);
+    }
+
+    public static String animateAtlas(String key) {
+        return getPath("images/" + key, null);
+    }
+
     public static String txt(String key) {
         return "assets/data/" + key + ".txt";
     }
