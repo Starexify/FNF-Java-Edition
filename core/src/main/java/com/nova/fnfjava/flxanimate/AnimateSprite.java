@@ -1,6 +1,7 @@
 package com.nova.fnfjava.flxanimate;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 
 public class AnimateSprite extends Actor {
@@ -8,7 +9,7 @@ public class AnimateSprite extends Actor {
     public AnimateData.Timeline timeline;
 
     public AnimateSprite(float x, float y, String assetPath) {
-        setAtlas(AnimateAtlas.fromAnimate(assetPath));
+        loadTextureAtlas(AnimateAtlas.fromAnimate(assetPath));
         setPosition(x, y);
     }
 
@@ -16,9 +17,12 @@ public class AnimateSprite extends Actor {
         this(0, 0, assetPath);
     }
 
-    public void setAtlas(AnimateAtlas atlas) {
+    public void loadTextureAtlas(AnimateAtlas atlas) {
+        if (atlas == null) {
+            Main.logger.setTag("AnimateSprite").warn("No Animation.json file was found for this AnimateSprite.");
+            return;
+        }
+
         this.atlas = atlas;
-        timeline = atlas.animateData.AN.TL;
-        timeline.currentFrame = animation.frameIndex;
     }
 }
