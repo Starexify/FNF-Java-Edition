@@ -17,6 +17,8 @@ dependencies {
   api "com.badlogicgames.gdx-video:gdx-video-desktop:$gdxVideoVersion"
   api "com.badlogicgames.gdx-video:gdx-video-lwjgl3:$gdxVideoVersion"
 
+  api "com.github.tommyettinger:textratypist:$textratypistVersion"
+
   api "com.github.JnCrMx:discord-game-sdk4j:v1.0.0"
 
   implementation 'io.vavr:vavr:0.10.7'

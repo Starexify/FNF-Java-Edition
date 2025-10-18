@@ -2,14 +2,18 @@ package com.nova.fnfjava.text;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.Styles;
+import com.github.tommyettinger.textra.TextraLabel;
 import com.nova.fnfjava.Main;
 import com.nova.fnfjava.Paths;
 
-public class FlxText extends Label implements Disposable {
+public class FlxText extends TextraLabel implements Disposable {
     public String font;
     public int size;
     public Color color;
@@ -20,10 +24,8 @@ public class FlxText extends Label implements Disposable {
 
     public boolean regen = true;
 
-    public BitmapFont currentFont;
-
-    public FlxText(float x, float y, CharSequence text) {
-        super(text, new LabelStyle(new BitmapFont(), Color.WHITE));
+    public FlxText(float x, float y, String text) {
+        super(text, new Styles.LabelStyle(new Font(), Color.WHITE));
         setPosition(x, y);
     }
 
@@ -40,6 +42,48 @@ public class FlxText extends Label implements Disposable {
         regenerateFont();
 
         return this;
+    }
+
+    public void regenerateFont() {
+        try {
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Paths.font(font) + ".ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+            parameter.size = size;
+            parameter.color = color;
+
+            parameter.magFilter = Texture.TextureFilter.Linear;
+
+            switch (borderStyle) {
+                case SHADOW:
+                    parameter.shadowOffsetX = (int) borderSize;
+                    parameter.shadowOffsetY = -(int) borderSize;
+                    parameter.shadowColor = borderColor;
+                    break;
+
+                case SHADOW_XY:
+                    parameter.shadowOffsetX = (int) borderStyle.offsetX;
+                    parameter.shadowOffsetY = (int) borderStyle.offsetY;
+                    parameter.shadowColor = borderColor;
+                    break;
+
+                case OUTLINE:
+                case OUTLINE_FAST:
+                    parameter.borderWidth = borderSize;
+                    parameter.borderColor = borderColor;
+                    break;
+
+                case NONE:
+                default: break;
+            }
+
+            Font newFont = new Font(generator.generateFont(parameter));
+            generator.dispose();
+
+            this.setFont(newFont);
+        } catch (Exception e) {
+            Main.logger.setTag(this.getClass().getSimpleName()).error("Error loading font: " + font, e);
+        }
     }
 
     public FlxText setFormat(String font, int size, Color color) {
@@ -67,60 +111,8 @@ public class FlxText extends Label implements Disposable {
         return borderColor = color;
     }
 
-    public void regenerateFont() {
-        if (currentFont != null) currentFont.dispose();
-
-        try {
-            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Paths.font(font) + ".ttf"));
-            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-            parameter.size = size;
-            parameter.color = color;
-
-            switch (borderStyle) {
-                case SHADOW:
-                    parameter.shadowOffsetX = (int) borderSize;
-                    parameter.shadowOffsetY = -(int) borderSize;
-                    parameter.shadowColor = borderColor;
-                    break;
-
-                case SHADOW_XY:
-                    parameter.shadowOffsetX = (int) borderStyle.offsetX;
-                    parameter.shadowOffsetY = (int) borderStyle.offsetY;
-                    parameter.shadowColor = borderColor;
-                    break;
-
-                case OUTLINE:
-                case OUTLINE_FAST:
-                    parameter.borderWidth = borderSize;
-                    parameter.borderColor = borderColor;
-                    break;
-
-                case NONE:
-                default: break;
-            }
-
-            currentFont = generator.generateFont(parameter);
-            generator.dispose();
-
-            this.setStyle(new Label.LabelStyle(currentFont, color));
-
-        } catch (Exception e) {
-            Main.logger.setTag(this.getClass().getSimpleName()).error("Error loading font: " + font, e);
-            this.setStyle(new Label.LabelStyle(new BitmapFont(), color));
-        }
-    }
-
     @Override
     public void dispose() {
-        if (currentFont != null) {
-            currentFont.dispose();
-            currentFont = null;
-        }
-    }
-
-    public void addText(String text) {
-        setText(getText() + text);
     }
 
     public enum FlxTextBorderStyle {
