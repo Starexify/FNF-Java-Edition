@@ -120,7 +120,7 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
                     difficulty.timeChanges = metadata.timeChanges;
                     difficulty.looped = metadata.looped;
                     difficulty.generatedBy = metadata.generatedBy;
-                    difficulty.offsets = metadata.offsets != null ?  metadata.offsets : new SongData.SongOffsets();
+                    difficulty.offsets = metadata.offsets != null ? metadata.offsets : new SongData.SongOffsets();
 
                     difficulty.stage = metadata.playData.stage;
                     difficulty.noteStyle = metadata.playData.noteStyle;
@@ -158,7 +158,8 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
         if (diffId == null) diffId = listDifficulties(null, possibleVariations).get(0);
 
         for (String variationId : possibleVariations)
-            if (difficulties.get(variationId) != null && difficulties.get(variationId).containsKey(diffId)) return variationId;
+            if (difficulties.get(variationId) != null && difficulties.get(variationId).containsKey(diffId))
+                return variationId;
 
         return null;
     }
@@ -205,7 +206,8 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             SongData.SongMetadata metadata = _metadata.get(variation);
             if (metadata != null && metadata.playData != null && metadata.playData.difficulties != null) {
                 // Add all difficulties from this variation
-                for (String difficulty : metadata.playData.difficulties) if (difficulty != null) diffFiltered.add(difficulty);
+                for (String difficulty : metadata.playData.difficulties)
+                    if (difficulty != null) diffFiltered.add(difficulty);
             }
         }
 
@@ -243,12 +245,14 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
 
     public String getSongName() {
         if (getData() != null) return getData().songName != null ? getData().songName : DEFAULT_SONGNAME;
-        if (_metadata.size > 0) return _metadata.get(Constants.DEFAULT_VARIATION).songName != null ? _metadata.get(Constants.DEFAULT_VARIATION).songName : DEFAULT_SONGNAME;
+        if (_metadata.size > 0)
+            return _metadata.get(Constants.DEFAULT_VARIATION).songName != null ? _metadata.get(Constants.DEFAULT_VARIATION).songName : DEFAULT_SONGNAME;
         return DEFAULT_SONGNAME;
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 
     @Override
     public String toString() {
@@ -313,6 +317,16 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             Assets.cacheSound(getInstPath(instrumental));
         }
 
+        public void playInst(float volume, String instId, boolean looped) {
+            String suffix = (!Objects.equals(instId, "")) ? "-" + instId : "";
+
+            Main.sound.load(Paths.inst(this.song.id, suffix), new FunkinSound.LoadSoundParams.Builder()
+                .volume(volume)
+                .looping(looped)
+                .autoPlay(true)
+                .build());
+        }
+
         public void cacheVocals() {
             for (String voice : buildVoiceList()) {
                 Main.logger.setTag("SongDifficulty").info("Caching vocal track: " + voice);
@@ -338,7 +352,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             // Automatically resolve voices by removing suffixes.
             // For example, if `Voices-bf-car-erect.ogg` does not exist, check for `Voices-bf-erect.ogg`.
             // Then, check for  `Voices-bf-car.ogg`, then `Voices-bf.ogg`.
-
             if (characters.playerVocals == null) {
                 String playerId = characters.player;
                 String playerVoice = Paths.voices(this.song.id, "-" + playerId + suffix);
@@ -379,7 +392,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
             // Automatically resolve voices by removing suffixes.
             // For example, if `Voices-bf-car-erect.ogg` does not exist, check for `Voices-bf-erect.ogg`.
             // Then, check for  `Voices-bf-car.ogg`, then `Voices-bf.ogg`.
-
             if (characters.opponentVocals == null) {
                 String opponentId = characters.opponent;
                 String opponentVoice = Paths.voices(this.song.id, "-" + opponentId + suffix);
@@ -418,23 +430,6 @@ public class Song implements IRegistryEntry<SongData.SongMetadata> {
 
             Array<String> playerVoiceList = this.buildPlayerVoiceList();
             Array<String> opponentVoiceList = this.buildOpponentVoiceList();
-
-            /*for (String playerVoice : playerVoiceList) {
-                if (!Assets.exists(playerVoice)) continue;
-                result.addPlayerVoice(FunkinSound.load(playerVoice, 1.0, false, false, false, false, null, null, true));
-            }
-
-            for (String opponentVoice : opponentVoiceList) {
-                if (!Assets.exists(opponentVoice)) continue;
-                result.addOpponentVoice(FunkinSound.load(opponentVoice, 1.0, false, false, false, false, null, null, true));
-            }
-
-            result.forEach(function(snd:FunkinSound) {
-                snd.important = true;
-            });
-
-            result.playerVoicesOffset = offsets.getVocalOffset(characters.player, instId);
-            result.opponentVoicesOffset = offsets.getVocalOffset(characters.opponent, instId);*/
 
             return result;
         }

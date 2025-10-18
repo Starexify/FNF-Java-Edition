@@ -275,11 +275,6 @@ public class StoryMenuState extends MusicBeatState {
                     changeLevel(-levelList.size);
                     changeDifficulty(0);
                 }
-/*                if (getMouseWheel() < 0) {
-                    changeLevel(-Math.round(getMouseWheel() / 8));
-                } else if (getMouseWheel() > 0) {
-                    changeLevel(-Math.round(getMouseWheel() / 8));
-                }*/
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.D)) changeDifficulty(1);
                 if (Gdx.input.isKeyJustPressed(Input.Keys.A)) changeDifficulty(-1);
@@ -300,8 +295,7 @@ public class StoryMenuState extends MusicBeatState {
     @Override
     public boolean handleMouseWheel(float amountY) {
         if (!exitingMenu && !selectedLevel && amountY != 0) {
-            int change = amountY > 0 ? -1 : 1;
-            changeLevel(change);
+            changeLevel(amountY > 0 ? 1 : -1);
             return true;
         }
         return false;
@@ -421,9 +415,6 @@ public class StoryMenuState extends MusicBeatState {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                //FlxTransitionableState.skipNextTransIn = false;
-                //FlxTransitionableState.skipNextTransOut = false;
-
                 String targetVariation = targetSong.getFirstValidVariation(PlayStatePlaylist.campaignDifficulty);
 
                 LoadingState.loadPlayState(parentState, new PlayState.PlayStateParams(targetSong, PlayStatePlaylist.campaignDifficulty, targetVariation), true);

@@ -3,7 +3,6 @@ package com.nova.fnfjava.play;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.nova.fnfjava.Conductor;
@@ -22,15 +21,14 @@ import com.nova.fnfjava.play.notes.notestyle.NoteStyle;
 import com.nova.fnfjava.play.song.Song;
 import com.nova.fnfjava.play.stage.Stage;
 import com.nova.fnfjava.text.FlxText;
-import com.nova.fnfjava.ui.MusicBeatSubState;
-import com.nova.fnfjava.ui.mainmenu.MainMenuState;
+import com.nova.fnfjava.ui.MusicBeatState;
 import com.nova.fnfjava.util.Constants;
 import com.nova.fnfjava.util.StringTools;
 import com.nova.fnfjava.util.WindowUtil;
 
 import java.util.Objects;
 
-public class PlayState extends MusicBeatSubState {
+public class PlayState extends MusicBeatState {
     public static PlayState instance;
     public static PlayStateParams lastParams;
     public Song currentSong;
@@ -111,13 +109,6 @@ public class PlayState extends MusicBeatSubState {
 
     public PlayState(Main main, PlayStateParams params) {
         super(main);
-        PlayStateParams paramsFinal;
-        if (params != null) paramsFinal = params;
-        else {
-            Main.logger.setTag("PlayState").warn("PlayState constructor called with no parameters. Reusing previous parameters.");
-            if (lastParams != null) paramsFinal = lastParams;
-            else throw new IllegalArgumentException("PlayState constructor called with no available parameters.");
-        }
         lastParams = params;
 
         // Apply parameters.
@@ -127,55 +118,24 @@ public class PlayState extends MusicBeatSubState {
         if (params.targetDifficulty != null) currentDifficulty = params.targetDifficulty;
         previousDifficulty = currentDifficulty;
         if (params.targetVariation != null) currentVariation = params.targetVariation;
-        //if (params.targetInstrumental != null) currentInstrumental = params.targetInstrumental;
-/*        isPracticeMode = params.practiceMode ?? false;
-        isBotPlayMode = params.botPlayMode ?? false;*/
         isMinimalMode = params.minimalMode != null ? params.minimalMode : false;
-/*        startTimestamp = params.startTimestamp ?? 0.0f;
-        playbackRate = params.playbackRate ?? 1.0f;*/
         overrideMusic = params.overrideMusic != null ? params.overrideMusic : false;
-        //previousCameraFollowPoint = params.cameraFollowPoint;
-
-        // Basic object initialization
-        // TODO: Add something to toggle this on!
-/*        if (false) {
-            // Displays the camera follow point as a sprite for debug purposes.
-            Image cameraFollowPoint = ImageUtil.createColored(8, 8,  Color.valueOf("#00FF00FF"));
-            cameraFollowPoint.setVisible(false);
-            cameraFollowPoint.setZIndex(1000000);
-            this.cameraFollowPoint = cameraFollowPoint;
-        } else {
-            cameraFollowPoint = new FlxObject(0, 0);
-        }*/
-
-        //camGame = new FunkinCamera('playStateCamGame');
-        //camHUD = new FlxCamera();
-        //camCutscene = new FlxCamera();
-        //camCutouts = new FlxCamera();
 
         Song.SongDifficulty currentChart = currentSong.getDifficulty(currentDifficulty, currentVariation);
         String noteStyleId = currentChart.noteStyle;
         NoteStyle nulNoteStyle = NoteStyleRegistry.instance.fetchEntry(noteStyleId != null ? noteStyleId : Constants.DEFAULT_NOTE_STYLE);
-        if (nulNoteStyle == null) throw new IllegalArgumentException("Failed to retrieve both note style and default note style. This shouldn't happen!");
+        if (nulNoteStyle == null)
+            throw new IllegalArgumentException("Failed to retrieve both note style and default note style. This shouldn't happen!");
         noteStyle = nulNoteStyle;
 
-        // Strumlines
-        //playerStrumline = new Strumline(noteStyle, !isBotPlayMode, currentChart?.scrollSpeed);
-        //opponentStrumline = new Strumline(noteStyle, false, currentChart?.scrollSpeed);
-
-        // Healthbar
-        //healthBarBG = FunkinSprite.create(0, 0, "healthBar");
-        //healthBar = new FlxBar(0, 0, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), null, 0, 2);
         scoreText = new FlxText(0, 0, "");
-
-        // Combo & Pop Up
-        //comboPopUps = new PopUpStuff(noteStyle);
     }
 
     @Override
     public void show() {
         super.show();
-        if (instance != null) Main.logger.setTag("PlayState").warn("PlayState instance already exists. This should not happen.");
+        if (instance != null)
+            Main.logger.setTag("PlayState").warn("PlayState instance already exists. This should not happen.");
         instance = this;
 
         if (!assertChartExists()) return;
@@ -191,7 +151,8 @@ public class PlayState extends MusicBeatSubState {
 
         Conductor.getInstance().forceBPM(null);
 
-        if (getCurrentChart().offsets != null) Conductor.getInstance().instrumentalOffset = getCurrentChart().offsets.getInstrumentalOffset(currentInstrumental);
+        if (getCurrentChart().offsets != null)
+            Conductor.getInstance().instrumentalOffset = getCurrentChart().offsets.getInstrumentalOffset(currentInstrumental);
 
         Conductor.getInstance().mapTimeChanges(getCurrentChart().timeChanges);
 
@@ -201,36 +162,13 @@ public class PlayState extends MusicBeatSubState {
 
         Conductor.getInstance().update(pre);
 
-/*        initCameras();
-        initHealthBar();
-        if (!isMinimalMode) {
-            initStage();
-            initCharacters();
-        } else initMinimalMode();
-        initStrumlines();
-        initPopups();*/
-
         initDiscord();
 
         generateSong();
 
-        //resetCamera();
-
-        //initPreciseInputs();
-
-        //FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
-
         startingSong = true;
 
-        if ((currentSong.id != null ? currentSong.id : "").toLowerCase().equals("winter-horrorland")) {
-            // VanillaCutscenes will call startCountdown later.
-            //VanillaCutscenes.playHorrorStartCutscene();
-        } else {
-            // Call a script event to start the countdown.
-            // Songs with cutscenes should call event.cancel().
-            // As long as they call `PlayState.instance.startCountdown()` later, the countdown will start.
-            startCountdown();
-        }
+        startCountdown();
 
         initialized = true;
     }
@@ -247,13 +185,7 @@ public class PlayState extends MusicBeatSubState {
             if (!assertChartExists()) return;
             prevScrollTargets = new Array<>();
 
-            //var retryEvent = new SongRetryEvent(currentDifficulty);
-
             previousDifficulty = currentDifficulty;
-
-            //dispatchEvent(retryEvent);
-
-            //resetCamera();
 
             boolean fromDeathState = isPlayerDying;
 
@@ -279,23 +211,12 @@ public class PlayState extends MusicBeatSubState {
             if (Main.sound.music != null) Main.sound.music.setVolume(1);
 
             if (vocals != null) {
-/*                vocals.pause();
-                vocals.time = startTimestamp - Conductor.getInstance().instrumentalOffset;
-
-                vocals.volume = 1;
-                vocals.playerVolume = 1;
-                vocals.opponentVolume = 1;*/
             }
 
             currentStage.resetStage();
 
             if (!fromDeathState) {
-                //playerStrumline.vwooshNotes();
-                //opponentStrumline.vwooshNotes();
             }
-
-            //playerStrumline.clean();
-            //opponentStrumline.clean();
 
             regenNoteData();
 
@@ -313,10 +234,6 @@ public class PlayState extends MusicBeatSubState {
             vwooshTimer.scheduleTask(new Timer.Task() {
                 @Override
                 public void run() {
-/*                    if (playerStrumline.notes.length == 0) playerStrumline.updateNotes();
-                    if (opponentStrumline.notes.length == 0) opponentStrumline.updateNotes();
-                    playerStrumline.vwooshInNotes();
-                    opponentStrumline.vwooshInNotes();*/
                     Countdown.performCountdown();
                 }
             }, vwooshDelay);
@@ -338,19 +255,12 @@ public class PlayState extends MusicBeatSubState {
                 }
             }
         } else {
-            /*if (Constants.EXT_SOUND == "mp3") Conductor.getInstance().formatOffset = Constants.MP3_DELAY_MS;
-            else */Conductor.getInstance().formatOffset = 0.0f;
+            Conductor.getInstance().formatOffset = 0.0f;
 
-            if (Main.sound.music.isPlaying()) {
-                //final float audioDiff = Math.round(Math.abs(Main.sound.music.time - (Conductor.getInstance().songPosition - Conductor.getInstance().getCombinedOffset())));
-                /*if (audioDiff <= CONDUCTOR_DRIFT_THRESHOLD) {
-                    final float easeRatio = (float) (1.0f - Math.exp(-(MUSIC_EASE_RATIO * playbackRate) * delta));
-                    Conductor.getInstance().update(MathUtils.lerp(Conductor.getInstance().songPosition, Main.sound.music.time + Conductor.getInstance().getCombinedOffset(), easeRatio), false);
-                } else {*/
-                    Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
-                    Conductor.getInstance().update();
-                //}
-            }
+            //if (Main.sound.music.isPlaying()) {
+                Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
+                Conductor.getInstance().update();
+            //}
         }
 
         boolean pauseButtonCheck = false;
@@ -361,20 +271,6 @@ public class PlayState extends MusicBeatSubState {
         if (health > Constants.HEALTH_MAX) health = Constants.HEALTH_MAX;
         if (health < Constants.HEALTH_MIN) health = Constants.HEALTH_MIN;
 
-        if (subState == null && cameraZoomRate > 0.0) {
-            cameraBopMultiplier = MathUtils.lerp(1.0f, cameraBopMultiplier, 0.95f);
-            float zoomPlusBop = currentCameraZoom * cameraBopMultiplier;
-            //if (!debugUnbindCameraZoom) FlxG.camera.zoom = zoomPlusBop;
-
-            //camHUD.zoom = FlxMath.lerp(defaultHUDCameraZoom, camHUD.zoom, 0.95);
-        }
-
-        if (currentStage != null && currentStage.getBoyfriend() != null) {
-            //FlxG.watch.addQuick('bfAnim', currentStage.getBoyfriend().getCurrentAnimation());
-        }
-        //FlxG.watch.addQuick('health', health);
-        //FlxG.watch.addQuick('cameraBopIntensity', cameraBopIntensity);
-
         if (!isInCutscene && !disableKeys) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
                 health = Constants.HEALTH_MIN;
@@ -382,13 +278,10 @@ public class PlayState extends MusicBeatSubState {
             }
 
             if (health <= Constants.HEALTH_MIN && !isPracticeMode && !isPlayerDying) {
-                //vocals.pause();
 
                 if (Main.sound.music != null) Main.sound.music.pause();
 
                 deathCounter += 1;
-
-                //dispatchEvent(new ScriptEvent(GAME_OVER));
 
                 persistentUpdate = false;
                 persistentDraw = false;
@@ -413,25 +306,10 @@ public class PlayState extends MusicBeatSubState {
             }
         }
 
-        //processSongEvents();
-
-        // Handle keybinds
-        //processInputQueue();
-        //if (!isInCutscene && !disableKeys) debugKeyShit();
-        //if (isInCutscene && !disableKeys) handleCutsceneKeys(elapsed);
-
-        // Moving notes into position is now done by Strumline.update().
-        //if (!isInCutscene) processNotes(elapsed);
-
         justUnpaused = false;
-
-        //if (Preferences.autoPause) Main.autoPause = !mayPauseGame;
     }
 
     public void moveToGameOver() {
-        //playerStrumline.clean();
-        //opponentStrumline.clean();
-
         vwooshTimer.clear();
 
         songScore = 0;
@@ -440,18 +318,10 @@ public class PlayState extends MusicBeatSubState {
         health = Constants.HEALTH_STARTING;
         healthLerp = health;
 
-        //healthBar.value = healthLerp;
-
         if (!isMinimalMode) {
             iconP1.updatePosition();
             iconP2.updatePosition();
         }
-
-        /*var gameOverSubState = new GameOverSubState({
-                isChartingMode: isChartingMode,
-            transparent: persistentDraw
-      });*/
-        //openSubState(gameOverSubState);
     }
 
     public Array<Object> prevScrollTargets = new Array<>();
@@ -460,20 +330,18 @@ public class PlayState extends MusicBeatSubState {
         if (currentSong == null || getCurrentChart() == null || getCurrentChart().notes == null) {
             criticalFailure = true;
             String message = "There was a critical error. Click OK to return to the main menu.";
-            if (currentSong == null) message = "'There was a critical error loading this song\'s chart. Click OK to return to the main menu.'";
-            else if (currentDifficulty == null) message = "There was a critical error selecting a difficulty for this song. Click OK to return to the main menu.";
-            else if (getCurrentChart() == null) message = "There was a critical error retrieving data for this song on \"" + currentDifficulty + "\" difficulty with variation \"" + currentVariation + "\". Click OK to return to the main menu.";
-            else if (getCurrentChart().notes == null) message = "There was a critical error retrieving note data for this song on \"" + currentDifficulty + "\" difficulty with variation \"" + currentVariation + "\". Click OK to return to the main menu.";
+            if (currentSong == null)
+                message = "'There was a critical error loading this song's chart. Click OK to return to the main menu.'";
+            else if (currentDifficulty == null)
+                message = "There was a critical error selecting a difficulty for this song. Click OK to return to the main menu.";
+            else if (getCurrentChart() == null)
+                message = "There was a critical error retrieving data for this song on \"" + currentDifficulty + "\" difficulty with variation \"" + currentVariation + "\". Click OK to return to the main menu.";
+            else if (getCurrentChart().notes == null)
+                message = "There was a critical error retrieving note data for this song on \"" + currentDifficulty + "\" difficulty with variation \"" + currentVariation + "\". Click OK to return to the main menu.";
 
             // Display a popup. This blocks the application until the user clicks OK.
             WindowUtil.showError("Error loading PlayState", message);
 
-            // Force the user back to the main menu.
-            if (getIsSubState()) close();
-            else {
-                if (currentStage != null) currentStage.remove();
-                main.switchState(new MainMenuState(main));
-            }
             return false;
         }
         return true;
@@ -489,7 +357,8 @@ public class PlayState extends MusicBeatSubState {
         if (PlayStatePlaylist.isStoryMode) return "Story Mode: " + PlayStatePlaylist.campaignTitle;
         else {
             /*if (isChartingMode) return "Chart Editor [Playtest]";
-            else */if (isPracticeMode) return "Freeplay [Practice]";
+            else */
+            if (isPracticeMode) return "Freeplay [Practice]";
             else if (isBotPlayMode) return "Freeplay [Bot Play]";
             else return "Freeplay";
         }
@@ -504,17 +373,9 @@ public class PlayState extends MusicBeatSubState {
     public void generateSong() {
         if (getCurrentChart() == null) throw new IllegalArgumentException("Song difficulty could not be loaded.");
         if (!overrideMusic) {
-            // Stop the vocals if they already exist.
-/*            vocals.stop();
-            vocals = getCurrentChart().buildVocals(currentInstrumental);
-
-            if (vocals.sounds.size == 0) Main.logger.setTag("PlayState").warn("No vocals found for this song.");*/
         }
 
         regenNoteData();
-
-/*        var event:ScriptEvent = new ScriptEvent(CREATE, false);
-        ScriptEventDispatcher.callEvent(currentSong, event);*/
 
         generatedMusic = true;
     }
@@ -527,10 +388,6 @@ public class PlayState extends MusicBeatSubState {
 
         Highscore.tallies.combo = 0;
         Highscore.tallies = new Highscore.Tallies();
-
-        //var event:SongLoadScriptEvent = new SongLoadScriptEvent(currentChart.song.id, currentChart.difficulty, currentChart.notes.copy(), currentChart.getEvents());
-
-        //dispatchEvent(event);
 
         Array<SongData.SongNoteData> builtNoteData = getCurrentChart().notes;
         Array<SongData.SongEventData> builtEventData = getCurrentChart().events;
@@ -547,7 +404,7 @@ public class PlayState extends MusicBeatSubState {
 
             var scoreable = true;
             if (songNote.kind != null) {
-                NoteKind noteKind = NoteKindManager.getNoteKind(songNote.kind != null ? songNote.kind  : "");
+                NoteKind noteKind = NoteKindManager.getNoteKind(songNote.kind != null ? songNote.kind : "");
                 if (noteKind != null) scoreable = noteKind.scoreable;
             }
 
@@ -564,9 +421,6 @@ public class PlayState extends MusicBeatSubState {
                     opponentNoteData.add(songNote);
             }
         }
-
-        //playerStrumline.applyNoteData(playerNoteData);
-        //opponentStrumline.applyNoteData(opponentNoteData);
     }
 
     public void regenNoteData() {
@@ -585,16 +439,12 @@ public class PlayState extends MusicBeatSubState {
     public void startSong() {
         startingSong = false;
 
-        //if (!overrideMusic && !getIsGamePaused() && getCurrentChart() != null) getCurrentChart().playInst(1.0, currentInstrumental, false);
+        if (!overrideMusic && !getIsGamePaused() && getCurrentChart() != null) getCurrentChart().playInst(1.0f, currentInstrumental, false);
 
         if (Main.sound.music == null) {
             Main.logger.setTag("PlayState").error("PlayState failed to initialize instrumental!");
             return;
         }
-
-/*        Main.sound.music.onComplete = () -> {
-            if (mayPauseGame) endSong(skipEndingTransition);
-        };*/
 
         Main.sound.music.pause();
         Main.sound.music.seekTo(startTimestamp);
@@ -602,17 +452,10 @@ public class PlayState extends MusicBeatSubState {
 
         // Prevent the volume from being wrong.
         Main.sound.music.setVolume(1.0f);
-        //if (Main.sound.music.fadeTween != null) Main.sound.music.fadeTween.cancel();
 
         if (vocals != null) {
             Main.logger.setTag("PlayState").info("Playing vocals...");
             add(vocals);
-
-            /*vocals.time = startTimestamp - Conductor.instance.instrumentalOffset;
-            vocals.pitch = playbackRate;
-            vocals.volume = 1.0;*/
-
-            //vocals.play();
         }
 
         Main.sound.music.play();
@@ -622,11 +465,7 @@ public class PlayState extends MusicBeatSubState {
         );
 
         if (startTimestamp > 0) {
-            // FlxG.sound.music.time = startTimestamp - Conductor.instance.combinedOffset;
-            //handleSkippedNotes();
         }
-
-        //dispatchEvent(new ScriptEvent(SONG_START));
 
         resyncVocals();
     }
@@ -643,13 +482,6 @@ public class PlayState extends MusicBeatSubState {
         Main.logger.setTag("PlayState").info("Resyncing vocals to " + timeToPlayAt);
 
         Main.sound.music.pause();
-        //vocals.pause();
-
-        //Main.sound.music.time = timeToPlayAt;
-        //Main.sound.music.play(false, timeToPlayAt);
-
-        //vocals.time = timeToPlayAt;
-        //vocals.play(false, timeToPlayAt);
     }
 
     public void updateScoreText() {
@@ -661,30 +493,9 @@ public class PlayState extends MusicBeatSubState {
     }
 
     // Getters/Setters
-    public float getStageZoom() {
-        if (currentStage != null) return currentStage.getCamZoom();
-        else return 1.0f * 1.05f;
-    }
-
-    public boolean getIsSubState() {
-        return this.parentState != null;
-    }
-
-/*    public boolean getIsChartingMode() {
-        return this.parentState != null && parentState instanceof ChartEditorState;
-    }*/
-
     public boolean getIsGamePaused() {
         return this.subState != null;
     }
-
-/*    public boolean getIsExitingViaPauseMenu() {
-        if (this.subState == null) return false;
-        if (!(this.subState instanceof PauseSubState)) return false;
-
-        PauseSubState pauseSubState = this.subState;
-        return !pauseSubState.allowInput;
-    }*/
 
     public Song.SongDifficulty getCurrentChart() {
         if (currentSong == null || currentDifficulty == null) return null;
@@ -696,13 +507,11 @@ public class PlayState extends MusicBeatSubState {
         return Objects.equals(stage, "") ? Constants.DEFAULT_STAGE : stage;
     }
 
-    public float get_currentSongLengthMs() {
+    public float getCurrentSongLengthMs() {
         return Main.sound.music.getLength();
     }
 
     public record PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation, Boolean overrideMusic, Boolean minimalMode) {
-        public PlayStateParams {}
-
         public PlayStateParams(Song targetSong, String targetDifficulty, String targetVariation) {
             this(targetSong, targetDifficulty, targetVariation, false, false);
         }

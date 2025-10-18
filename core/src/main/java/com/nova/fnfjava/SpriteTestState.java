@@ -1,18 +1,11 @@
 package com.nova.fnfjava;
 
 import com.badlogic.ashley.signals.Signal;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
 import com.nova.fnfjava.audio.FunkinSound;
-import com.nova.fnfjava.flxanimate.AnimateSprite;
-import com.nova.fnfjava.graphics.FunkinSprite;
 import com.nova.fnfjava.ui.MusicBeatState;
 
 public class SpriteTestState extends MusicBeatState {
     public static Main main;
-
-    public FunkinSprite gfDance;
-    public AnimateSprite bfChill;
 
     public SpriteTestState(Main main) {
         super(main);
@@ -23,9 +16,6 @@ public class SpriteTestState extends MusicBeatState {
         super.show();
 
         if (Main.sound.music == null) playMenuMusic();
-
-        bfChill = new AnimateSprite(Paths.animateAtlas("charSelect/bfChill"));
-        add(bfChill);
     }
 
     @Override
