@@ -8,4 +8,8 @@ public class StageProp extends FunkinSprite {
     public StageProp(float x, float y) {
         super(x, y);
     }
+
+    public StageProp() {
+        this(0, 0);
+    }
 }

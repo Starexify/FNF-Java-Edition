@@ -14,6 +14,8 @@ import com.nova.fnfjava.data.event.SongEventRegistry;
 import com.nova.fnfjava.data.notestyle.NoteStyleRegistry;
 import com.nova.fnfjava.data.song.SongData;
 import com.nova.fnfjava.graphics.FunkinSprite;
+import com.nova.fnfjava.modding.events.Event;
+import com.nova.fnfjava.modding.events.StateEvent;
 import com.nova.fnfjava.play.components.HealthIcon;
 import com.nova.fnfjava.play.notes.notekind.NoteKind;
 import com.nova.fnfjava.play.notes.notekind.NoteKindManager;
@@ -43,11 +45,6 @@ public class PlayState extends MusicBeatState {
     public int songScore = 0;
     public float startTimestamp = 0.0f;
     public float playbackRate = 1.0f;
-    //public var cameraFollowPoint:FlxObject;
-    //public var cameraFollowTween:Null<FlxTween>;
-    //public var cameraZoomTween:Null<FlxTween>;
-    //public var scrollSpeedTweens:Array<FlxTween> = [];
-    //public var previousCameraFollowPoint:Null<FlxPoint>;
     public float currentCameraZoom = 1.0f;
     public float cameraBopMultiplier = 1.0f;
     public float stageZoom;
@@ -64,9 +61,6 @@ public class PlayState extends MusicBeatState {
     public boolean isInCutscene = false;
     public boolean disableKeys = false;
     public String previousDifficulty = Constants.DEFAULT_DIFFICULTY;
-    //public Conversation currentConversation;
-    //public Array<PreciseInputEvent> inputPressQueue = new Array<>();
-    //var inputReleaseQueue:Array<PreciseInputEvent> = [];
     public boolean justUnpaused = false;
     public NoteStyle noteStyle;
     public Array<SongData.SongEventData> songEvents = new Array<>();
@@ -77,8 +71,6 @@ public class PlayState extends MusicBeatState {
     public boolean criticalFailure = false;
     public boolean startingSong = false;
     public boolean musicPausedBySubState = false;
-    //public List<FlxTween> cameraTweensPausedBySubState = new List<FlxTween>();
-    //public var soundsPausedBySubState:List<FlxSound> = new List<FlxSound>();
     public boolean initialized = false;
     public VoicesGroup vocals;
 
@@ -87,18 +79,10 @@ public class PlayState extends MusicBeatState {
     public String discordRPCIcon = "";
 
     public FlxText scoreText;
-    //public FlxBar healthBar;
     public FunkinSprite healthBarBG;
     public HealthIcon iconP1;
     public HealthIcon iconP2;
-    //public Strumline playerStrumline;
-    //public Strumline opponentStrumline;
-    //public FlxCamera camHUD;
-    //public FlxCamera camGame;
     public boolean debugUnbindCameraZoom = false;
-    //public FlxCamera camCutscene;
-    //public FlxCamera camCutouts:FlxCamera;
-    //public PopUpStuff comboPopUps;
     public boolean isSongEnd = false;
     public static final float RESYNC_THRESHOLD = 40;
     public static final float CONDUCTOR_DRIFT_THRESHOLD = 65;
@@ -134,8 +118,7 @@ public class PlayState extends MusicBeatState {
     @Override
     public void show() {
         super.show();
-        if (instance != null)
-            Main.logger.setTag("PlayState").warn("PlayState instance already exists. This should not happen.");
+        if (instance != null) Main.logger.setTag("PlayState").warn("PlayState instance already exists. This should not happen.");
         instance = this;
 
         if (!assertChartExists()) return;
@@ -178,7 +161,6 @@ public class PlayState extends MusicBeatState {
         if (criticalFailure) return;
         super.render(delta);
 
-        //updateHealthBar();
         updateScoreText();
 
         if (needsReset) {
@@ -186,8 +168,6 @@ public class PlayState extends MusicBeatState {
             prevScrollTargets = new Array<>();
 
             previousDifficulty = currentDifficulty;
-
-            boolean fromDeathState = isPlayerDying;
 
             persistentUpdate = true;
             persistentDraw = true;
@@ -210,13 +190,7 @@ public class PlayState extends MusicBeatState {
 
             if (Main.sound.music != null) Main.sound.music.setVolume(1);
 
-            if (vocals != null) {
-            }
-
             currentStage.resetStage();
-
-            if (!fromDeathState) {
-            }
 
             regenNoteData();
 
@@ -256,11 +230,7 @@ public class PlayState extends MusicBeatState {
             }
         } else {
             Conductor.getInstance().formatOffset = 0.0f;
-
-            //if (Main.sound.music.isPlaying()) {
-                Main.logger.setTag("PlayState").warn("Normal Conductor Update!! are you lagging?");
-                Conductor.getInstance().update();
-            //}
+            Conductor.getInstance().update();
         }
 
         boolean pauseButtonCheck = false;
@@ -372,10 +342,9 @@ public class PlayState extends MusicBeatState {
 
     public void generateSong() {
         if (getCurrentChart() == null) throw new IllegalArgumentException("Song difficulty could not be loaded.");
-        if (!overrideMusic) {
-        }
-
         regenNoteData();
+
+        StateEvent.postCreate();
 
         generatedMusic = true;
     }
@@ -463,9 +432,6 @@ public class PlayState extends MusicBeatState {
         DiscordClient.instance.setPresence(
             new DiscordClient.DiscordPresenceParams(buildDiscordRPCState(), buildDiscordRPCDetails(), discordRPCAlbum, discordRPCIcon)
         );
-
-        if (startTimestamp > 0) {
-        }
 
         resyncVocals();
     }

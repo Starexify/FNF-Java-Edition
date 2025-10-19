@@ -33,6 +33,10 @@ public class Bopper extends StageProp implements IBPMSyncedClass {
         EventBus.getInstance().register(SongTimeEvent.class, this);
     }
 
+    public Bopper(float danceEvery) {
+        this(0, 0, danceEvery);
+    }
+
     public void resetPosition() {
         this.setX(originalPosition.x);
         this.setY(originalPosition.y);

@@ -9,6 +9,9 @@ public interface IBPMSyncedClass extends IEventHandler<SongTimeEvent> {
         onStepHit(event.step);
     }
 
-    default void onBeatHit(int beat) { }
-    default void onStepHit(int step) { }
+    default void onBeatHit(int beat) {
+    }
+
+    default void onStepHit(int step) {
+    }
 }

@@ -2,7 +2,7 @@ package com.nova.fnfjava.modding.bus;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.nova.fnfjava.modding.events.*;
+import com.nova.fnfjava.modding.events.Event;
 import com.nova.fnfjava.modding.events.handlers.IEventHandler;
 
 public class EventBus {
@@ -32,11 +32,11 @@ public class EventBus {
     @SuppressWarnings("unchecked")
     public <T extends Event> void post(T event) {
         Array<Object> list = listeners.get(event.getClass());
-        if (list != null) {
-            for (Object listener : list) {
-                if (event.isCancelled()) continue;
-                if (listener instanceof IEventHandler<?>) ((IEventHandler<T>) listener).handle(event);
-            }
+        if (list == null) return;
+
+        for (Object listener : list) {
+            if (event.isCancelled()) continue;
+            if (listener instanceof IEventHandler<?>) ((IEventHandler<T>) listener).handle(event);
         }
     }
 }
