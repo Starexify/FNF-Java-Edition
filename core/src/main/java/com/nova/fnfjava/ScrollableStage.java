@@ -176,7 +176,7 @@ public class ScrollableStage extends Stage {
         boolean handled = super.scrolled(amountX, amountY);
         if (!handled && parentState != null) handled = parentState.handleMouseWheel(amountY);
 
-        return super.scrolled(amountX, amountY);
+        return handled;
     }
 
     public static class ScrollableActor extends Group {
